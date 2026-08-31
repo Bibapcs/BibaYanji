@@ -1,0 +1,49 @@
+<html>
+
+<head>
+<title>Advanced Menu - ECM</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Advanced Menu - ECM</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>ADVANCED MENU - ECM</h1>
+<h2>ECM</h2>
+<p><img border="0" src="images/EcmDlg.png" width="263" height="177"></p>
+<p><b>The ECM</b> choice lets you factor Mersenne numbers using the Elliptic Curve 
+Method of factoring. Select a few exponents and bounds to factor from the
+<a href="http://www.mersenne.org/ecm.htm" target="_blank">http://www.mersenne.org/ecm.htm</a> web 
+pages. </p>
+<p>&nbsp;</p>
+<p><u><i>Note:</i></u> You do not reserve exponents to work on, several people can 
+do ECM factoring on the same exponent. The program uses a random number generator 
+to select elliptic curves to test. You must email results to me at
+<a href="mailto:woltman@alum.mit.edu">woltman@alum.mit.edu</a> -
+<a href="http://www.mersenne.org/primenet/status.shtml" target="_blank">PrimeNet</a> does not support 
+ECM factoring. WARNING: ECM does not adhere to the memory limits specified in the 
+Options/CPU dialog box. ECM requires a minimum of 192 times the FFT size. Thus, 
+ECM factoring of F20 which uses a 64K FFT will use a minimum of 192 * 64K or 12MB 
+of memory. You can also edit the <a href="FileList.html">worktodo.ini</a> file directly. 
+For example: </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECM=751,3000000,0,100,0,0,0,0 </p>
+<p>The first value is the exponent. The second value is bound #1. The third value 
+is bound #2 - leave it as zero. The fourth value is the number of curves to test. 
+The fifth value is no longer used. The sixth value is the specific curve to test 
+- it is only used in debugging. The seventh value is 0 for 2^N-1 factoring, 1 for 
+2^N+1 factoring. The eighth value is no longer used. </p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

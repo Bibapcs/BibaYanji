@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<title>Setting up Available Memory</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Setting up Available Memory</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>SETTING AVAILABLE MEMORY</h1>
+The P-1 factoring step prior to running a <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> 
+test is more effective if it is given more memory to work with. However, if you 
+let the program use too much memory then the performance of ALL programs will suffer. 
+The good news is that 98% of the time the program uses less than 8MB. In fact, the 
+program will work just fine if you instruct the program to use only 8MB or less.
+<p>So how do you intelligently choose the available memory settings? Below are some 
+steps you might take to figure this out: </p>
+<ol>
+  <li>Be conservative. It is better to set the available memory too low than too 
+  high. Setting the value too high can cause thrashing which slows down all programs. 
+  Remember, the program will only use the extra memory in stage 2 of P-1 factoring 
+  (about 12 hours a month). </li>
+  <li>Start with how much memory is installed in your machine. Allow a reasonable 
+  amount of memory for the OS and whatever background tasks you run (say 16 or 24MB). 
+  This represents the maximum value you should use. The program won&#39;t let you enter 
+  more than 90% of installed memory. </li>
+  <li>Assuming you run your machine 24 hours a day, what hours of the day do you 
+  not use your computer? Make these your nighttime hours and let the program use 
+  a lot of memory during these hours. But reduce this value if you also run batch 
+  jobs at night. </li>
+  <li>Factor in the information below about minimum, reasonable, and desirable memory 
+  amounts for some sample exponents. </li>
+</ol>
+<p>&nbsp;</p>
+<table id="AutoNumber1">
+  <tr>
+    <td width="25%"><b>Exponent</b> </td>
+    <td width="25%"><b>Minimum</b> </td>
+    <td width="25%"><b>Reasonable</b> </td>
+    <td width="25%"><b>Desirable</b> </td>
+  </tr>
+  <tr>
+    <td width="25%">6,000,000</td>
+    <td width="25%">12MB</td>
+    <td width="25%">23MB</td>
+    <td width="25%">33MB</td>
+  </tr>
+  <tr>
+    <td width="25%">10,000,000</td>
+    <td width="25%">19MB</td>
+    <td width="25%">36MB</td>
+    <td width="25%">53MB</td>
+  </tr>
+  <tr>
+    <td width="25%">33,000,000</td>
+    <td width="25%">65MB</td>
+    <td width="25%">125MB</td>
+    <td width="25%">185MB</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>For example, my machine is a dual-processor with 128MB of memory. Each CPU runs 
+an LL test on an exponent near 10 million. On the off chance that both CPUs wind 
+up doing P-1 factoring at the same time, I don&#39;t want to set the available memory 
+to more than half of the 128MB. I guess Windows NT can survive on 24MB of memory. 
+Thus, I set the available memory to (128 - 24) / 2 or 52MB. This is my nighttime 
+setting. During the day, I set the available memory to 24MB. I can always stop prime95 
+if it is doing P-1 factoring and I detect memory thrashing. More casual users will 
+probably want to set the daytime memory to 8MB so they don&#39;t have to worry about 
+it. </p>
+<p>If at all in doubt, leave the settings at 8MB. The worst that will happen is 
+you end up running a <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> primality 
+test when stage 2 of P-1 factoring would have found a factor.</p>
+<h1></h1>
+<p></p>
+
+</body>
+
+</html>

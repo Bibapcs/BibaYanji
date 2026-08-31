@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 插件 SDK：宿主与插件共用的契约程序集。插件以 Private=false 引用它，运行时与宿主共享同一份类型。 -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>YanJi.PluginSdk</RootNamespace>
+  </PropertyGroup>
+
+</Project>

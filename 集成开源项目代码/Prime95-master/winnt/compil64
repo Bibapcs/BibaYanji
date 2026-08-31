@@ -1,0 +1,43 @@
+# Choose compiler switches 
+
+cl64=cl /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /O2 /DPORT=5 /c
+cl64d=cl /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /DGDEBUG /Zi /DPORT=5 /c
+
+# Standard options
+copt=/I.. /I..\gwnum /Ic:\curl-7.70.0-win64-mingw\include\curl /Ic:\hwloc-win64-build-2.8.0\include /Ic:\gmp64 /Ic:\boost_1_76_0 /EHsc
+
+# This line allows NMAKE to work as well
+
+all: ntprime64.exe
+
+# Update the object files if necessary
+
+amd64\cJSON.obj: ..\cJSON.c
+    $(cl64) $(copt) /Foamd64\cJSON.obj ..\cJSON.c
+
+amd64\ecm.obj: ..\ecm.cpp
+    $(cl64) $(copt) /Foamd64\ecm.obj ..\ecm.cpp
+
+amd64\exponentiate.obj: ..\exponentiate.c
+    $(cl64) $(copt) /Foamd64\exponentiate.obj ..\exponentiate.c
+
+amd64\pair.obj: ..\pair.cpp
+    $(cl64) $(copt) /Foamd64\pair.obj ..\pair.cpp
+
+amd64\pm1prob.obj: ..\pm1prob.c
+    $(cl64) $(copt) /Foamd64\pm1prob.obj ..\pm1prob.c
+
+amd64\main.obj: main.c main.h prime95.h
+    $(cl64) $(copt) /Foamd64\main.obj main.c
+
+amd64\service.obj: service.c service.h
+    $(cl64) $(copt) /Foamd64\service.obj service.c
+
+amd64\prime.obj: prime.c prime95.h ..\commonc.c ..\commonb.c
+    $(cl64) $(copt) /Foamd64\prime.obj prime.c
+
+# Update the executable file
+
+ntprime64.exe: amd64\main.obj amd64\prime.obj amd64\service.obj amd64\cJSON.obj amd64\ecm.obj amd64\exponentiate.obj amd64\pair.obj amd64\pm1prob.obj
+    link @main64.lnk
+

@@ -1,0 +1,9 @@
+{
+  "id": "keyboard",
+  "name": "键盘测试",
+  "version": "1.0.0",
+  "order": 20,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.KeyboardTest.dll",
+  "entryType": "YanJi.Plugin.KeyboardTest.KeyboardTestPlugin"
+}

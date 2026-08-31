@@ -1,0 +1,9 @@
+{
+  "id": "config",
+  "name": "配置核对",
+  "version": "1.0.0",
+  "order": 10,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.ConfigCheck.dll",
+  "entryType": "YanJi.Plugin.ConfigCheck.ConfigCheckPlugin"
+}

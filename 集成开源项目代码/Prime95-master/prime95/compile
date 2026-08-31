@@ -1,0 +1,32 @@
+# Assembler command lines
+#
+# Uasm is a MASM-compatible assembler that is supported much better than MASM.
+# It can be downloaded at http://www.terraspace.co.uk/hjwasm.html
+#
+# objconv comes courtesy of Agner Fog.  Download available at
+# http://www.agner.org/optimize/#objconv
+
+masm=uasm64 /c -coff -safeseh /I..\gwnum
+#masm=ml /c /coff /I..\gwnum
+#masm=ml /c /coff /I..\gwnum /Fl /Sf /Sa
+
+# C compiler options - optimization is not necessary
+
+cl=cl /I.. /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /c
+#cl=cl /I.. /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /Zi /c
+objconv=c:\objconv\objconv
+
+# List of all buildables in this makefile
+
+all:	factor32.obj
+
+# Create 32-bit object files
+
+factor32.obj: factor32.asm factor32.mac
+    $(masm) /Fofactor32.obj factor32.asm
+    ..\gwnum\strip factor32.obj
+    $(objconv) -felf32 factor32.obj linux\factor32.o
+    attrib -r linux\factor32.o
+    $(objconv) -fmac -wd1050 factor32.obj macosx\factor32.o
+    attrib -r macosx\factor32.o
+

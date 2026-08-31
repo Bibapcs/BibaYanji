@@ -1,0 +1,2 @@
+/incremental:no /largeaddressaware /out:ntprime.exe *.obj ..\prime95\factor32 ..\gwnum\gwnum.lib ..\gwnum\polymult.lib c:\curl-7.70.0-win32-mingw\lib\libcurl.dll.a c:\hwloc-win32-build-2.8.0\lib\libhwloc.lib c:\gmp32\libgmp-gw1.lib libcmt.lib kernel32.lib user32.lib gdi32.lib ws2_32.lib advapi32.lib wininet.lib winmm.lib
+

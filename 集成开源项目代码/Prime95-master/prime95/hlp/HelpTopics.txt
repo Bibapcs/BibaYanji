@@ -1,0 +1,82 @@
+.topic IDH_PRIMENET
+The PrimeNet menu choice lets you configure the type of work you get from the server.  The "Use PrimeNet..." option can be turned on to switch from the manual method to the automatic method.  The "Request whatever..." box should be left checked.  However, if you are running a slow computer and don't mind waiting several months for a single Lucas-Lehmer test to complete OR you are running a faster computer and would rather do factoring, then uncheck this box and choose a different type of work to do.  The "Always have at least this many days of work queued up" value should be changed based on how often you connect to the Internet.  As long as you connect at least once in the given time period, prime95 will have an uninterrupted stream of work.  However, the program will not checkout more than 20 exponents no matter what this value is set at.
+
+
+.topic IDH_USERINFORMATION
+The User Information menu choice lets you change your name and email address.  Your name will be used in credits and "top producers" web pages.  Your email address may be used to send you a newsletter once every few months.  Select the "Receive occasional newsletters..." checkbox to enable these emails.  The userid you use will appear in the status pages on the PrimeNet server.  You can also set the ComputerID field if you have several computers and want to keep track of which computers produced which results.  You can create a team by choosing the "Create a team..." checkbox.  The user name you entered becomes the team name and a message is sent to the server which prevents the team name from changing.  Thus, you can handout the userid and password for others to join your team and these team members are not able to accidentally or maliciously change the team name that appears on the statistics page.
+
+
+.topic IDH_VACATION
+This is a topic for 
+
+.topic IDH_RANGE_STATUS
+This is a topic for 
+
+.topic IDH_CONTINUE
+This is a topic for 
+
+.topic IDH_STOP
+This is a topic for 
+
+.topic IDH_APP_EXIT
+This is a topic for 
+
+.topic IDH_PASSWORD
+This is a topic for 
+
+.topic IDH_TEST
+This is a topic for 
+
+.topic IDH_TIME
+This is a topic for 
+
+.topic IDH_PMINUS1 
+This is a topic for 
+
+.topic IDH_ECM 
+This is a topic for 
+
+.topic IDH_ERRCHK 
+This is a topic for 
+
+.topic IDH_PRIORITY 
+This is a topic for 
+
+.topic IDH_AFFINITY 
+This is a topic for 
+
+.topic IDH_MANUALCOMM 
+This is a topic for 
+
+.topic IDH_QUIT 
+This is a topic for 
+
+.topic IDH_CPU 
+This is a topic for 
+
+.topic IDH_PREFERENCES 
+This is a topic for 
+
+.topic IDH_OPTIONS_SELFTEST 
+This is a topic for 
+
+.topic IDH_TORTURE 
+This is a topic for 
+
+.topic IDH_TRAY 
+This is a topic for 
+
+.topic IDH_HIDE 
+This is a topic for 
+
+.topic IDH_SERVICE 
+This is a topic for 
+
+.topic IDH_HELP_FINDER 
+This is a topic for 
+
+.topic IDH_APP_ABOUT 
+This is a topic for 
+
+.topic IDH_SERVER  
+This is a topic for 

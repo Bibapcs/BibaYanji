@@ -1,0 +1,60 @@
+<html>
+
+<head>
+<title>Options Menu - Start at Bootup</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Options Menu - Start at 
+    Bootup</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>OPTIONS MENU - Start at Bootup</h1>
+<h2><a name="Start at Bootup">Start at Bootup</a></h2>
+<p>Checking the <b>Start at Bootup</b> menu choice will run prime95 as a service that 
+is started when your computer boots up. Windows NT/2000/XP users need administrator 
+privileges to use this feature. This method of starting prime95 is better than creating 
+a shortcut to prime95 in the startup folder. That is because services run even when 
+no one is logged on. These are the details you should be aware of:<br>
+<br>
+In Windows 95/98/Me:<br>
+<br>
+The HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices registry 
+entry is created. You will not be able to tell any difference between prime95 running 
+as a service and prime95 running as an ordinary process.<br>
+<br>
+In Windows NT/2000/XP (without administrator privileges):<br>
+<br>
+In this case the menu text is changed to &quot;Start at Logon&quot;. The HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 
+is created. Prime95 will run only when you are logged in.<br>
+<br>
+In Windows NT/2000/XP (with administrator privileges):<br>
+<br>
+There are a few minor quirks when running as a service. You shouldn&#39;t run into these 
+quirks in normal operation. You can only change this option once and it will take 
+effect when the service is started or stopped. You will need to exit prime95 running 
+as a normal process before starting the prime95 service. Finally, the prime95 window 
+will only appear on one users desktop. Only one prime95.exe program can be run as 
+a service. If you have a dual processor system you&#39;ll want to run two instances 
+of prime95. Instead of running a second prime95 from another directory, run the 
+second prime95 from the same directory with the -A1 switch (go to a DOS window and 
+type “prime95 –A1”). Finally, if you are worried about giving users access to a 
+GUI service running in the Local System account, you can turn off the &quot;Allow service 
+to interact with desktop&quot; option in the services control panel applet or run the 
+GUI-less NT service version available at
+<a href="http://www.mersenne.org/freesoft.htm">http://www.mersenne.org/freesoft.htm</a>. 
+These options are more secure than using the No Icon menu choice<br>
+<br>
+&nbsp;</p>
+
+</body></html>

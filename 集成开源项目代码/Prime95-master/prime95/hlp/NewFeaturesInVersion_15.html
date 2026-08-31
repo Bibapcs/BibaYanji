@@ -1,0 +1,129 @@
+<html>
+
+<head>
+<title>New Features in Version 15 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 15.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 15.x of PRIME95.EXE</h1>
+<h2>New Features in Version 15.4 of Prime95</h2>
+<ol>
+  <li>Quit GIMPS choice moved to the Advanced Menu (so novice users do not confuse 
+  it with exit).<br>
+&nbsp;</li>
+  <li>A bug in httpnet.dll was fixed. It now works for even more proxy servers and 
+  firewalls.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 15.3 of Prime95</h2>
+<ol>
+  <li>More errors in detecting whether you are connected to the Internet have been 
+  fixed.<br>
+&nbsp;</li>
+  <li>Minor bugs fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 15.2 of Prime95</h2>
+<ol>
+  <li>A new primenet.dll that uses HTTP to communicate with the server is available. 
+  This should allow prime95 to work in environments that have firewalls installed.<br>
+&nbsp;</li>
+  <li>An option that allows you to write a progress line to the results file every 
+  N iterations is available.<br>
+&nbsp;</li>
+  <li>A dialog box lets you tell prime95 when you go on vacation. This will prevent 
+  the server from reassigning your exponents when you&#39;re on an extended vacation.<br>
+&nbsp;</li>
+  <li>Some errors in detecting whether you are connected to the Internet have been 
+  fixed.<br>
+&nbsp;</li>
+  <li>An option for you to initiate all contact with the Primenet server is now 
+  available (in case I didn&#39;t find all the problems mentioned in number 4 above!)<br>
+&nbsp;</li>
+  <li>Support for Windows 95 services has been added.<br>
+&nbsp;</li>
+  <li>To get Windows 95 service support to work, prime95 now changes its working 
+  directory to the same directory that prime95.exe is located. If you must run prime95 
+  from a different directory than the rest of the files, then use new -W switch.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 15.1 of Prime95</h2>
+<ol>
+  <li>Better support for dial-up users to the Internet.<br>
+&nbsp;</li>
+  <li>Prime95 no longer contacts the PrimeNet server at startup.<br>
+&nbsp;</li>
+  <li>Prime95 will no longer let you select Pentium Pro or Pentium CPU type unless 
+  your CPU supports the process-specific instructions.<br>
+&nbsp;</li>
+  <li>Bug where AMD-K6s were using the Pentium Pro factoring code (and crashing 
+  because of it) is fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 15.0 of Prime95</h2>
+<ol>
+  <li>Prime95 can now contact a central server to get exponents to test, report 
+  results, and change your email address. No database is required! The old manual 
+  reservation system is still supported. This has led to a major reworking of the 
+  user interface. See the readme file for more details.<br>
+&nbsp;</li>
+  <li>The Pentium factoring code (up to 60 bit factors) is about 4.5% faster.<br>
+&nbsp;</li>
+  <li>You can now change how often prime95 saves intermediate files to disk.<br>
+&nbsp;</li>
+  <li>You can now select one save file or two.<br>
+&nbsp;</li>
+  <li>The auto-continue option is gone. The program now does an auto-continue by 
+  default.<br>
+&nbsp;</li>
+  <li>-Q switch removed. The preferences dialog box lets you select whether the 
+  program should be quiet if a new Mersenne prime is found.<br>
+&nbsp;</li>
+  <li>-H switch removed. Use the Hide Icon menu choice instead.<br>
+&nbsp;</li>
+  <li>-P switch removed. The advanced menu now has a dialog box that lets you change 
+  the priority.<br>
+&nbsp;</li>
+  <li>-A switch added. This allows you to run multiple copies of prime95 from the 
+  same directory. This is useful on multi-processor machines.<br>
+&nbsp;</li>
+  <li>Prime95 no longer uses a prime95.ini file in the Windows directory. All information 
+  is kept in 3 local ini files: prime.ini, local.ini, and worktodo.ini. Eventually, 
+  all ports to other operating systems will use these same ini files.<br>
+&nbsp;</li>
+  <li>The CPU dialog box now has an entry for the AMD K6 and an entry for how many 
+  hours per day you expect to be running the program.<br>
+&nbsp;</li>
+  <li>The time estimate in the Status dialog box now takes into account the time 
+  you&#39;ve invested in the current Lucas-Lehmer test. It also takes into account how 
+  many hours per day you are running the program. It also adjusts its time estimate 
+  if your computer seems to be running faster or slower than expected.<br>
+&nbsp;</li>
+  <li>Timestamps in the results.txt file. <br>
+&nbsp;</li>
+  <li>The results file is now named results.txt, not results. <br>
+  <br>
+&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

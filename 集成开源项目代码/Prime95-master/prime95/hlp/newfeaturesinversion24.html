@@ -1,0 +1,142 @@
+<html>
+
+<head>
+<title>New Features in Version 24 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 24.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 24.x of PRIME95.EXE</h1>
+<h2>New Features in Version 24.14 of Prime95</h2>
+<ol>
+  <li>A bug that caused the
+torture test to hang on 256K FFTs on SSE2 machines with 128K of L2 cache was
+fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 24.13 of Prime95</h2>
+<ol>
+  <li>Celeron D (256K L2
+cache) and Willamette (also 256K L2 cache) now have different implementations
+for several FFT sizes. This results in an improvement of several percent for
+the Celeron D.<br>
+&nbsp;</li>
+  <li>A bug that caused some
+machines to generate &quot;Error 2252&quot; when communicating with the server
+was fixed.<br>
+&nbsp;</li>
+  <li>SSE2 trial factoring
+code had a bug when factoring very large exponents.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 24.12 of Prime95</h2>
+<ol>
+  <li>For SSE2 machines the
+larger FFTs have been changed to more effectively use a wide variety of L2
+cache sizes. The previous version was optimized for a 256KB L2 cache only. Depending
+on your CPU and FFT size, you could see an improvement of several
+percent.<br>
+&nbsp;</li>
+  <li>As a side
+&quot;benefit&quot; even larger FFT sizes are now supported. This allows
+testing of exponents up to 596 million. Not recommended.<br>
+&nbsp;</li>
+  <li>The factoring breakeven
+points have been recalculated using my 2 GHz P4. This version of prime95 will
+do less trial factoring.<br>
+&nbsp;</li>
+  <li>Since server database
+crashes cause spurious error 3 messages, prime95 will now ignore error 3
+messages from the server for 72 hours. This should workaround the problem
+whereby a result is reported but no CPU credit is given and the reservation is
+not cleared.<br>
+&nbsp;</li>
+  <li>Fixed crash bug trial
+factoring exponents above 286 million.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 24.11 of Prime95</h2>
+<ol>
+  <li>Faster FFTs for AMD64
+using prefetchw in both 32-bit and 64-bit mode. You can expect about a 15%
+speed improvement.<br>
+&nbsp;</li>
+  <li>Prime95 now detects
+support for 3DNow! instructions. See undoc.txt for overriding this detection
+with CpuSupports3DNow=n in local.ini.<br>
+&nbsp;</li>
+  <li>Factoring entries in
+worktodo.ini now accept exponents up to 2 billion.<br>
+&nbsp;</li>
+  <li>Improved checking for
+memory allocation errors during a torture test. Better guessing of amount of
+memory to use in a blend test.<br>
+&nbsp;</li>
+  <li>Added timeouts to
+PrimeNet communications in hopes of avoiding rare hangs when contacting the
+PrimeNet server.<br>
+&nbsp;</li>
+  <li>Fixed rare bug where
+P-1's GCD could miss a factor.<br>
+&nbsp;</li>
+  <li>Added trial factoring
+to the benchmark.<br>
+&nbsp;</li>
+  <li>Fixed bug in ECM when
+using zero-padded FFTs.<br>
+&nbsp;</li>
+  <li>SSE2 macros optimized
+for an additional 1-3% improvement on P4 and AMD64 CPUs.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 24.10 of Prime95</h2>
+<ol>
+  <li>64-bit version of
+prime95 available for 64-bit Windows.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 24.9 of Prime95</h2>
+<ol>
+  <li>Fixed crash when
+running on machines with &quot;no-execute&quot; protection.<br>
+&nbsp;</li>
+  <li>Fixed mis-detection of
+some P3 and Celeron CPUs.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 24.6 of Prime95</h2>
+<ol>
+  <li>Athlon users should see
+a 20% to 30% speed increase.<br>
+&nbsp;</li>
+  <li>Pentium, Pentium II,
+Pentium III users should see dramatically WORSE performance. Run version 23
+instead.<br>
+&nbsp;</li>
+  <li>P-1 and ECM now support
+numbers of the form k*b^n+c. This cannot be done from the menus. Add these
+entries to worktodo.ini:<br>
+Pminus1=k,b,n,c,B1,B2<br>
+ECM2=k,b,n,c,B1,B2,curves_to_do[,specific_sigma]<br>&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

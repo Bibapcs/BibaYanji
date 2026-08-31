@@ -1,0 +1,17 @@
+# 构建产物
+bin/
+obj/
+out/
+
+# 发布产物（可重新生成，见 README「部署」与项目交接文档）
+publish/
+publish-stage/
+
+# 安装向导产物（脚本 installer/setup.iss 入库，产物可重新构建）
+installer/*.exe
+
+# 临时探针（按交接文档惯例用完即删，防误提交）
+.*-probe/
+
+# FurMark 负载是构建产物（FurMark 工程构建后自动拷贝），不入库
+验机软件/Tools/furmark/

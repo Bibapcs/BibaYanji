@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 19041：与宿主对齐（AvConference 的摄像头 WinRT 需要 Windows SDK 目标） -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- 类库默认不把 NuGet 依赖拷到输出；插件目录需自含依赖（NAudio/HidSharp/DiskInfoToolkit 等），
+         运行时由宿主的依赖解析兜底钩子从插件目录加载（System.Management 桩除外：宿主 TPA 优先解析到真实实现） -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>YanJi.Plugin.ScreenDeadPixel</AssemblyName>
+    <RootNamespace>YanJi.Plugin.ScreenDeadPixel</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 插件契约由宿主提供：Private=false 不把 YanJi.PluginSdk.dll 拷进插件目录，运行时与宿主共享同一类型 -->
+    <ProjectReference Include="..\..\PluginSdk\YanJi.PluginSdk.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

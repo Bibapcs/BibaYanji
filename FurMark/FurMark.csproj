@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- 与主工程对齐（解决方案约定 TFM） -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <!-- 还原资产恒含 win-x64：主工程发布（RID=win-x64 全局属性）嵌套构建本工程时防 NETSDK1047 -->
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>FurMark</AssemblyName>
+    <RootNamespace>YanJi.FurMark</RootNamespace>
+    <Version>1.0.0</Version>
+    <Description>FurMark 毛球 GPU 烤机（C# / OpenTK 重实现，移植自 StanislavPetrovV 的 FurMark-Python，MIT）</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- OpenGL 窗口 + 绑定（GLFW）：MIT -->
+    <PackageReference Include="OpenTK" Version="4.9.4" />
+    <!-- 贴图解码（stb_image 的 C# 移植）：公有领域 -->
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 着色器与贴图（移植自 FurMark-Python，MIT，见 Assets/LICENSE.FurMark.txt），随输出拷贝 -->
+    <None Include="Assets\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- 构建后把完整运行负载拷到主工程 Tools/furmark/（主工程再把 Tools/ 整体随输出拷贝）。
+       先清空目标目录再拷：历史上曾残留过自包含构建的运行时 dll（coreclr/hostfxr 等），
+       与框架依赖的 runtimeconfig 混在一起会让 apphost 误把应用目录当 .NET 根而报缺运行时。
+       Condition 排除发布：本工程 publish 时（RID=win-x64 + SelfContained）不拷——否则自包含
+       运行时污染源码树 Tools/furmark（publish\Tools\furmark 由主工程 pubxml 用 publish-stage
+       自包含负载整体替换，不走这里）。 -->
+  <Target Name="CopyToYanJiTools" AfterTargets="Build" Condition="'$(RuntimeIdentifier)' == ''">
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\..\验机软件\Tools\furmark" />
+    <ItemGroup>
+      <_ToolPayload Include="$(TargetDir)**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_ToolPayload)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_ToolPayload->'$(MSBuildProjectDirectory)\..\验机软件\Tools\furmark\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+</Project>

@@ -1,0 +1,128 @@
+<html>
+
+<head>
+<title>New Features in Version 19 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 19.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 19.x of PRIME95.EXE</h1>
+<h2>New Features in Version 19.2 of Prime95</h2>
+<ol>
+  <li>A bug in factoring exponents above 35.79 million was fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 19.1 of Prime95</h2>
+<ol>
+  <li>A new undocumented feature, Stage1 GCD, lets you speed up P-1 tests on 
+  large exponents - see undoc.txt for details.<br>
+&nbsp;</li>
+  <li>K6 CPUs now default to the Pentium code path instead of the Pentium Pro 
+  code path. This is faster on the K6.<br>
+&nbsp;</li>
+  <li>The rolling average formula was adjusted to work better on machines that 
+  are not on 24 hours a day.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 19.0 of Prime95</h2>
+<ol>
+  <li>Faster - in some cases as much as 10% faster!. The FFTs were recoded for 
+  improved memory and TLB efficiency. Furthermore, optimizations specific to the 
+  Pentium Pro and later processors were added.<br>
+&nbsp;</li>
+  <li>New FFT lengths. The program can now test exponents as large as 79.3 
+  million. Also, smaller FFT lengths are supported for use in ECM and P-1 
+  factoring.<br>
+&nbsp;</li>
+  <li>More conservative FFT breakpoints. This could actually result in some 
+  exponents being slower to test in this version. However, the chance of a fatal 
+  rounding error has been reduced.<br>
+&nbsp;</li>
+  <li>P-1 factoring has been added. Although it is not very practical for large 
+  exponents because of a slow GCD routine, it can be used to find new factors of 
+  exponents below a few million or so.<br>
+&nbsp;</li>
+  <li>ECM can now run on large exponents. Once again, the slow GCD routine and 
+  high memory requirements might make this impractical for large exponents.<br>
+&nbsp;</li>
+  <li>ECM and P-1 factoring now support save files. Very handy on lengthy runs. 
+  The count of completed ECM curves is maintained in the save file instead of 
+  the worktodo.ini file.<br>
+&nbsp;</li>
+  <li>ECM and P-1 factoring lets you specify the amount of memory to use. In 
+  some cases, more memory can improve execution speed slightly.<br>
+&nbsp;</li>
+  <li>A bug in guessing the CPU speed on initial install has been fixed.<br>
+&nbsp;</li>
+  <li>The preferences dialog now has an option to pause prime95 when a laptop is 
+  running on its battery.<br>
+&nbsp;</li>
+  <li>Error checking has been improved slightly.<br>
+&nbsp;</li>
+  <li>Factoring is now &quot;layered&quot;. That is, prime95 now factors to 2^50, then 
+  2^51, 2^52, and so forth up to the appropriate limit. The factoring output 
+  lines have been changed to show percent complete in the current &quot;layer&quot;.<br>
+&nbsp;</li>
+  <li>A bug in running two or more self or torture tests in the same directory 
+  has been fixed.<br>
+&nbsp;</li>
+  <li>Trial factoring above 2^64 is now supported.<br>
+&nbsp;</li>
+  <li>More trial factoring is now done to take into account the cost of 
+  double-checking.<br>
+&nbsp;</li>
+  <li>Title now contains percent complete when LL testing. By default, the 
+  percent complete value is now displayed to 2 decimal places. You can change 
+  this by setting PercentPrecision in prime.ini to a value between 0 and 6.<br>
+&nbsp;</li>
+  <li>Affinity and service name settings moved from prime.ini to local.ini file. 
+  Prime95 will automatically move these settings for you.<br>
+&nbsp;</li>
+  <li>An option to get only 10,000,000 digit numbers to run primality tests on 
+  has been added to the Test/Primenet dialog box. See 
+  <a href="http://www.mersenne.org/prize.htm">http://www.mersenne.org/prize.htm</a> 
+  for rules on claiming the EFF award for finding a 10,000,000 digit prime.<br>
+&nbsp;</li>
+  <li>The Advanced/Clear primes menu choice has been deleted.<br>
+&nbsp;</li>
+  <li>The prime95 icon turns yellow when the program is idle. After an error 
+  such as ILLEGAL SUMOUT, the icon will blink for 10 seconds.<br>
+&nbsp;</li>
+  <li>The User Information dialog box allows you to request newsletters and form 
+  a team user ID where the team members cannot alter the team name.<br>
+&nbsp;</li>
+  <li>A bug in the reporting of error counts in the results.txt file has been 
+  fixed.<br>
+&nbsp;</li>
+  <li>The server can now broadcast important messages to the prime95 client. 
+  Prime95 will blink the icon until prime95 is activated and then it will 
+  display the message.<br>
+&nbsp;</li>
+  <li>A computer ID will be generated for computers that do not have one. If you 
+  want to assign your own computer ID, please try to make each computer ID using 
+  the same user ID unique.  <br>
+&nbsp;</li>
+</ol>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>

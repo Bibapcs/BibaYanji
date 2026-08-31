@@ -1,0 +1,58 @@
+<html>
+
+<head>
+<title>Program Output</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Program Output</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>PROGRAM OUTPUT</h1>
+<p><h2>On screen you will see:<br><br>Factoring M400037 to 2^54 is 3.02% complete. Clocks: 24235224=0.121 sec.</h2>
+<p>
+This means prime95 is trying to find a small factor of 2^400037-1. It is 3.02% of 
+the way though looking at factors below 2^54. When this completes it may start looking 
+for factors less than 2^55.<br>
+<h2>Iteration: 941400 / 1667747 [56.45%]. Per iteration time: 0.109 sec.</h2>
+<p>This means prime95 just finished the 941400th iteration of a 
+<a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> primality 
+test. The program must execute 1667747 iterations to complete the primality test. 
+The average iteration took 0.109 seconds.<br>
+<br>
+The results file and screen will include lines that look like:</p>
+<h2>M2645701 has a factor: 13412891051374103</h2><p>
+This means to 2^2645701-1 is not prime. It is divisible by 13412891051374103.<br>
+<br>
+<h2>M2123027 no factor to 2^57, WV1: 14780E25</h2>
+This means 2^2123027-1 has no factors less than 2^57. The Mersenne number may or 
+may not be prime. A <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test is needed to determine the primality of the 
+Mersenne number. WV1 is the program version number. 14780E25 is a checksum to guard 
+against email transmission errors.<br>
+<br>
+<h2>M1992031 is not prime. Res64: 6549369F4962ADE0. WV1: B253EF24,1414032,00000000</h2>
+This means 2^1992031-1 is not prime - a <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test says so. The last 64 bits 
+of the last number in the <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> sequence is 6549369F4962ADE0. At some future 
+date, another person will verify this 64-bit result by rerunning the 
+<a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> 
+test. WV1 is the program version number. B253EF24 is a checksum to guard against 
+email transmission errors. 1414032 can be ignored it is used as part of the double-checking 
+process. The final 00000000 value is a set of 4 counters. These count the number 
+of errors that occurred during the <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test.<br>
+<br>
+<h2>M11213 is prime! WV1: 579A579A</h2>
+This means 2^11213-1 is a Mersenne prime! WV1 is the program version number. 579A579A 
+is a checksum to guard against email transmission errors. <br>
+
+</body>
+</html>

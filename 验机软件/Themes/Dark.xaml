@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 深色主题语义令牌：与 Light.xaml 键集完全一致 -->
+    <SolidColorBrush x:Key="WindowBgBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="SurfaceBgBrush" Color="#2A2A2D"/>
+    <SolidColorBrush x:Key="SubtleBgBrush" Color="#252527"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#E8E8E8"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9CA3AF"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#3F3F46"/>
+    <SolidColorBrush x:Key="BorderStrongBrush" Color="#5A5A62"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#4CA6F0"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#62B4F5"/>
+    <SolidColorBrush x:Key="NavHoverBrush" Color="#333337"/>
+    <SolidColorBrush x:Key="NavSelectedBrush" Color="#264F78"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#FF6B5E"/>
+    <SolidColorBrush x:Key="ChartGridBrush" Color="#3A3A3E"/>
+    <SolidColorBrush x:Key="ChartTextBrush" Color="#9CA3AF"/>
+    <SolidColorBrush x:Key="ChartNoDataBrush" Color="#4A4A50"/>
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#4A4E55"/>
+    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#6B7280"/>
+    <SolidColorBrush x:Key="ScrollTrackBrush" Color="#252527"/>
+</ResourceDictionary>

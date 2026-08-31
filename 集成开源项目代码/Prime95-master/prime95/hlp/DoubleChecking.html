@@ -1,0 +1,47 @@
+<html>
+
+<head>
+<title>Double Checking</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>Math: Double Checking</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>DOUBLE CHECKING</h1>
+
+<p>To verify that a first-time <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> 
+primality test was performed without error, GIMPS runs the primality test a 
+second time. During each test, the low order 64 bits of the final S(P)-2 value, 
+called a residue, are printed. If these match, then GIMPS declares the exponent 
+properly double-checked. If they do not match, then the primality test is run 
+again until a match finally occurs.<br>
+<br>
+GIMPS goes a bit further to guard against programming errors. Prior to starting 
+the <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test, the S(0) value 
+is left shifted by a random amount. Each squaring just doubles how much we have 
+shifted the S value. Note that the mod 2<sup>p</sup>-1 step merely rotates the 
+p-th bits and above to the least significant bits, so there is no loss of 
+information. Why do we go to this trouble? If there were a bug in the FFT code, 
+then the shifting of the S values insures that the FFTs in the first primality 
+test are dealing with completely different data than the FFTs in the second 
+primality test. It would be near impossible for a programming bug to produce the 
+same final 64-bit residues.<br>
+<br>
+Historically, the error rate for a <a href="Lucas-LehmerDetails.html">
+Lucas-Lehmer</a> test is a little over one percent.<br>
+&nbsp;</p>
+
+</body>
+
+</html>

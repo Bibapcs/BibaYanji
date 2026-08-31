@@ -1,0 +1,65 @@
+<html>
+
+<head>
+<title>How Gimps Works</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>Welcome...: How GIMPS Works</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>HOW GIMPS WORKS</h1>
+<ul>
+  <li>This program is used to find Mersenne Prime numbers. Mersenne numbers can 
+  be proved composite (not prime) by either finding a <a href="Factoring.html">factor</a> or by running a 
+  <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> 
+  primality test. </li>
+  <li>GIMPS requires a Pentium class computer that is on most of the time. The program 
+  runs at the lowest possible priority. 
+  <a href="http://www.mersenne.org/links.htm#studies">You should not see any 
+  impact</a> on your system&#39;s 
+  performance. The program will use about 8MB of memory and about 10MB of disk space.
+  </li>
+  <li>Most importantly, you will need a lot of patience. Roughly speaking it will 
+  take about a month to run a single primality test - visit the 
+  <a href="http://www.mersenne.org/bench.htm">benchmark</a> page for 
+  a more accurate estimate on your computer. </li>
+  <li>The program talks to 
+  <a href="http://www.mersenne.org/primenet/status.shtml">PrimeNet</a>, a central server on the Internet, to get work 
+  to do and report results. The program communicates using the HTTP protocol and 
+  may require a little extra configuration to get through some firewalls. The program 
+  only sends a few hundred bytes every week or two. Thus, there is no impact on 
+  your network performance. The program does not require a continuous Internet connection 
+  and if properly configured will not automatically dial out to establish an Internet 
+  connection. </li>
+  <li>There are three types of work assigned by the server. PIII-900 and faster 
+  computers get first-time primality tests. These tests require the most work and 
+  have the best chance of finding a new Mersenne prime. Pentium-233 and faster computers 
+  get double-check assignments. These assignments do not take as long and can find 
+  a Mersenne prime only if the original test had a problem. The slowest computers 
+  are assigned factoring work. This helps by eliminating some exponents for the 
+  faster computers. </li>
+  <li>Every half hour the program saves its state so that if there is a computer 
+  crash you will lose at most a half-hour of work. All temporary files and program 
+  settings are conveniently stored in the same folder as the program. </li>
+  <li>Before you complete your assignment, the program will get more work to do. 
+  This will assure that your computer has a continuous supply of work. </li>
+  <li>If you are lucky enough to find a new Mersenne prime, the program optionally 
+  notifies the server and optionally emits a continuous sound to notify you of the 
+  happy news! </li>
+</ul>
+<p></p>
+
+</body>
+
+</html>

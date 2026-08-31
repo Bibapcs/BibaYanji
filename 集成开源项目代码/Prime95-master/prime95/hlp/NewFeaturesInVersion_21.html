@@ -1,0 +1,122 @@
+<html>
+
+<head>
+<title>New Features in Version 21 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 21.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 21.x of PRIME95.EXE</h1>
+<h2>New Features in Version 21.4 of Prime95</h2>
+<ol>
+  <li>Exiting the Torture Test now prints out how long it ran.<br>
+&nbsp;</li>
+  <li>P4 error checking was relaxed slightly to reduce false alarms.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 21.3 of Prime95</h2>
+<ol>
+  <li>The program will now skip the P-1 factoring stage if another user has already 
+  performed this step.<br>
+  <br>
+&nbsp;</li>
+  <li>The Advanced/Quit GIMPS menu choice now lets you quit after current work completes 
+  or quit immediately.<br>
+&nbsp;</li>
+  <li>A bug was fixed in the error recovery code. After getting a &quot;Disregard last 
+  error&quot; message, the user was treated to a new error on every iteration. The end 
+  result was incorrect. The bug only affected the error recovery of the new P4 FFT 
+  introduced in the beta version 21.2.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 21.2 of Prime95</h2>
+<ol>
+  <li>The program now uses the SSE2 instructions introduced on the Pentium 4 CPU. 
+  This version is about 3 times faster than the previous version on a P4.<br>
+&nbsp;</li>
+  <li>The program now uses the prefetch instructions on the Celeron 2, Pentium 3, 
+  and all Athlon CPUs. This results in about a 20% performance boost on these machines.<br>
+&nbsp;</li>
+  <li>Process priority is now set to idle. Microsoft documentation says that an 
+  idle thread priority overrides process priority. The program&#39;s priority scheme 
+  has always worked well. However, several Win2K users have reported that the program 
+  works better if the process priority is also set to idle.<br>
+&nbsp;</li>
+  <li>The program now delays calculations until 90 seconds after bootup. This lets 
+  your machine boot up as fast as possible. This can be changed, see undoc.txt.<br>
+&nbsp;</li>
+  <li>The default crossover between double-check assignments and first-time tests 
+  has been increased to a 400 MHz PII.<br>
+&nbsp;</li>
+  <li>After 5 1/2 years, a help file now exists! It is HTML Help which may have 
+  problems on older Windows machines. If so, try downloading hhupd.exe from Microsoft&#39;s 
+  web site.<br>
+&nbsp;</li>
+  <li>The program used to do factoring and P-1 testing on new exponents before completing 
+  LL tests on older exponents. This was confusing to many. The program now processes 
+  the worktodo.ini file in sequential order. See undoc.txt on how to restore the 
+  old behavior.<br>
+&nbsp;</li>
+  <li>Error messages such as ILLEGAL SUMOUT, SUMINP != SUMOUT, etc. are no longer 
+  sent to the server since the final result contains a count of how many errors 
+  occurred during the LL test.<br>
+&nbsp;</li>
+  <li>Some of the FFT crossover points have changed slightly.<br>
+&nbsp;</li>
+  <li>Test/Status now outputs the day of the week each work item will complete.<br>
+&nbsp;</li>
+  <li>Interim output lines have changed - hopefully, so they are more useful especially 
+  to newbies. By default, output lines no longer contain the clocks count. Lines 
+  now contain a timestamp. Benchmark timings are now output in milliseconds. These 
+  defaults can be changed using options in undoc.txt.<br>
+&nbsp;</li>
+  <li>A new welcome screen for new users will encourage stress testers to use the 
+  program without reserving exponents.<br>
+&nbsp;</li>
+  <li>There is now a menu choice that lets you unreserve a specific exponent. This 
+  is for knowledgeable users only. You might do this if the server assigned a small 
+  exponent and you&#39;d rather be testing larger ones. Or the prime95 you set up on 
+  another machine had a hard drive failure.<br>
+&nbsp;</li>
+  <li>The Windows 9x Service menu choice has been replaced by the more general Start 
+  at Bootup menu choice. This choice now sets registry entries to auto start prime95 
+  on any Windows machine. WARNING: Using this option will delete any StartUp menu 
+  shortcuts so the registry entry and startup menu do not both try to start prime95.
+  <br>
+&nbsp;</li>
+  <li>Prime95 will now ask for confirmation if you enter a CPU speed that differs 
+  from the computed CPU speed by more than 4%.<br>
+&nbsp;</li>
+  <li>The self-test menu choice was deleted - use the torture test instead.<br>
+&nbsp;</li>
+  <li>A benchmark menu choice has been added.<br>
+&nbsp;</li>
+  <li>The torture test code now includes more FFT lengths including smaller ones 
+  that run completely in the L2 cache, which may increase CPU temperatures. Each 
+  FFT size is tested for 15 minutes by default.<br>
+&nbsp;</li>
+  <li>There are now several options in the undoc.txt for fine-tuning the torture 
+  test&#39;s behavior.<br>
+&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 19041：与宿主对齐 -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- 类库默认不把 NuGet 依赖拷到输出；插件目录需自含依赖（NAudio/HidSharp/DiskInfoToolkit 等），
+         运行时由宿主的依赖解析兜底钩子从插件目录加载（System.Management 桩除外：宿主 TPA 优先解析到真实实现） -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>YanJi.Plugin.ConfigCheck</AssemblyName>
+    <RootNamespace>YanJi.Plugin.ConfigCheck</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 插件契约由宿主提供：Private=false 不把 YanJi.PluginSdk.dll 拷进插件目录，运行时与宿主共享同一类型 -->
+    <ProjectReference Include="..\..\PluginSdk\YanJi.PluginSdk.csproj" Private="false" />
+    <!-- 开源硬件采集库（MPL-2.0）：源码项目引用。SetPlatform=x64：其 CsWin32 对 SetupDi* 等 API
+         只在指定 CPU 架构下生成（AnyCPU 会跳过导致编译失败）——与主程序原引用方式相同 -->
+    <ProjectReference Include="..\..\集成开源项目代码\LibreHardwareMonitor-master\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj"
+                      SetPlatform="Platform=x64" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- WMI 查询用。注意：插件目录里拷到的是 lib/ 下的 PNSE 桩，运行时由宿主 deps.json/TPA
+         解析到 runtimes/win 真实实现（宿主保留同版本 PackageReference 就是这个目的），勿删宿主引用 -->
+    <PackageReference Include="System.Management" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

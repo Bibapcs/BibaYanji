@@ -1,0 +1,42 @@
+# Choose compiler switches 
+
+cl=cl /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /O2 /DPORT=5 /c
+cld=cl /GF /W3 /MT /D_CRT_SECURE_NO_DEPRECATE /DGDEBUG /Zi /DPORT=5 /c
+
+# Standard options
+copt=/I.. /I..\gwnum /Ic:\curl-7.70.0-win32-mingw\include\curl /Ic:\hwloc-win32-build-2.8.0\include /Ic:\gmp32 /Ic:\boost_1_76_0 /EHsc
+
+# This line allows NMAKE to work as well
+
+all: ntprime.exe
+
+# Update the object files if necessary
+
+cJSON.obj: ../cJSON.c
+    $(cl) $(copt) ..\cJSON.c
+
+ecm.obj: ../ecm.cpp
+    $(cl) $(copt) ..\ecm.cpp
+
+exponentiate.obj: ..\exponentiate.c
+    $(cl) $(copt) ..\exponentiate.c
+
+pair.obj: ../pair.cpp
+    $(cl) $(copt) ..\pair.cpp
+
+pm1prob.obj: ..\pm1prob.c
+    $(cl) $(copt) ..\pm1prob.c
+
+main.obj: main.c main.h prime95.h
+    $(cl) $(copt) main.c
+
+service.obj: service.c service.h
+    $(cl) $(copt) service.c
+
+prime.obj: prime.c prime95.h ..\commonc.c ..\commonb.c
+    $(cl) $(copt) prime.c
+
+# Update the executable file
+
+ntprime.exe: main.obj prime.obj service.obj cJSON.obj ecm.obj exponentiate.obj pair.obj pm1prob.obj
+    link @main.lnk

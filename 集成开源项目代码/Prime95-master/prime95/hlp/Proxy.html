@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<title>Advanced Menu</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Setting up a Proxy Server</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>SETTING UP A PROXY SERVER </h1>
+
+<p>For the latest information on this and other networking issues visit the FAQ 
+at <a href="http://mersenne.org/ips/faq.html">http://mersenne.org/ips/faq.html</a>
+Create a file in the same local folder as Prime95.exe, called &quot;primenet.ini&quot;. Add 
+these text lines, substituting the appropriate proxy server URL and port:<br>
+
+<blockquote>[PrimeNet Proxy]<br>
+ProxyHost=http://proxy.megacorp.com:8080</blockquote>
+&nbsp;<p>If the proxy is secured by a userid/password, add the following two text lines, 
+substituting the appropriate values: </p>
+
+
+<blockquote>ProxyUser=whatever_the_userid_is<br>
+ProxyPass=whatever_the_password_is</blockquote>
+
+&nbsp;<p>After the first time 
+<a href="http://mersenne.org/primenet/status.shtml">PrimeNet</a> is contacted through a secure proxy, the proxy password 
+is encoded and a new parameter &#39;ProxyMask=1&#39; set. To change the password, simply 
+change the ProxyPass= value, and either delete the ProxyMask text line or set ProxyMask=0.<br>
+
+&nbsp;</p>
+</p>

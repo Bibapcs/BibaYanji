@@ -1,0 +1,85 @@
+<UserControl x:Class="YanJi.Plugin.ConfigCheck.ConfigCheckPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 状态行：通过后变绿 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,4">
+            <TextBlock Text="核对状态：" FontWeight="SemiBold"/>
+            <TextBlock x:Name="StatusText" Text="待检测" Margin="8,0,0,0"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- 操作行（进入页面即自动检测，这里只保留手动重新检测） -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8">
+            <Button x:Name="RunButton" Content="重新检测"
+                    FontSize="14" FontWeight="SemiBold" Padding="16,7" Click="RunButton_Click"
+                    ToolTip="重新采集 CPU / 显卡 / 内存 / 硬盘 / 屏幕信息（会清除已通过状态）"/>
+            <Button x:Name="PassButton" Content="确认无误，通过" IsEnabled="False"
+                    Margin="8,3,2,3" Click="PassButton_Click"
+                    ToolTip="人工逐项核对下方信息与订单配置一致后点击"/>
+        </StackPanel>
+
+        <!-- 进度行 -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,8">
+            <ProgressBar x:Name="DetectProgress" Height="10" Minimum="0" Maximum="100"/>
+            <TextBlock x:Name="PhaseText" Text="尚未检测" Margin="0,6,0,0"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- 结果区：分组卡片（项目 = 值 两列；Details 非空时带「详细信息」折叠区） -->
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="ResultsHost">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,0,0,12" Padding="14,10">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="13"/>
+                                <ItemsControl ItemsSource="{Binding Entries}" Margin="0,6,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="180"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Value}"
+                                                           TextWrapping="Wrap"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Expander Header="详细信息" Style="{StaticResource DetailsExpander}">
+                                    <ItemsControl ItemsSource="{Binding Details}" Margin="14,2,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="180"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Name}"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Value}"
+                                                               TextWrapping="Wrap"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,9 @@
+{
+  "id": "av",
+  "name": "影音会议",
+  "version": "1.0.0",
+  "order": 40,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.AvConference.dll",
+  "entryType": "YanJi.Plugin.AvConference.AvConferencePlugin"
+}

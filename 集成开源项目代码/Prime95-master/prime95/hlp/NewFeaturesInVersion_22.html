@@ -1,0 +1,226 @@
+<html>
+
+<head>
+<title>New Features in Version 22 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 22.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 22.x of PRIME95.EXE</h1>
+<h2>New Features in Version 22.13 of Prime95</h2>
+<ol>
+  <li>A P-1 and ECM QA suite was implemented. A bug in ECM for exponents below 172,700 
+  and near the limit of an FFT size and using SSE2 code was fixed. <br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 22.12 of Prime95</h2>
+<ol>
+  <li>A bug was fixed that caused some factors to be missed in stage 2 of P-1 when 
+  the available memory did not let the program allocate 12 temporary variables. 
+  If testing a number in the 16 millions using an FFT size of 768K, then each temporary 
+  takes 768K * 8 bytes or 6MB. If your memory setting was less than 72MB (6MB * 
+  12 temporaries) then you were affected by the bug. Actual the program allocates 
+  some fixed tables so anything less than about 75MB triggered the bug.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.11 of Prime95</h2>
+<ol>
+  <li>A bug that caused factors to be missed in the last stage of P-1 and ECM factoring 
+  was fixed. The bug was introduced in executables built after Sept. 28, 2002.
+  <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.10 of Prime95</h2>
+<ol>
+  <li>When running a double-check assignment the preferred trial factoring depth 
+  is reduced one bit. This is done because finding a factor will save one LL test 
+  instead of the usual two LL tests.<br>
+&nbsp;</li>
+  <li>On a Windows NT/2000/XP system, if prime95 is run by a user without administrator 
+  privileges then prime95 cannot install itself as a service. Thus, the Start at 
+  Bootup option will set prime95 to run at login time rather than bootup time.<br>
+&nbsp;</li>
+  <li>A crash bug when selecting &quot;Start at Bootup&quot; on Windows NT3 and Windows NT4 
+  systems was fixed.<br>
+&nbsp;</li>
+  <li>Bug in starting more than one prime95 as NT services on multi-processor machines 
+  was fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.9 of Prime95</h2>
+<ol>
+  <li>Error rate for a clean run is now estimated at 1.8% raising your chances of 
+  finding a Mersenne prime while double-checking. <br>
+&nbsp;</li>
+  <li>You can now stop and continue testing from the system tray menu. <br>
+&nbsp;</li>
+  <li>You can now pause prime95 when another program starts running. See the PauseWhileRunning 
+  option in undoc.txt. <br>
+&nbsp;</li>
+  <li>Fixed bug introduced in 22.8 where No Icon did not work if Start at Bootup 
+  was also specified in Windows 98.<br>
+&nbsp;</li>
+  <li>A bug in unscrambling the proxy server password in primenet.ini was fixed.
+  <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.8 of Prime95</h2>
+<ol>
+  <li>Soft FFT crossovers have been implemented. If you test an exponent that is 
+  within 0.2% of the old hard FFT crossover point, then 1000 test iterations are 
+  run to determine if the smaller or larger FFT is appropriate for the exponent. 
+  Although not recommended, you can adjust prime95&#39;s behavior to be more aggressive 
+  using the SoftCrossover and SoftCrossoverAdjust features discussed in undoc.txt.<br>
+&nbsp; </li>
+  <li>To better stress main memory, the torture test will now use up to the amount 
+  of memory specified in the Options/CPU dialog box. <br>
+&nbsp;</li>
+  <li>Iterations with roundoff checking are a little faster for non-SSE2 CPUs.<br>
+&nbsp; </li>
+</ol>
+<h2>New features in Version 22.7 of Prime95</h2>
+<ol>
+  <li>Trial factoring above 2^64 on a P4 now uses the SSE2 instructions. This is 
+  more than four times as fast as the previous version. <br>
+&nbsp;</li>
+  <li>Old Advanced/Factoring save files are not compatible with this version. They 
+  are named p0000000 and should be deleted. This should not be a problem as no one 
+  should be using this obsolete and unsupported feature. <br>
+&nbsp;</li>
+  <li>Four more x87 FFT crossover changes as suggested by Brian Beesley&#39;s research.
+  <br>
+&nbsp;</li>
+  <li>You can now change the NT/2000/XP service name and service display name. See 
+  undoc.txt for details. <br>
+&nbsp;</li>
+  <li>Bug where found factors were silently truncated to 200 digits was fixed.
+  <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.6 of Prime95</h2>
+<ol>
+  <li>The Start At Bootup option now runs prime95 as a Windows NT/2000/XP service!! 
+  Normally Windows NT/2000/XP will not run GUI programs as services, but several 
+  tricks have allowed us to get this working almost flawlessly. <br>
+&nbsp;</li>
+  <li>To reduce spurious error reports on x86 LL tests near the crossover points, 
+  the program now allows roundoff errors less than 0.40625 rather than less than 
+  0.4.&nbsp; </li>
+</ol>
+<h2>New features in Version 22.5 of Prime95</h2>
+<ol>
+  <li>A bug in P4 roundoff error recovery was fixed. Bug was present in version 
+  22 executables dated between May 22 and June 18.<br>
+&nbsp;</li>
+  <li>Prime95 now properly detects if the program is running by another logged in 
+  Windows XP user.</li>
+  <li>When Tray Icon or Hide Icon is set, the &quot;X&quot; in the upper right corner no longer 
+  closes prime95 rather it minimizes it. Also right clicking the tray icon now brings 
+  up a popup menu.<br>
+&nbsp;</li>
+  <li>Changed the way prime95 shuts down. Logoff in WinXP used to hang.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.4 of Prime95</h2>
+<ol>
+  <li>A little more tweaking of the FFT crossovers. <br>
+&nbsp;</li>
+  <li>A GCD hang bug was fixed in case where there were a large number of entries 
+  in the lowm.txt file. Another GCD bug affecting ECM on F18 was fixed. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.3 of Prime95</h2>
+<ol>
+  <li>Given more data, the roundoff error checking is now done on every iteration 
+  for exponents within 0.5% of the maximum that can be tested by the current FFT 
+  length. If a roundoff error above 0.4 occurs, then the iteration is now repeated 
+  without any change to the shift count. It now takes a roundoff error greater than 
+  0.6 to corrupt the results. <br>
+&nbsp;</li>
+  <li>Many of the FFT ranges have changed. Version 21 was too aggressive in choosing 
+  FFT sizes for the P4. The new handling of roundoff errors above 0.4 lets us be 
+  more aggressive with the non-P4 code. <br>
+&nbsp;</li>
+  <li>Result lines are now WYn rather than WXn. <br>
+&nbsp;</li>
+  <li>A crash bug affecting P-1 and ECM using the 2^N+1 option for large N was fixed.
+  <br>
+&nbsp;</li>
+  <li>A rare memory corruption and possible crash bug in the GCD code was fixed.
+  <br>
+&nbsp;</li>
+  <li>The -t command line argument will run the torture test. <br>
+&nbsp;</li>
+  <li>To reduce wild fluctuations in the RollingAverage, it will be updated roughly 
+  twice per day. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.2 of Prime95</h2>
+<ol>
+  <li>Factoring assignments go to machines slower than a 233 MHz Pentium. Double-checks 
+  are assigned to machines slower than a 500 MHz P-III. <br>
+&nbsp;</li>
+  <li>The speed of the GCD has been improved. <br>
+&nbsp;</li>
+  <li>Some of the P4 FFT ranges have changed. Version 21 was too aggressive in choosing 
+  FFT sizes for the P4. <br>
+&nbsp;</li>
+  <li>Roundoff error checking is now done on every iteration for exponents within 
+  2% of the maximum that can be tested by the current FFT length. See undoc.txt 
+  for ways to disable this new feature. <br>
+&nbsp;</li>
+  <li>The previous version would get into an infinite loop if a repeatable roundoff 
+  error larger than 0.48 was discovered. Now, if a repeatable roundoff error greater 
+  than 0.45 is found, then the iteration is repeated after shifting the FFT data.
+  <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 22.1 of Prime95</h2>
+<ol>
+  <li>Some bugs in error handling when communicating with the server have been fixed.
+  <br>
+&nbsp;</li>
+  <li>Communicating with the server by RPC is no longer supported. The HTTPNET.DLL 
+  and RPCNET.DLL have been deleted. Only &quot;Basic&quot; Proxy server authentication is 
+  supported. Version 21 may have supported MS Proxy Server 2.0&#39;s NTLM (NT Lan Manager) 
+  challenge/response authentication. <br>
+&nbsp;</li>
+  <li>The program now uses a high resolution timer rather than the RDTSC instruction 
+  to time events. This should help the program display accurate timings on laptops 
+  with SpeedStep or desktops that can hibernate. You can force the program to use 
+  the old RDTSC timing method with the RdtscTiming option described in undoc.txt.
+  <br>
+&nbsp;</li>
+  <li>The program uses a updated algorithm to automatically detect CPU type and 
+  speed. The Options/CPU dialog box no longer let&#39;s you set this information. Instead, 
+  the Options/CPU dialog displays the detected CPU type and speed. This new feature 
+  helps prevent incorrect settings when users upgrade or try several overclocking 
+  speeds. If the new algorithm fails, you can override the settings as described 
+  in undoc.txt. <br>
+&nbsp;</li>
+  <li>Benchmark now writes the program version, timing methodology, cpu type and 
+  speed, L1 and L2 cache information to results.txt. It will refuse to benchmark 
+  if rdtsctiming is 10. <br>
+&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

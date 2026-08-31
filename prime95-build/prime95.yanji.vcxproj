@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 笔吧验机 · prime95 叠加构建工程（只保留 Release|x64）。
+     由来：集成开源项目代码\Prime95-master\prime95\prime95.vcxproj 的忠实路径变换版——
+     原工程不变（ vendored 源码目录保持原样），本工程以相对路径引用其全部源文件，
+     差异仅：① 依赖（curl/hwloc/gmp/boost）指向 prime95-build\deps\（获取方式见交接文档）；
+     ② PCH/PDB/输出目录改到本目录 out\ 下（原工程写死 c:\temp）；
+     ③ 去掉帮助文件 CustomBuild（hhc/makehm 需 HTML Help Workshop，烤机用不到 .chm）；
+     ④ PlatformToolset 由本机 VS18 决定（原工程 v142 未安装）。
+     构建命令见 项目交接文档.md「散热测试模块」节。 -->
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Prime95</ProjectName>
+    <ProjectGuid>{12CE8FC3-4697-4DF8-8111-196225B01F11}</ProjectGuid>
+    <RootNamespace>Prime95</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <P95Src>..\集成开源项目代码\Prime95-master</P95Src>
+    <P95Gui>..\集成开源项目代码\Prime95-master\prime95</P95Gui>
+    <OutDir>$(MSBuildProjectDirectory)\out\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\out\int\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>$(P95Src);$(P95Src)\gwnum;$(MSBuildProjectDirectory)\stub;$(MSBuildProjectDirectory)\deps\curl-8.21.0_7-win64-mingw\include\curl;$(MSBuildProjectDirectory)\deps\hwloc-win64-build-2.8.0\include;$(MSBuildProjectDirectory)\deps;$(MSBuildProjectDirectory)\deps\nuget\boost\1.76.0\lib\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PORT=4;WIN32;PSAPI_VERSION=1;NDEBUG;_WINDOWS;ADD_UNDERSCORES;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>$(IntDir)prime95.pch</PrecompiledHeaderOutputFile>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <!-- res\*.ico 等相对引用按 vendored prime95 目录解析 -->
+      <AdditionalIncludeDirectories>$(P95Gui);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>$(P95Gui)\amd64\factor64.obj;$(P95Src)\gwnum\gwnum64.lib;$(P95Src)\gwnum\polymult64.lib;$(MSBuildProjectDirectory)\deps\hwloc-win64-build-2.8.0\lib\libhwloc.lib;$(MSBuildProjectDirectory)\deps\libgmp-gw1.lib;$(MSBuildProjectDirectory)\deps\curl-8.21.0_7-win64-mingw\lib\libcurl.dll.a;wininet.lib;nafxcw.lib;libcmt.lib;kernel32.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)prime95.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DelayLoadDLLs>wininet.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)prime95.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <TargetMachine>MachineX64</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(P95Src)\cJSON.c" />
+    <ClCompile Include="$(P95Src)\ecm.cpp" />
+    <ClCompile Include="$(P95Src)\exponentiate.c" />
+    <ClCompile Include="$(P95Src)\pair.cpp" />
+    <ClCompile Include="$(P95Src)\pm1prob.c" />
+    <ClCompile Include="$(P95Gui)\BenchmarkDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\ChildFrm.cpp" />
+    <ClCompile Include="$(P95Gui)\CpuDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\EcmDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\HyperLink.cpp" />
+    <ClCompile Include="$(P95Gui)\MainFrm.cpp" />
+    <ClCompile Include="$(P95Gui)\ManualCommDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\Pminus1Dlg.cpp" />
+    <ClCompile Include="$(P95Gui)\PreferencesDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\Prime95.cpp" />
+    <ClCompile Include="$(P95Gui)\Prime95Doc.cpp" />
+    <ClCompile Include="$(P95Gui)\Prime95View.cpp" />
+    <ClCompile Include="$(P95Gui)\PrimenetDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\ResourcesDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\StartDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\StdAfx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(P95Gui)\StopDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\TestDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\TimeDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\TortureDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\UnreserveDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\WelcomeDlg.cpp" />
+    <ClCompile Include="$(P95Gui)\WorkerDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="$(P95Gui)\Prime95.rc">
+      <AdditionalOptions>/d X86_64 %(AdditionalOptions)</AdditionalOptions>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

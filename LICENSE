@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Bibapcs
+Copyright (c) 2025 Bibapcs（笔吧验机项目贡献者）
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+────────────────────────────────────────────────────────────────────────────
+注意：本仓库还包含若干第三方开源组件与素材，它们各自遵循其原有协议
+（详见 README.md「开源组件与协议（致谢）」一节及各目录内的许可文件）：
+LibreHardwareMonitor（MPL-2.0）、Prime95（GIMPS freeware）、PawnIO（GPL-2.0
+带例外）等不以 MIT 授权；试音曲「不死のバイオレット」Copyright© 幻月遠征隊，
+经著作权人许可随本仓库分发，不属于 MIT 授权范围。

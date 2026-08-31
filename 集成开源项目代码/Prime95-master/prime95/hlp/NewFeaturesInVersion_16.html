@@ -1,0 +1,117 @@
+<html>
+
+<head>
+<title>New Features in Version 16 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 16.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 16.x of PRIME95.EXE</h1>
+<h2>New Features in Version 16.5 of Prime95</h2>
+<ol>
+  <li>A new httpnet.dll can provide Scott Kurowski with debugging information. Simply 
+  create a primenet.ini file with these lines:<br>
+  <blockquote>
+    [Debug]<br>
+    PacketLog=1<br>
+  </blockquote>
+  Output file is pnHttp.txt.<br>
+&nbsp; </li>
+  <li>The old network retry time has been replaced by two settings. The modem retry 
+  time (default 2 minutes) controls how often prime95 polls your modem to see if 
+  you are connected to the Internet. The network retry time (default 60 minutes) 
+  controls how long prime95 waits after a failed attempt to contact the server.<br>
+&nbsp;</li>
+  <li>A timestamp and program version number is written to the prime.log file.<br>
+&nbsp;</li>
+  <li>You can now switch between HTTP-based and RPC-based PrimeNet protocols from 
+  the Test/Primenet dialog box.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 16.4 of Prime95</h2>
+<ol>
+  <li>Lucas-Lehmer testing output now shows percent complete.<br>
+&nbsp;</li>
+  <li>Windows NT users can now set processor affinity on multi-CPU systems.<br>
+&nbsp;</li>
+  <li>ECM factoring is available for small exponents. See 
+  <a href="http://www.mersenne.org/ecm.htm">http://www.mersenne.org/ecm.htm</a> 
+  for a list of exponents that need factoring.<br>
+&nbsp;</li>
+  <li>A bug that prevented 486 &amp; Cyrix machines from factoring above 2^62 has been 
+  fixed.<br>
+&nbsp;</li>
+  <li>The LockUserInfo feature no longer sends user info every time prime95 starts 
+  up.<br>
+&nbsp;</li>
+  <li>A bug in setting minimized or maximized window in a shortcut to prime95 is 
+  fixed.<br>
+&nbsp;</li>
+  <li>Test/Status now shows expected completion dates.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 16.3 of Prime95</h2>
+<ol>
+  <li>The LockUserInfo=1 setting is now sent to the server so that no member of 
+  a team can accidentally transfer the credit for work previously performed by the 
+  team.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 16.2 of Prime95</h2>
+<ol>
+  <li>Bug in calculating estimated time to factor a number has been fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 16.1 of Prime95</h2>
+<ol>
+  <li>Prime95 can now test exponents up to 20.5 million.<br>
+&nbsp;</li>
+  <li>Prime95 can now find factors up to 2^64.<br>
+&nbsp;</li>
+  <li>The program now reports to the PrimeNet server new completion dates every 
+  28 days (actually user adjustable from 1 to 60 days). This will improve the reclaiming 
+  of exponents that are not being actively tested.<br>
+&nbsp;</li>
+  <li>The program now reports the current iteration number to the server for more 
+  informative status reports.<br>
+&nbsp;</li>
+  <li>Intermediate files are now less likely to fail. If an error occurs during 
+  the writing of an intermediate file, the program continues on trying to write 
+  the intermediate file every 10 minutes.<br>
+&nbsp;</li>
+  <li>A bug in the rolling average code has been fixed. Prime95 now modifies the 
+  rolling average when factoring too.<br>
+&nbsp;</li>
+  <li>The prime.log file is now limited in size to 256K bytes.<br>
+&nbsp;</li>
+  <li>The user information dialog box now has a checkbox to tell the server not 
+  to send email.<br>
+&nbsp;</li>
+  <li>Setting LockUserInfo=1 in prime.ini will make the user information dialog 
+  box inaccessible.<br>
+&nbsp;</li>
+  <li>Trying to run a second copy of prime95 will now start the already running 
+  copy of prime95. This makes the Hide Icon feature a bit more useful.<br>
+&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

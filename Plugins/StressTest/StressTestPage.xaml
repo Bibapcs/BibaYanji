@@ -1,0 +1,200 @@
+<UserControl x:Class="YanJi.Plugin.StressTest.StressTestPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:YanJi.Plugin.StressTest">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16" MaxWidth="860">
+
+            <!-- 状态行：通过后变绿（通用约定） -->
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="核对状态：" FontWeight="SemiBold"/>
+                <TextBlock x:Name="StatusText" Text="待核对" Margin="8,0,0,0"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+
+            <!-- 控制区：模式 + 开始/停止 + 时长 -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,8,0,0" Padding="14,10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="烤机模式" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ModeBox" Width="130" Margin="8,0,0,0" SelectedIndex="2">
+                                <ComboBoxItem Content="CPU 单烤" Tag="Cpu"/>
+                                <ComboBoxItem Content="GPU 单烤" Tag="Gpu"/>
+                                <ComboBoxItem Content="双烤" Tag="Both"/>
+                            </ComboBox>
+                            <Button x:Name="StartButton" Content="开始烤机" Margin="12,3,2,3"
+                                    FontSize="14" FontWeight="SemiBold" Padding="16,7" Click="StartButton_Click"
+                                    ToolTip="按所选模式启动 prime95 和/或 FurMark（会另起窗口）"/>
+                            <Button x:Name="StopButton" Content="停止" Margin="8,3,2,3" IsEnabled="False"
+                                    Padding="16,7" Click="StopButton_Click"
+                                    ToolTip="结束全部烤机进程"/>
+                        </StackPanel>
+                        <TextBlock x:Name="ElapsedText" Grid.Column="1" Text="未在烤机"
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </Grid>
+                    <TextBlock x:Name="RunStateText" Text="尚未烤过机；烤机会让硬件满载发热，请留意温度与风扇状态"
+                               Margin="0,6,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 设置区：FurMark（GPU）+ prime95（CPU）两卡片并排 -->
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardBorder}" Width="Auto"
+                        Margin="0,0,6,0" Padding="14,10">
+                    <StackPanel>
+                        <TextBlock Text="FurMark 设置（GPU 烤机）" FontWeight="SemiBold" FontSize="13"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBlock Text="分辨率" Width="64" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <ComboBox x:Name="ResolutionBox" Width="150">
+                                <ComboBoxItem Content="1280 × 720" Tag="1280x720"/>
+                                <ComboBoxItem Content="1600 × 900" Tag="1600x900"/>
+                                <ComboBoxItem Content="1920 × 1080" Tag="1920x1080"/>
+                                <ComboBoxItem Content="2560 × 1440" Tag="2560x1440"/>
+                                <ComboBoxItem Content="3840 × 2160 (4K)" Tag="3840x2160" IsSelected="True"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="抗锯齿" Width="64" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <ComboBox x:Name="MsaaBox" Width="150">
+                                <ComboBoxItem Content="关闭" Tag="0" IsSelected="True"/>
+                                <ComboBoxItem Content="2x MSAA" Tag="2"/>
+                                <ComboBoxItem Content="4x MSAA" Tag="4"/>
+                                <ComboBoxItem Content="8x MSAA" Tag="8"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <CheckBox x:Name="FullscreenCheck" Content="全屏烤机（Esc 或关窗退出）" Margin="0,6,0,0"/>
+                        <CheckBox x:Name="FurShowUiCheck" Content="显示界面（不勾选则后台无窗口烤机）" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardBorder}" Width="Auto"
+                        Margin="6,0,0,0" Padding="14,10">
+                    <StackPanel>
+                        <TextBlock Text="prime95 设置（CPU 烤机）" FontWeight="SemiBold" FontSize="13"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBlock Text="线程数" Width="64" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <ComboBox x:Name="ThreadsBox" Width="150"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="FFT 模式" Width="64" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <ComboBox x:Name="FftBox" Width="150" SelectedIndex="1">
+                                <ComboBoxItem Content="均衡 Blend" Tag="Blend"/>
+                                <ComboBoxItem Content="小 FFT（高热）" Tag="SmallHot"/>
+                                <ComboBoxItem Content="大 FFT（压内存）" Tag="LargeMem"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBlock x:Name="CoresHint" Margin="0,8,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <CheckBox x:Name="P95ShowUiCheck" Content="显示界面（不勾选则后台无窗口烤机）" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 数据监控：LHM 传感器 1 秒轮询，四路实时折线（页面可见时才轮询） -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="数据监控（LibreHardwareMonitor 2 秒轮询）" FontWeight="SemiBold" FontSize="13"
+                                   VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="GPU" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <!-- 显卡选择：LHM 枚举的全部带温度/功耗传感器的显卡，默认独显（启发式口径见交接文档） -->
+                            <ComboBox x:Name="GpuBox" Width="290" Margin="6,0,0,0"
+                                      SelectionChanged="GpuBox_Changed" Visibility="Collapsed"
+                                      ToolTip="选择温度/功耗监控的显卡（切换即换绑，旧曲线清空）"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- CPU 两路：叠层 = 占位文案 + 「安装 PawnIO 驱动」按钮（不可用时显示；
+                             可用时收起，图表正常画线） -->
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,6,0">
+                            <views:LineChartControl x:Name="CpuTempChart"
+                                                    Title="CPU 温度" Unit="℃" SampleIntervalSeconds="2"/>
+                            <StackPanel x:Name="CpuTempOverlay" Visibility="Collapsed"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="传感器不可用（需 PawnIO 驱动）"
+                                           Foreground="{DynamicResource ChartNoDataBrush}"
+                                           HorizontalAlignment="Center"/>
+                                <Button Content="安装 PawnIO 驱动" Margin="0,6,0,0" Padding="14,4"
+                                        Click="InstallPawnIo_Click"
+                                        ToolTip="运行官方签名安装器（namazso，GPL-2.0）静默安装内核驱动；装后立即可用、无需重启"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Margin="6,0,0,0">
+                            <views:LineChartControl x:Name="CpuPowerChart"
+                                                    Title="CPU 功耗" Unit="W" SampleIntervalSeconds="2"/>
+                            <StackPanel x:Name="CpuPowerOverlay" Visibility="Collapsed"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="传感器不可用（需 PawnIO 驱动）"
+                                           Foreground="{DynamicResource ChartNoDataBrush}"
+                                           HorizontalAlignment="Center"/>
+                                <Button Content="安装 PawnIO 驱动" Margin="0,6,0,0" Padding="14,4"
+                                        Click="InstallPawnIo_Click"
+                                        ToolTip="运行官方签名安装器（namazso，GPL-2.0）静默安装内核驱动；装后立即可用、无需重启"/>
+                            </StackPanel>
+                        </Grid>
+                        <views:LineChartControl x:Name="GpuTempChart" Grid.Row="1" Grid.Column="0"
+                                                Title="GPU 温度" Unit="℃" Margin="0,0,6,0" SampleIntervalSeconds="2"/>
+                        <views:LineChartControl x:Name="GpuPowerChart" Grid.Row="1" Grid.Column="1"
+                                                Title="GPU 功耗" Unit="W" Margin="6,0,0,0" SampleIntervalSeconds="2"/>
+                    </Grid>
+                    <!-- 传感器口径：每路一行「指标 ← 硬件 / 传感器」，不可用的行注明状态 -->
+                    <TextBlock x:Name="SensorHintText" Margin="0,8,0,0" TextWrapping="Wrap"
+                               FontSize="11" LineHeight="17"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 运行日志：Consolas（LogBox 惯例同键盘页），自动滚底，上限 500 条；
+                 圆角 = 外套圆角 Border（TextBox 去边框去底色嵌入） -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <TextBlock Text="运行日志" FontWeight="SemiBold" FontSize="13"/>
+                    <Border Margin="0,6,0,0" CornerRadius="6"
+                            Background="{DynamicResource SurfaceBgBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <TextBox x:Name="LogBox" Height="110" Padding="6,4"
+                                 IsReadOnly="True" FontFamily="Consolas" FontSize="11"
+                                 VerticalScrollBarVisibility="Auto"
+                                 BorderThickness="0" Background="Transparent"
+                                 Foreground="{DynamicResource TextBrush}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- 通过区 -->
+            <StackPanel Orientation="Horizontal" Margin="0,14,0,4">
+                <Button x:Name="PassButton" Content="确认散热合格，通过"
+                        FontSize="14" FontWeight="SemiBold" Padding="16,7" Click="PassButton_Click"
+                        ToolTip="人工判断烤机过程中温度/稳定性合格后点击（会停止烤机）"/>
+                <TextBlock x:Name="PassHintText" Margin="10,0,0,0" VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

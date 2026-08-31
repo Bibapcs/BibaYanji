@@ -1,0 +1,9 @@
+{
+  "id": "screen",
+  "name": "屏幕坏点",
+  "version": "1.0.0",
+  "order": 30,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.ScreenDeadPixel.dll",
+  "entryType": "YanJi.Plugin.ScreenDeadPixel.ScreenDeadPixelPlugin"
+}

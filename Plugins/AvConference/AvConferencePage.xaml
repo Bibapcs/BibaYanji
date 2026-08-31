@@ -1,0 +1,87 @@
+<UserControl x:Class="YanJi.Plugin.AvConference.AvConferencePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <!-- 状态行：通过后变绿 -->
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="测试状态：" FontWeight="SemiBold"/>
+                <TextBlock x:Name="StatusText" Text="待测试" Margin="8,0,0,0"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+
+            <!-- ═══ 摄像头 ═══ -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,8,0,0" Padding="14,10">
+                <StackPanel>
+                    <TextBlock Text="摄像头" FontWeight="SemiBold" FontSize="13"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="设备：" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <ComboBox x:Name="CameraBox" Width="360" SelectionChanged="CameraBox_Changed"/>
+                    </StackPanel>
+                    <Border Margin="0,8,0,0" Width="480" Height="270" CornerRadius="6" ClipToBounds="True"
+                            Background="{DynamicResource SubtleBgBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <Grid>
+                            <Image x:Name="PreviewImage" Stretch="Uniform"/>
+                            <TextBlock x:Name="CameraError" TextWrapping="Wrap" Margin="16"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       Text="正在初始化摄像头…"/>
+                        </Grid>
+                    </Border>
+                    <TextBlock Text="离开本页面即自动关闭摄像头（指示灯熄灭）" Margin="0,4,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ 麦克风 ═══ -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <TextBlock Text="麦克风" FontWeight="SemiBold" FontSize="13"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="设备：" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <ComboBox x:Name="MicBox" Width="360" SelectionChanged="MicBox_Changed"/>
+                    </StackPanel>
+                    <ProgressBar x:Name="MicLevel" Margin="2,8" Minimum="0" Maximum="100"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="RecordButton" Content="录制" Click="RecordButton_Click"
+                                ToolTip="录一段麦克风输入（最长 15 秒自动停）"/>
+                        <Button x:Name="PlayRecButton" Content="回放" IsEnabled="False" Click="PlayRecButton_Click"
+                                ToolTip="通过下方所选扬声器回放刚录的音"/>
+                        <TextBlock x:Name="MicStatus" Margin="8,0,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ 扬声器 ═══ -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <TextBlock Text="扬声器" FontWeight="SemiBold" FontSize="13"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="设备：" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <ComboBox x:Name="SpkBox" Width="360"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0" VerticalAlignment="Center">
+                        <Button x:Name="PlayMusicButton" Content="播放音乐" Click="PlayMusicButton_Click"
+                                ToolTip="通过所选设备播放试音曲"/>
+                        <TextBlock x:Name="MusicStatus" Margin="8,0,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                    <TextBlock Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"
+                               Text="试音曲「不死のバイオレット」Copyright© 幻月遠征隊，使用已经著作权人同意。"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 通过按钮 -->
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <Button x:Name="PassButton" Content="确认无故障，通过" Click="PassButton_Click"
+                        FontSize="14" FontWeight="SemiBold" Padding="16,7"
+                        ToolTip="摄像头有画面、麦克风有电平且录放正常、扬声器出声后点击"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

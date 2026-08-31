@@ -1,0 +1,156 @@
+<html>
+
+<head>
+<title>New Features in Version 23 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 23.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 23.x of PRIME95.EXE</h1>
+<h2>New Features in Version 23.8 of Prime95</h2>
+<ol>
+  <li>A communication bug, Primenet Error 1, was fixed in the case where proxy software 
+  inserted the text &quot;NetAnts: MaxConnection=1&quot; in the HTML response from the Primenet 
+  server. <br>
+&nbsp;</li>
+  <li>Fixed memory allocation bug in torture test when using 926MB of memory on 
+  the 20K FFT size. <br>
+&nbsp;</li>
+  <li>The program will now try both full and a relative URL in trying to contact 
+  the PrimeNet server. Some rare setups only work with full URLs and some only work 
+  with relative URLs. The small downside is there might be an increase in network 
+  traffic when the server is down. If this is a concern you can use the UseFullURL 
+  option described in undoc.txt.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 23.7 of Prime95</h2>
+<ol>
+  <li>A bug was fixed where the torture test used more virtual memory than necessary, 
+  sometimes resulting in an &quot;Out of memory&quot; error. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 23.6 of Prime95</h2>
+<ol>
+  <li>Several changes have been made to the torture test. <br>
+&nbsp;</li>
+  <ol>
+    <li>Machines faster than 1 GHz will use new test data that runs a lot more iterations. 
+    This will reduce time spent in initialization code, hopefully increasing stress 
+    on the CPU.<br>
+&nbsp;</li>
+    <li>The torture test stops after 100 ILLEGAL SUMOUT errors.<br>
+&nbsp;</li>
+    <li>There are now 3 flavors of torture testing. One that operates on small FFTs 
+    only, theoretically maximizing FPU stress. One that operates in place on large 
+    FFTs only, maximizing heat and power drain. One that runs a blend of tests using 
+    lots of memory, possibly catching errors that might only occur at a specific 
+    memory address.<br>
+&nbsp;</li>
+  </ol>
+  </li>
+</ol>
+<h2>New features in Version 23.5 of Prime95</h2>
+<ol>
+  <li>Four changes have been made after GIMPS&#39; first false positive report in 7 
+  1/2 years of operation. <br>
+&nbsp;</li>
+  <ol>
+    <li>The program now returns the number of errors that occurred when the result 
+    is prime. A non-zero value will make us more suspect of the reported prime.<br>
+&nbsp;</li>
+    <li>The save files will not be deleted. The user can then email these to me 
+    and we can rerun the last 30 minutes of the LL test. It is hard to imagine a 
+    second false positive report in this mini LL run.<br>
+&nbsp;</li>
+    <li>The shift counter is now checked every iteration. If this variable AND the 
+    FFT data was corrupted, then and endless loop of LL iterations generating zero 
+    is possible - resulting in a false prime report.<br>
+&nbsp;</li>
+    <li>Every iteration the FFT data is checked to see if the data has been zeroed.<br>
+&nbsp;</li>
+    <li>The is-this-a-prime check now makes sure the FFT data is not NaN. NaN stands 
+    for not a number and means the data is corrupt. The previous version checked 
+    for zero and my C compiler returns TRUE for the test NaN == 0.0!<br>
+&nbsp;</li>
+  </ol>
+  </li>
+  <li>I restored the old behavior sending relative URLs. Some users had trouble 
+  with this feature introduced in 23.4. So, UseFullURL=0 is now the default. <br>
+&nbsp;</li>
+  <li>Some prefetching improvements were made for the Athlon, Pentium 3, and Celeron 
+  2 processors. You can expect speed improvements between 3% and 10% for most FFT 
+  sizes. Warning: the new code is slower for Durons and Celeron&#39;s with small L2 
+  caches for FFT sizes 1024K and above. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 23.4 of Prime95</h2>
+<ol>
+  <li>Further performance improvements in the SSE2 FFT code. I&#39;ve tried to do more 
+  work while data is in the L1 data cache. <br>
+&nbsp;</li>
+  <li>The program should now work with a &quot;redirected proxy server&quot;. This was done 
+  by sending full URLs in Primenet requests. While I don&#39;t anticipate any problems, 
+  the old relative URL functionality can be had by setting UseFullURL=0 in primenet.ini.
+  <br>
+&nbsp;</li>
+  <li>A bug in the assembly language add and subtract routines was fixed. The bug 
+  could affect ECM on exponents just below MAXIMUM_EXPONENT_FOR_FFTLEN - FFTLEN/2.
+  <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 23.3 of Prime95</h2>
+<ol>
+  <li>Further performance improvements in the SSE2 code for FFTs larger than 640K. 
+  You should see about a 4% improvement in LL tests on a P4. However, FFTs between 
+  40K and 512K might be a tiny bit slower. <br>
+&nbsp;</li>
+  <li>Stage 2 of P-1 factoring has been recoded for more speed. WARNING: when continuing 
+  from a save file created in stage 2 by a previous prime95 version, this version 
+  will restart stage 2 from the beginning. ALSO: the stage 2 P-1 save file format 
+  has changed - in dual boot scenarios you must upgrade mprime and prime95 at the 
+  same time. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 23.2 of Prime95</h2>
+<ol>
+  <li>Further performance improvements in the SSE2 code. You can expect about a 
+  4% improvement. <br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 23.1 of Prime95</h2>
+<ol>
+  <li>Big SSE2 FFTs now take the L2 cache size into account. P4 Celeron (128KB L2 
+  cache) is faster for FFTs between 512K and 2M. P4 Northwood (512KB L2 cache) is 
+  faster for FFTs larger than 1M. <br>
+&nbsp;</li>
+  <li>Benchmark no longer times 256K and 320K FFTs, but does time 2048K FFT. <br>
+&nbsp;</li>
+  <li>Support for torture testing FFT sizes from 1280K to 4096K added. <br>
+&nbsp;</li>
+  <li>A 900 MHz P-III is now required to get first time LL tests by default. <br>
+&nbsp;</li>
+  <li>Slightly faster SSE2 FFTs for lengths of 5*2^N and 7*2^N (e.g. 640K, 896K).
+  <br>
+&nbsp;</li>
+</ol>
+
+</body>
+
+</html>

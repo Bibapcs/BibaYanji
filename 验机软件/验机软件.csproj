@@ -1,0 +1,106 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- 19041：插件与本程序统一对齐（摄像头 WinRT 需要 Windows SDK 目标） -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <AssemblyName>验机软件</AssemblyName>
+    <RootNamespace>YanJi</RootNamespace>
+    <Version>1.0.0</Version>
+    <Product>笔记本电脑验机</Product>
+    <Description>笔吧验机：主程序外壳 + plugins/ 插件模块（配置核对/键盘测试/屏幕坏点/影音会议/散热测试/验机结束）</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 宿主代码本身不直接用 WMI；保留此引用是为了让 deps.json/TPA 携带 System.Management 的
+         runtimes/win 真实实现映射——插件（配置核对/散热测试）目录里拷到的是 lib/ 下的 PNSE 桩，
+         运行时靠宿主 TPA 解析到真身（见交接文档「System.Management 双份实现坑」），勿删 -->
+    <PackageReference Include="System.Management" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 插件契约程序集：随宿主输出到 exe 同级，插件以 Private=false 引用共享同一类型 -->
+    <ProjectReference Include="..\PluginSdk\YanJi.PluginSdk.csproj" />
+  </ItemGroup>
+
+  <!-- FurMark 烤机工具：构建序依赖（先构建它 → 它把负载拷到下面的 Tools/furmark/）。
+       用 MSBuild 任务而非 ProjectReference：ProjectReference 会把 FurMark 的输出文件
+       一并流入本工程输出/发布根目录（多出一份框架依赖 FurMark.exe 与 Assets 副本）。
+       RemoveProperties：发布时本工程的全局 RuntimeIdentifier/SelfContained 不传染给它
+       （否则 NETSDK1047 资产文件缺 RID 目标） -->
+  <Target Name="BuildFurMark" BeforeTargets="BeforeBuild">
+    <MSBuild Projects="..\FurMark\FurMark.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)"
+             RemoveProperties="RuntimeIdentifier;SelfContained" />
+  </Target>
+
+  <!-- 插件工程：先构建（同样用 MSBuild 任务避免输出流入本工程），再把各插件输出拷到
+       $(OutDir)plugins/<id>/。ItemGroup 写在 Target 内：文件是构建产生的，必须在执行期求值 -->
+  <Target Name="BuildPlugins" BeforeTargets="BeforeBuild">
+    <MSBuild Projects="..\Plugins\ConfigCheck\YanJi.Plugin.ConfigCheck.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\KeyboardTest\YanJi.Plugin.KeyboardTest.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\ScreenDeadPixel\YanJi.Plugin.ScreenDeadPixel.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\AvConference\YanJi.Plugin.AvConference.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+  </Target>
+
+  <!-- %(RecursiveDir) 保留子目录结构；插件目录按 plugin.json 的 id 命名 -->
+  <Target Name="CopyPluginsToOutput" AfterTargets="Build">
+    <ItemGroup>
+      <_PluginConfigFiles Include="..\Plugins\ConfigCheck\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginKeyboardFiles Include="..\Plugins\KeyboardTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginScreenFiles Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginAvFiles Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginStressFiles Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_PluginConfigFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginConfigFiles->'$(OutDir)plugins\config\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginKeyboardFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginKeyboardFiles->'$(OutDir)plugins\keyboard\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginScreenFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginScreenFiles->'$(OutDir)plugins\screen\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginAvFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginAvFiles->'$(OutDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginStressFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginStressFiles->'$(OutDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <!-- 发布时把插件负载同步到 publish 目录（publish 不扫 OutDir，需要单独拷一次） -->
+  <Target Name="CopyPluginsToPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <_PubConfig Include="..\Plugins\ConfigCheck\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubKeyboard Include="..\Plugins\KeyboardTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubScreen Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubAv Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubStress Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_PubConfig)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubConfig->'$(PublishDir)plugins\config\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubKeyboard)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubKeyboard->'$(PublishDir)plugins\keyboard\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubScreen)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubScreen->'$(PublishDir)plugins\screen\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubAv)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubAv->'$(PublishDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubStress)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubStress->'$(PublishDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <ItemGroup>
+    <Resource Include="app.ico" />
+    <!-- 烤机工具负载：Tools/prime95/（手工放入的 prime95.exe）与 Tools/furmark/（FurMark 工程构建后自动拷贝）
+         与 Tools/pawnio/，整体随输出拷贝到 exe 同级 Tools/ 下（散热测试插件按 AppContext.BaseDirectory 定位） -->
+    <None Update="Tools\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

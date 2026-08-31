@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<title>New Features in Version 20 of Prime95</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+<style>
+<!--
+	div.Section1 {page:Section1;}
+-->
+</style>
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>What&#39;s New: New Features in Version 20.x of Prime95</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NEW FEATURES IN VERSION 20.x of PRIME95.EXE</h1>
+<h2>New Features in Version 20.6 of Prime95</h2>
+<ol>
+  <li>A crash bug was fixed. If you did P-1 factoring followed by trial factoring, 
+  then if you found a factor unallocated memory was accessed usually resulting in 
+  a crash.<br>
+&nbsp;</li>
+</ol>
+<h2>New Features in Version 20.5 of Prime95</h2>
+<ol>
+  <li>A rare error was fixed. When the memory settings changed during the GCD step 
+  in P-1 or ECM factoring, then a spurious &quot;ERROR: Factor does not divide N!&quot; error 
+  was raised.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 20.4 of Prime95</h2>
+<ol>
+  <li>If stage 2 of P-1 was postponed because of insufficient memory, the program 
+  did not restart stage 2 when nighttime started. This bug was fixed.<br>
+&nbsp;</li>
+  <li>By default, PII-300&#39;s and faster get first-time LL tests, P-90 and faster 
+  get double-checking work, and all slower machines get factoring work.<br>
+&nbsp;</li>
+  <li>An ECM bug during stage 2 init on huge exponents caused false ILLEGAL SUMOUT 
+  errors. This bug was fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 20.3 of Prime95</h2>
+<ol>
+  <li>Another fairly uncommon ECM bug was fixed. The bug caused &quot;Factor does not 
+  divide N!&quot; errors.<br>
+&nbsp;</li>
+  <li>A couple of minor bugs in computing the optimal P-1 bounds to use prior to 
+  a Lucas-Lehmer test were fixed. The program now does a better job at estimating 
+  the memory required in P-1 stage 2. Finally, although P-1 stage 2 working set 
+  size is unchanged, the program allocates less memory in stage 2.<br>
+&nbsp;</li>
+  <li>Prime95 no longer searches for a smaller factor when trial factoring discovers 
+  a factor. The reasons are two-fold. <br>
+&nbsp;</li>
+  <ol>
+    <li>Version 19 had a bug where stopping and restarting the program bypassed 
+    the search for smaller factors. Thus, my database may already be missing smaller 
+    factors. <br>
+&nbsp;</li>
+    <li>As we factor larger exponents to a deeper depth it may no longer be a quick 
+    job to determine if there are smaller factors. Note, that version 20 will still 
+    look for smaller factors if you are looking for factors below 2^60 with the 
+    FactorOverride option in undoc.txt.<br>
+&nbsp;</li>
+  </ol>
+  </li>
+  <li>The undocumented AMPM feature controls how times are formatted in the Options/CPU 
+  dialog box.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 20.2 of Prime95</h2>
+<ol>
+  <li>If P-1 stage 1 completed and there was not enough memory to start stage 2 
+  immediately, then an incorrect save file was generated. This bug was introduced 
+  in version 20.1. Upon restart of the P-1 factoring job a crash or other unpredictable 
+  behavior was possible. This bug was fixed and this version has special code to 
+  properly read these incorrect save files.<br>
+&nbsp;</li>
+  <li>P-1 will restart any time the memory settings change. This is done so that 
+  the optimal P-1 bounds can be computed with the new memory settings.<br>
+&nbsp;</li>
+  <li>A bug in ECM testing was fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 20.1 of Prime95</h2>
+<ol>
+  <li>A bug in the new GCD code was fixed.<br>
+&nbsp;</li>
+  <li>Timings in the P-1 stage are no longer cumulative. There is a new feature 
+  in undoc.txt for those that prefer cumulative timings.<br>
+&nbsp;</li>
+  <li>Messages are now output prior to beginning the lengthy GCD.<br>
+&nbsp;</li>
+  <li>The FactorOverride undocumented feature (not for use with PrimeNet) now supports 
+  factoring to a deeper level than prime95 would ordinarily factor.<br>
+&nbsp;</li>
+  <li>A bug where the worktodo.ini entry was not removed if P-1 found a factor was 
+  fixed.<br>
+&nbsp;</li>
+  <li>If P-1 finds a factor it now deletes any Lucas-Lehmer intermediate files.<br>
+&nbsp;</li>
+  <li>A crash bug when continuing from a P-1 stage 2 save files with different available 
+  memory parameters was fixed.<br>
+&nbsp;</li>
+  <li>Resuming an LL test now outputs a line to the screen.<br>
+&nbsp;</li>
+  <li>The Test/Status display now correctly calculates the estimated completion 
+  time for an LL test when P-1 factoring is in progress.<br>
+&nbsp;</li>
+  <li>Advanced/Factor menu choice was deleted.<br>
+&nbsp;</li>
+  <li>A bug in computing P-1 stage 2 percentage complete was fixed.<br>
+&nbsp;</li>
+</ol>
+<h2>New features in Version 20.0 of Prime95</h2>
+<ol>
+  <li>The program now does some P-1 factoring prior to running first time and double-checking 
+  Lucas-Lehmer tests. This will increase overall GIMPS throughput. If you install 
+  version 20 in the middle of an LL test the program will run the P-1 step if the 
+  LL test is less than 50% complete.<br>
+&nbsp;</li>
+  <li>The Options/CPU dialog box now asks how much memory the program can use during 
+  the P-1 factoring. See the &quot;Setting Available Memory&quot; section in the readme.txt 
+  file.<br>
+&nbsp;</li>
+  <li>Stage 1 of P-1 factoring is now faster.<br>
+&nbsp;</li>
+  <li>The GCD used in P-1 and ECM factoring is now faster.<br>
+&nbsp;</li>
+  <li>The Test/Manual Operation menu choice has been deleted.<br>
+&nbsp;</li>
+  <li>The memory options in P-1 and ECM dialog boxes have been deleted.<br>
+&nbsp;</li>
+  <li>The &quot;send new completion dates&quot; checkbox was moved from the Test/PrimeNet 
+  dialog box to the Advanced/Manual Communication dialog box.<br>
+&nbsp;</li>
+  <li>A bug in estimating time remaining for a factoring job was fixed.<br>
+&nbsp;</li>
+  <li>AdvancedFactor now writes a line to the worktodo.ini - just like all the other 
+  work types.<br>
+&nbsp;</li>
+  <li>ECM and P-1 are now consistent with Lucas-Lehmer testing in the use of the 
+  &quot;Iterations between screen outputs&quot; setting. An iteration is defined as the time 
+  it takes to do a squaring. If you are doing ECM on small exponents you will probably 
+  want to increase this setting.</li>
+</ol>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

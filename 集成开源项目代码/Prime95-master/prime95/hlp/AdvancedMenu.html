@@ -1,0 +1,157 @@
+<html>
+
+<head>
+<title>Advanced Menu</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Advanced Menu</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>ADVANCED MENU</h1>
+<p>&nbsp;</p>
+<p><img border="0" src="images/AdvancedMenu.png" width="305" height="270"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h5>
+<!--EXPAND--><nobr><a ID="ExPand" HREF="#">Applies To</a></nobr></h5>
+<p>&nbsp;</p>
+<div CLASS="expand2">
+  <table border="1" cellpadding="2" cols="2" frame="box" rules="all" width="592">
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Test">Test</a></td>
+      <td width="50%"><a href="#Priority">Priority</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Time">Time</a></td>
+      <td width="50%"><a href="#Affinity">Affinity</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#P-1">P-1</a></td>
+      <td width="50%"><a href="#Manual Communication">Manual Communication</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#ECM">ECM</a></td>
+      <td width="50%"><a href="#Unreserve Exponent">Unreserve Exponent</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Round Off">Round off checking</a></td>
+      <td width="50%"><a href="#Quit">Quit GIMPS</a></td>
+    </tr>
+  </table>
+  <br>
+</div>
+<!--/EXPAND-->&nbsp;<p>You should not need to use the Advanced menu. This menu choice 
+is provided only for those who are curious to play with. To avoid confusion for 
+novice users, all the choices in the Advanced menu have been grayed. Please read 
+this section if you want to know what the Advanced menu choices do. To turn on the 
+Advanced menu, use the Advanced <b>Password</b> dialog box and enter a value of 
+9876. Also note that many of the menu choices are grayed while testing is in progress. 
+Choose Test/Stop to activate these menu choices. </p>
+<p>&nbsp;</p>
+<h2><a name="Test">Test</a></h2>
+<p><img border="0" src="images/ManualTestDlg.png" width="285" height="107"></p>
+<p><b>The Test</b> choice can be used to run a <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test on one Mersenne number. 
+Enter the Mersenne number&#39;s exponent - this must be a prime number between 5 and 
+79300000. </p>
+<p>&nbsp;</p>
+<h2><a name="Time">Time</a></h2>
+<p><img border="0" src="images/TimeDlg.png" width="285" height="107"></p>
+<p><b>The Time</b> choice can be used to see how long each iteration of a
+<a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test will take on your computer 
+and how long it will take to test a given exponent. For example, if you want to 
+know how long a <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test will 
+take to test the exponent 876543, choose Advanced/Time and enter 876543 for 100 
+iterations. </p>
+<p>&nbsp;</p>
+<h2><a name="P-1">P-1</a></h2>
+<p><img border="0" src="images/P1Dlg.png" width="263" height="139"></p>
+<p><b>The P-1</b> choice lets you factor Mersenne numbers using the P-1 method of 
+factoring. There is presently no web site which tells you how much P-1 factoring 
+has already been done on exponents. You can also edit the <a href="FileList.html">
+worktodo.ini</a> file directly. For example: </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pminus1=751001,1000000,0,0,0 </p>
+<p>The first value is the exponent. The second value is bound #1. The third value 
+is bound #2. The fourth value is 0 for 2^N-1 factoring, 1 for 2^N+1 factoring. The 
+fifth value is no longer used. </p>
+<h2>&nbsp;</h2>
+<h2><a name="ECM">ECM</a></h2>
+<p><img border="0" src="images/EcmDlg.png" width="263" height="177"></p>
+<p><b>The ECM</b> choice lets you factor Mersenne numbers using the Elliptic Curve 
+Method of factoring. Select a few exponents and bounds to factor from the
+<a href="http://www.mersenne.org/ecm.htm" target="_blank">http://www.mersenne.org/ecm.htm</a> web 
+pages. </p>
+<p>Note: You do not reserve exponents to work on, several people can do ECM factoring 
+on the same exponent. The program uses a random number generator to select elliptic 
+curves to test. You must email results to me at
+<a href="mailto:woltman@alum.mit.edu">woltman@alum.mit.edu</a> -
+<a href="http://www.mersenne.org/primenet/status.shtml" target="_blank">PrimeNet</a> does not support 
+ECM factoring. WARNING: ECM does not adhere to the memory limits specified in the 
+Options/CPU dialog box. ECM requires a minimum of 192 times the FFT size. Thus, 
+ECM factoring of F20 which uses a 64K FFT will use a minimum of 192 * 64K or 12MB 
+of memory. You can also edit the <a href="FileList.html">worktodo.ini</a> file directly. 
+For example: </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECM=751,3000000,0,100,0,0,0,0 </p>
+<p>The first value is the exponent. The second value is bound #1. The third value 
+is bound #2 - leave it as zero. The fourth value is the number of curves to test. 
+The fifth value is no longer used. The sixth value is the specific curve to test 
+- it is only used in debugging. The seventh value is 0 for 2^N-1 factoring, 1 for 
+2^N+1 factoring. The eighth value is no longer used. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Round Off">Round Off</a></h2>
+<p><b>Round off checking.</b> This option will slow the program down by about 15%. 
+This option displays the smallest and largest &quot;convolution error&quot;. The convolution 
+error must be less than 0.49 or the results will be incorrect. There really is no 
+good reason to turn this option on. </p>
+<p>&nbsp;</p>
+<h2><a name="Priority">Priority</a></h2>
+<p><img border="0" src="images/PriorityDlg.png" width="338" height="229"></p>
+<p><b>The Priority menu</b> is used to adjust the priority prime95 runs at. You 
+should not need to change this. You might raise the priority if you (or your coworker) 
+just cannot live without a screen saver (bad idea), or if you are running some ill-behaved 
+program that is using CPU cycles for no good reason. </p>
+<p>&nbsp;</p>
+<h2><a name="Affinity">Affinity</a></h2>
+<p>Dual processor machines can also improve performance by setting processor <b>
+affinity</b>. Use the Advanced/Affinity dialog box to do this.<br>
+&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Manual Communication">Manual Communication</a></h2>
+<p><img border="0" src="images/ManualCommDlg.png" width="356" height="115"></p>
+<p><b>The Manual Communication</b> menu choice should only be used if the automatic 
+detection of an Internet connection is not working for you. Using this option means 
+you have to remember to communicate with the server every week or two (by using 
+this same menu choice). </p>
+<p>&nbsp;</p>
+<h2><a name="Unreserve Exponent">Unreserve Exponent</a></h2>
+<p><img border="0" src="images/UnreserveDlg.png" width="363" height="136"></p>
+<p><b>The Unreserve Exponent</b> choice lets you tell the server to unreserved an 
+exponent you have been assigned. You might do this if a second computer you had 
+been running GIMPS on died or if you had been assigned an exponent of one work type 
+(such as a first-time-test) and now you have switched to another work type (such 
+as 10,000,000 digit numbers). Any work you have done on the unreserved exponent 
+will be lost. </p>
+<p>&nbsp;</p>
+<h2><a name="Quit">Quit</a></h2>
+<p><b>The Quit GIMPS</b> menu choice is used when you no longer want this computer 
+to work on the <a href="http://mersenne.org/" target="_blank">GIMPS</a> project. You may rejoin 
+at a later date. If you are a
+<a href="http://www.mersenne.org/primenet/status.shtml" target="_blank">PrimeNet</a> user your 
+unfinished work will be returned to the server. If you are a manual user, you need 
+to send me email containing your <a href="FileList.html">results.txt</a> file and 
+a note saying you are quitting. </p>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<UserControl x:Class="YanJi.Plugin.ScreenDeadPixel.DeadPixelPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Margin="16">
+        <!-- 状态行：通过后变绿 -->
+        <StackPanel Orientation="Horizontal" Margin="0,4">
+            <TextBlock Text="测试状态：" FontWeight="SemiBold"/>
+            <TextBlock x:Name="StatusText" Text="待测试" Margin="8,0,0,0"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- 操作行：显示器选择 + 开始测试 + 确认通过 -->
+        <StackPanel Orientation="Horizontal" Margin="0,8" VerticalAlignment="Center">
+            <TextBlock Text="显示器：" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <ComboBox x:Name="MonitorBox" Width="340" VerticalAlignment="Center" Margin="4,3"
+                      ToolTip="选择要做坏点检测的屏幕（多屏逐台测试）"/>
+            <Button x:Name="StartButton" Content="开始测试" Click="StartButton_Click"
+                    FontSize="14" FontWeight="SemiBold" Padding="16,7" Margin="8,3,2,3"
+                    ToolTip="在所选屏幕上弹出全屏纯色窗口：白→红→绿→蓝→黑 循环"/>
+            <Button x:Name="PassButton" Content="确认无坏点，通过" Margin="8,3,2,3" Click="PassButton_Click"
+                    ToolTip="各纯色下检查无坏点/亮点/暗点后点击"/>
+        </StackPanel>
+
+        <TextBlock x:Name="TestingHint" Text="" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,4"/>
+
+        <!-- 使用说明（操作方式以这里为准：任意键/单击切换，Esc 退出） -->
+        <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}" LineHeight="20" Margin="0,4">
+操作方式：点「开始测试」后，所选屏幕进入全屏纯色检测模式（白 → 红 → 绿 → 蓝 → 黑 循环）。
+按任意键或单击鼠标左键 = 切换下一种颜色；Esc = 退出全屏回到本页面。
+请在每种纯色下仔细观察全屏：坏点（恒黑）、亮点（恒亮/恒白）、暗点（颜色异常）在任何一种颜色下都会现形。
+多屏请逐台选择测试；全部确认无异常后点「确认无坏点，通过」。
+        </TextBlock>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,129 @@
+<html>
+
+<head>
+<title>Options Menu</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Options Menu</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>OPTIONS MENU</h1>
+<p>&nbsp;</p>
+<p><img border="0" src="images/OptionsMenu.png" width="305" height="270"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h5>
+<!--EXPAND--><nobr><a ID="ExPand" HREF="#">Applies To</a></nobr></h5>
+<p>&nbsp;</p>
+<div CLASS="expand2">
+  <table border="1" cellpadding="2" cols="2" frame="box" rules="all" width="592">
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Cpu">Cpu</a></td>
+      <td width="50%"><a href="#Tray Icon">Tray Icon</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Preference">Preference</a></td>
+      <td width="50%"><a href="#No Icon">No Icon</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Torture Test">Torture Test</a></td>
+      <td width="50%"><a href="#Start at Bootup">Start at Bootup</a></td>
+    </tr>
+    <tr VALIGN="top">
+      <td width="50%"><a href="#Benchmark">Benchmark</a></td>
+      <td width="50%">&nbsp;</td>
+    </tr>
+  </table>
+  <br>
+</div>
+<!--/EXPAND-->&nbsp;<h2><a name="Cpu">Cpu</a></h2>
+<p><img border="0" src="images/CpuDlg.png" width="354" height="281"></p>
+<p><b>The CPU</b> menu choice lets you tell the program how often the program will 
+run and how much memory the program can use. The dialog box also displays your CPU 
+type, speed, and capabilities.</p>
+<p>&nbsp;</p>
+<h2><a name="Preference">Preference</a></h2>
+<p><img border="0" src="images/PreferencesDlg.png" width="366" height="238"></p>
+<p><b>The Preferences</b> menu choice lets you control how often a line is written 
+to the main window and how often a line is written to the results file. It also 
+lets you change how often intermediate files (to guard against power failure and 
+crashes) are created. You can control how often the program checks to see if you 
+are connected to the Internet. The program polls whenever it has new data to send 
+to or work to get from the PrimeNet server. If you are low on disk space, you can 
+select one intermediate file instead of two. However, if you crash in the middle 
+of writing the one intermediate file, you may have to restart an exponent from scratch. 
+You can also tell the program to be quiet, rather than beeping like crazy, if a 
+new Mersenne prime is found. You can also make prime95 go idle whenever your laptop 
+is running on battery power (does not work under Windows NT/2000/XP).</p>
+<p>&nbsp;</p>
+<h2><a name="Torture Test">Torture Test</a></h2>
+<b>The Torture Test</b> choice will run a continuous self-test. This is great for 
+testing machines for hardware problems.<p></p>
+<p>&nbsp;</p>
+<h2><a name="Benchmark">Benchmark</a></h2>
+<p><b>The Benchmark</b> choice times the program on several FFT lengths. You can 
+then compare your computer&#39;s speed to others list at
+<a href="http://www.mersenne.org/bench.htm">http://www.mersenne.org/bench.htm</a></p>
+<p>&nbsp;</p>
+<h2><a name="Tray Icon">Tray Icon</a></h2>
+<b>The Tray Icon</b> choice will cause prime95 to have a small icon on the taskbar 
+when it is minimized. You can activate or hide the program by double-clicking on 
+the small icon. If you place the cursor over the small icon, a tool tip will display 
+the current status.<p></p>
+<p>&nbsp;</p>
+<h2><a name="No Icon">No Icon</a></h2>
+<b>The No Icon</b> choice is only enabled if the Advanced Menu is activated with 
+the password. Using this menu choice means there will be no prime95 icon on the 
+taskbar once you minimize the program - making it very hard to reactivate! You can 
+reactivate the program by trying to execute prime95 a second time. Alternatively, 
+you can turn this feature off by editing prime.ini and change the line &quot;HideIcon=1&quot; 
+to &quot;HideIcon=0&quot;, then reboot.<p></p>
+<p>&nbsp;</p>
+<h2><a name="Start at Bootup">Start at Bootup</a></h2>
+Checking the <b>Start at Bootup</b> menu choice will run prime95 as a service that 
+is started when your computer boots up. Windows NT/2000/XP users need administrator 
+privileges to use this feature. This method of starting prime95 is better than creating 
+a shortcut to prime95 in the startup folder. That is because services run even when 
+no one is logged on. These are the details you should be aware of:<br>
+<br>
+In Windows 95/98/Me:<br>
+<br>
+The HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices registry 
+entry is created. You will not be able to tell any difference between prime95 running 
+as a service and prime95 running as an ordinary process.<br>
+<br>
+In Windows NT/2000/XP (without administrator privileges):<br>
+<br>
+In this case the menu text is changed to &quot;Start at Logon&quot;. The HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 
+is created. Prime95 will run only when you are logged in.<br>
+<br>
+In Windows NT/2000/XP (with administrator privileges):<br>
+<br>
+There are a few minor quirks when running as a service. You shouldn&#39;t run into these 
+quirks in normal operation. You can only change this option once and it will take 
+effect when the service is started or stopped. You will need to exit prime95 running 
+as a normal process before starting the prime95 service. Finally, the prime95 window 
+will only appear on one users desktop. Only one prime95.exe program can be run as 
+a service. If you have a dual processor system you&#39;ll want to run two instances 
+of prime95. Instead of running a second prime95 from another directory, run the 
+second prime95 from the same directory with the -A1 switch (go to a DOS window and 
+type “prime95 –A1”). Finally, if you are worried about giving users access to a 
+GUI service running in the Local System account, you can turn off the &quot;Allow service 
+to interact with desktop&quot; option in the services control panel applet or run the 
+GUI-less NT service version available at
+<a href="http://www.mersenne.org/freesoft.htm">http://www.mersenne.org/freesoft.htm</a>. 
+These options are more secure than using the No Icon menu choice<br>
+<br>
+<br>
+&nbsp;</body></html>

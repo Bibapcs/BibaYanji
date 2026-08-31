@@ -1,0 +1,90 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Prime95.chm
+Contents file=Prime95.hhc
+Default topic=Welcome.html
+Display compile progress=Yes
+Full-text search=Yes
+Index file=Prime95.hhk
+Language=0x409 English (United States)
+Title=Prime95 Help
+
+
+[FILES]
+AdvancedMenu.html
+AdvancedMenuECM.html
+AdvancedMenuManual.html
+AdvancedMenuP1.html
+AdvancedMenuPassword.html
+AdvancedMenuPriority.html
+AdvancedMenuQuit.html
+AdvancedMenuRoundoff.html
+AdvancedMenuTest.html
+AdvancedMenuTime.html
+AdvancedMenuUnreserve.html
+AvailableMemory.html
+CashAwards.html
+CommandLine.html
+Disclaimer.html
+DoubleChecking.html
+EndUser.html
+Factoring.html
+FileList.html
+HowGIMPSWorks.html
+Instructions.html
+InstructionsAutomatic.html
+InstructionsManual.html
+Lucas-LehmerDetails.html
+NewFeaturesInVersion_8.html
+NewFeaturesInVersion_10.html
+NewFeaturesInVersion_12.html
+NewFeaturesInVersion_13.html
+NewFeaturesInVersion_14.html
+NewFeaturesInVersion_15.html
+NewFeaturesInVersion_16.html
+NewFeaturesInVersion_17.html
+NewFeaturesInVersion_18.html
+NewFeaturesInVersion_19.html
+NewFeaturesInVersion_20.html
+NewFeaturesInVersion_21.html
+NewFeaturesInVersion_22.html
+NewFeaturesInVersion_23.html
+NewFeaturesInVersion_24.html
+Newsletters.html
+Notes.html
+OptionsMenu.html
+OptionsMenuBenchmark.html
+OptionsMenuCPU.html
+OptionsMenuPreferences.html
+OptionsMenuTortureTest.html
+OptionsMenuTrayIcon.html
+OptionsMenuWin95.html
+PossibleHardwareFailure.html
+ProgramOutput.html
+Proxy.html
+RunningonSeveralMachines.html
+StressTestingYourComputer.html
+Success.html
+TestMenu.html
+TestMenuContinue.html
+TestMenuPrimeNet.html
+TestMenuStatus.html
+TestMenuStop.html
+TestMenuUserInfo.html
+TestMenuVacation.html
+Thanks.html
+ThirdParty.html
+Undoc.html
+Welcome.html
+WhatAreMersennePrimes.html
+WhatIsThisProgram.html
+
+[ALIAS]
+#include Alias.h
+
+[MAP]
+#include HelpTopics.h
+#include HtmlDefines.h
+
+[INFOTYPES]
+

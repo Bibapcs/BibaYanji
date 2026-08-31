@@ -1,0 +1,511 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./NewFeaturesInVersion_24_files/filelist.xml">
+<title>New Features in Version 24 of Prime95</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>George Woltman</o:Author>
+  <o:LastAuthor>George Woltman</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>2</o:TotalTime>
+  <o:Created>2005-08-09T15:13:00Z</o:Created>
+  <o:LastSaved>2005-08-09T15:15:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>438</o:Words>
+  <o:Characters>2501</o:Characters>
+  <o:Lines>20</o:Lines>
+  <o:Paragraphs>5</o:Paragraphs>
+  <o:CharactersWithSpaces>3071</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+ </w:WordDocument>
+</xml><![endif]-->
+<link rel=Stylesheet type="text/css" media=all href=backsdk4.css>
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+code
+	{mso-ansi-font-size:12.0pt;
+	mso-bidi-font-size:12.0pt;
+	mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+pre
+	{margin-top:.1in;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";}
+p.proch, li.proch, div.proch
+	{mso-style-name:proch;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.label, li.label, div.label
+	{mso-style-name:label;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.tl, li.tl, div.tl
+	{mso-style-name:tl;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.atl, li.atl, div.atl
+	{mso-style-name:atl;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.cfe, li.cfe, div.cfe
+	{mso-style-name:cfe;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.mini, li.mini, div.mini
+	{mso-style-name:mini;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.dt, li.dt, div.dt
+	{mso-style-name:dt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.indent, li.indent, div.indent
+	{mso-style-name:indent;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.product, li.product, div.product
+	{mso-style-name:product;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.buttonbarshade, li.buttonbarshade, div.buttonbarshade
+	{mso-style-name:buttonbarshade;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.buttonbartable, li.buttonbartable, div.buttonbartable
+	{mso-style-name:buttonbartable;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.version, li.version, div.version
+	{mso-style-name:version;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.lang, li.lang, div.lang
+	{mso-style-name:lang;
+	font-size:7.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";}
+p.ilang, li.ilang, div.ilang
+	{mso-style-name:ilang;
+	font-size:7.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";}
+p.note, li.note, div.note
+	{mso-style-name:note;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.indent1, li.indent1, div.indent1
+	{mso-style-name:indent1;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.indent2, li.indent2, div.indent2
+	{mso-style-name:indent2;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.indent3, li.indent3, div.indent3
+	{mso-style-name:indent3;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.diagclass, li.diagclass, div.diagclass
+	{mso-style-name:diagclass;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.diagclasscol, li.diagclasscol, div.diagclasscol
+	{mso-style-name:diagclasscol;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.NormalWeb1, li.NormalWeb1, div.NormalWeb1
+	{mso-style-name:"Normal \(Web\)1";
+	margin-top:.1in;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.NormalWeb2, li.NormalWeb2, div.NormalWeb2
+	{mso-style-name:"Normal \(Web\)2";
+	margin-top:.1in;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.NormalWeb3, li.NormalWeb3, div.NormalWeb3
+	{mso-style-name:"Normal \(Web\)3";
+	margin-top:.1in;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.Heading11, li.Heading11, div.Heading11
+	{mso-style-name:"Heading 11";
+	margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:-16.5pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:17.5pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	color:blue;
+	mso-font-kerning:18.0pt;
+	font-weight:bold;
+	font-style:italic;}
+p.Heading21, li.Heading21, div.Heading21
+	{mso-style-name:"Heading 21";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:-16.5pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:3;
+	font-size:15.5pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+p.Heading31, li.Heading31, div.Heading31
+	{mso-style-name:"Heading 31";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:-16.5pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:4;
+	font-size:14.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+p.Heading41, li.Heading41, div.Heading41
+	{mso-style-name:"Heading 41";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:.1in;
+	margin-left:-16.5pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:5;
+	font-size:12.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:155195681;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1423321876 -139404310 923934282 1455066654 -1113264534 -680883024 -857707688 -1966471238 -710481566 -584964996;}
+@list l1
+	{mso-list-id:576206953;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1332732408 -1871430508 1192896364 -530697160 -1905734206 854624442 -1467563998 1617871602 1593450972 1668065792;}
+@list l2
+	{mso-list-id:677385287;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1508954558 180397974 -1728438336 1561913688 2053276242 -271148338 903648222 723177750 -1162448588 849239628;}
+@list l3
+	{mso-list-id:954407027;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2014349144 -1087451032 -818242988 363890620 -748112138 -1842681232 1403126964 -287798182 -1135456800 -18073688;}
+@list l4
+	{mso-list-id:1303392632;
+	mso-list-type:hybrid;
+	mso-list-template-ids:727595906 1903329250 1850138594 -1847532052 272147236 305049192 1535256046 2119963904 76813422 614250056;}
+@list l5
+	{mso-list-id:1350570832;
+	mso-list-type:hybrid;
+	mso-list-template-ids:253645658 370293194 -1951913828 1690188186 464549516 856162548 83514136 415525978 689575006 -1229682492;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1027"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white lang=EN-US link="#0066ff" vlink="#996600" style='tab-interval:
+.5in' topmargin=0>
+
+<div class=Section1>
+
+<table border=0 cellspacing=0 cellpadding=0 width="100%" bgcolor="#999999"
+ style='width:100.0%;mso-cellspacing:0in;background:#999999'>
+ <tr>
+  <td valign=top style='background:white;padding:3.0pt 6.0pt 3.0pt 6.0pt'>
+  <p class=MsoNormal><span style='font-size:6.0pt;font-family:Verdana;
+  color:black'>&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:8.5pt;font-family:Verdana;color:black;
+display:none;mso-hide:all'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<table border=0 cellspacing=0 cellpadding=0 width="100%" bgcolor="#999999"
+ style='width:100.0%;mso-cellspacing:0in;background:#999999'>
+ <tr id=hdr>
+  <td nowrap valign=top style='background:white;padding:3.0pt 6.0pt 3.0pt 6.0pt'>
+  <p class=MsoNormal><span style='font-size:6.0pt;font-family:Verdana;
+  color:black'>What's New: New Features in Version 24.x of Prime95<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp;<o:p></o:p></span></p>
+
+<h1><span style='font-size:12.5pt'>NEW FEATURES IN VERSION 24.x of PRIME95.EXE<o:p></o:p></span></h1>
+
+<h2><span style='font-size:11.0pt;color:black'>New Features in Version 24.14 of
+Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l4 level1 lfo1;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp;<o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New Features in Version 24.13 of
+Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l4 level1 lfo1;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l4 level1 lfo1;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l4 level1 lfo1;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'><o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New Features in Version 24.12 of
+Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l3 level1 lfo2;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l3 level1 lfo2;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l3 level1 lfo2;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l3 level1 lfo2;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l3 level1 lfo2;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>5.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'><o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New Features in
+Version&nbsp;24.11 of Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>5.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>6.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>7.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>8.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l5 level1 lfo3;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>9.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'><o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New features in
+Version&nbsp;24.10 of Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l1 level1 lfo4;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'><o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New features in
+Version&nbsp;24.9 of Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l2 level1 lfo5;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l2 level1 lfo5;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;<o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>New features in
+Version&nbsp;24.6 of Prime95<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l0 level1 lfo6;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l0 level1 lfo6;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>&nbsp; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;margin-bottom:.1in;
+margin-left:.6in;text-indent:-.25in;mso-list:l0 level1 lfo6;tab-stops:list .5in'><![if !supportLists]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><![endif]><span
+style='font-size:8.5pt;font-family:Verdana;color:black'><o:p></o:p></span></p>
+
+<p style='margin-left:1.9in'><span style='font-size:8.5pt;font-family:Verdana;
+color:black'>&nbsp; <o:p></o:p></span></p>
+
+<h2><span style='font-size:11.0pt;color:black'>&nbsp;<o:p></o:p></span></h2>
+
+</div>
+
+</body>
+
+</html>

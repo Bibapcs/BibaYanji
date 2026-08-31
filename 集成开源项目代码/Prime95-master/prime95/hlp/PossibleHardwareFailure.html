@@ -1,0 +1,60 @@
+<html>
+
+<head>
+<title>Possible Hardware Failure</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Possible Hardware Failure</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>POSSIBLE HARDWARE FAILURE</h1>
+If the message, &quot;Possible hardware failure, consult the readme file.&quot;, appears 
+in the <a href="FileList.html">results</a> file, then prime95's error-checking has detected a problem. After 
+waiting 5 minutes, the program will continue testing from the last save file.<p>&nbsp;</p>
+<p>Could it be a software problem? If the error is ILLEGAL SUMOUT, then there is a 
+good chance that this is a software problem. A device driver or VxD may not be 
+saving and restoring FPU state correctly. The good news is that prime95 recovers 
+very well from ILLEGAL SUMOUT errors. Try seeing if the problem occurs only when 
+a specific device is active or a specific program is running.</p>
+<p>&nbsp;</p>
+<p>The other two errors messages, SUMINP! = SUMOUT and ROUND OFF &gt; 0.40 are caused 
+by one of two things:<br>
+
+</p>
+
+<ol>
+  <li>For reasons too complicated to go into here, the program's error checking is 
+not perfect. Some errors can be missed and some correct results flagged as an 
+error. If you get the message &quot;Disregard last error...&quot; upon continuing from the 
+last save file, then you may have found the rare case where a good result was 
+flagged as an error.</li>
+<li>
+  A true hardware error.</li>
+</ol>
+&nbsp;<p>If you do not get the &quot;Disregard last error...&quot; message or this happens more 
+than once, then your machine is a good candidate for a torture test. See the 
+<a href="FileList.html">stress.txt</a> file or
+<a href="StressTestingYourComputer.html">click here</a> for more information.</p>
+<p>Running the program on a computer with hardware problems may produce incorrect 
+results. This won't hurt the GIMPS project since all results will be 
+double-checked. However, you could be wasting your CPU time. If you are getting 
+several errors during each primality test, then I recommend using your machine 
+to factor Mersenne numbers or run less strenuous distributed computing projects 
+at <a href="http://www.mersenne.org/projects.htm">http://www.mersenne.org/projects.htm</a>.<br>
+&nbsp; </p>
+
+</p>
+
+</body>
+</html>

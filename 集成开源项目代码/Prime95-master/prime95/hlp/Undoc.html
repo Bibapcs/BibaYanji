@@ -1,0 +1,619 @@
+<html>
+
+<head>
+<title>Undocumented Features</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>Advanced Usage: Undocumented Features</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<h1>UNDOCUMENTED FEATURES</h1>
+<h2>This file lists the previously undocumented features available in the program. 
+These features may change or be discontinued at any time. Their use is totally unsupported.</h2>
+<ul>
+  <li>In prime.ini you can force the program to use different filenames for 6 files. 
+  This is in response to a user that is running security software that prevents 
+  writing to any file with a .ini extension. There may well be other uses. You can 
+  also change the working directory (identical to the -W command line argument).
+  <blockquote>
+    <b>prime.ini=your_filename<br>
+    local.ini=your_filename<br>
+    worktodo.ini=your_filename<br>
+    prime.log=your_filename<br>
+    prime.spl=your_filename<br>
+    results.txt=your_filename<br>
+    WorkingDir=your_directory_name</b><br>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can change the program's behavior at various times of the day. See the 
+  Time= option described in the readme.txt file. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can limit how far the program 
+  tries to factor a number. This feature should not be used with the Primenet server. 
+  To prevent the factoring code from factoring higher than 2^n, enter this in prime.ini:
+  <blockquote>
+    <b>FactorOverride=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can force the Options/CPU dialog to display times using AM/PM or a 24-hour 
+  clock format. Otherwise, the program will make its best guess as to the proper 
+  format. Add this line to prime.ini:
+  <blockquote>
+    <b>AMPM=n</b>
+  </blockquote>
+  where n is 1 for AM/PM formatting and n is 2 for 24-hour formatting.
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can adjust how many decimal digits of precision are displayed in lines 
+  output to the screen. In prime.ini enter a value between 0 and 6:
+  <blockquote>
+    <b>PercentPrecision=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can choose whether the program uses the high resolution system clock, 
+  the standard system clock, or the read timestamp counter instruction (RDTSC) to 
+  time events. By default prime95 uses the high resolution system clock if available. 
+  Choose one of these values for n (default is 1):
+  <blockquote>
+    <b>0 - use the system clock.<br>
+    1 - use RDTSC but do not output clock counts.<br>
+    2 - use RDTSC and output clock counts.</b>
+  </blockquote>
+  The above values will only have an affect if a high resolution system clock 
+  is not available. You can force prime95 to bypass the high resolution clock by 
+  adding 10 to one of the values above. In prime.ini, enter
+  <blockquote>
+    <b>RdtscTiming=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can alter the way the program outputs timings. In prime.ini set:
+  <blockquote>
+    <b>TimingOutput=n</b>
+  </blockquote>
+  Where n=1 for seconds with 3 digits of precision, n=2 for milliseconds with 
+  1 digit of precision, n=3 for milliseconds with 2 digits of precision, n=4 for 
+  milliseconds with 3 digit of precision.
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can turn off the outputting of date and time to the screen. In prime.ini:
+  <blockquote>
+    <b>TimeStamp=0</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can have the timings that are output to the screen be cumulative (from 
+  program restart or start of a new exponent) rather than resetting after each screen 
+  output. Add this line to prime.ini:
+  <blockquote>
+    <b>CumulativeTiming=1 </b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program normally will not start any calculation until 90 seconds after 
+  a reboot. This is done so that your normal boot up procedure can be as fast as 
+  possible. You can control how long this delay is by adding this line to prime.ini, 
+  where n is the number of seconds to sleep:
+  <blockquote>
+    <b>BootDelay=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program supports 4 different code paths for LL testing depending on the 
+  CPU type. It also has a few different factoring code paths. You can force the 
+  program to choose a specific code path by setting the proper combination of these 
+  settings in local.ini:
+  <blockquote>
+    <b>CpuSupportsRDTSC=0 or 1<br>
+    CpuSupportsCMOV=0 or 1<br>
+    CpuSupportsPrefetch=0 or 1<br>
+    CpuSupportsSSE=0 or 1<br>
+    CpuSupportsSSE2=0 or 1</b><br>
+  </blockquote>
+  This shouldn't be necessary though as the program uses the CPUID instruction to 
+  see if the CPU supports these features.
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program also supports different code paths for LL testing on a Pentium 
+  4 based on the size of the L2 cache. You can explicitly specify the L2 cache size 
+  although this shouldn't be necessary since the program uses the CPUID instruction 
+  to determine the L2 cache size. In local.ini enter:
+  <blockquote>
+    <b>CpuL2CacheSize=128 or 256 or 512<br>
+    CpuL2CacheLineSize=32 or 64 or 128<br>
+    CpuL2SetAssociative=4 or 8</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program automatically computes the CPU type and speed. The CPU type is 
+  used to tell the server what kind of CPU you have (to display in the reports). 
+  The CPU type and speed is also used to calculate how much work to get. If the 
+  program did not correctly figure out your CPU information, you can override the 
+  info in local.ini:
+  <blockquote>
+    <b>CpuOverride=1<br>
+    CpuType=n<br>
+    CpuSpeed=s </b>
+  </blockquote>
+  Where n is 3=Cyrix, 4=486, 5=Pentium, 6=Pro, 7=K6, 8=Celeron, 9=P-II, 10=P-III, 
+  11=K7, 12=P4 and s is the speed in MHz. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program used to do factoring and P-1 testing on exponents even if they 
+  were not the first entry in worktodo.ini. The rationale was that if the number 
+  had a factor, the server could be contacted and another exponent reserved. This 
+  avoids the possible scenario where the LL test for the first worktodo.ini line 
+  completes, a factor is quickly found for the second line in worktodo.ini and the 
+  computer now sits idle until the server can be contacted. This behavior was confusing, 
+  especially to newcomers. To restore this old behavior add this line to prime.ini:
+  <blockquote>
+    <b>SequentialWorkToDo=0</b>
+  </blockquote>
+  One added benefit is time estimates in Test/Status will be more accurate because 
+  we'll know no factors will be found and the LL test must be run. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program will restrict how many exponents can be added to worktodo.ini. 
+  To override this, change prime.ini:
+  <blockquote>
+    <b>MaxExponents=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>By default, ECM will stop when a new factor is found for exponents above 5825. 
+  You can have ECM always stop or always continue searching for factors by using 
+  a value of zero or one in prime.ini:
+  <blockquote>
+    <b>ContinueECM=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can skip the GCD in stage 1 of P-1 factoring with this prime.ini setting:
+  <blockquote>
+    <b>Stage1GCD=0</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can prevent users from accessing the Test/User Information dialog box. 
+  In prime.ini enter:
+  <blockquote>
+    <b>LockUserInfo=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can make prime95 ping the Primenet server every time it starts up. I don't 
+  know why you'd want to do this. In prime.ini enter:
+  <blockquote>
+    <b>PingAtStartup=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can have the program generate save files every n iterations. The files 
+  will have a .XXX extension where XXX equals the current iteration divided by n. 
+  In prime.ini enter:
+  <blockquote>
+    <b>InterimFiles=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can have the program output residues every n iterations. The default value 
+  is the InterimFiles value. In prime.ini enter:
+  <blockquote>
+    <b>InterimResidues=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can force prime95 to skip the trial factoring step prior to running a 
+  Lucas-Lehmer test. In prime.ini add this line:
+  <blockquote>
+    <b>SkipTrialFactoring=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can do P-1 factoring by adding lines to worktodo.ini:
+  <blockquote>
+    <b>Pfactor=exponent,how_far_factored,has_been_LL_tested_once</b>
+  </blockquote>
+  For example, Pfactor=10000157,64,0 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can reduce the number of times worktodo.ini is read and written by setting 
+  in prime.ini:
+  <blockquote>
+    <b>WellBehavedWork=1</b>
+  </blockquote>
+  This only works for worktodo.ini files that contain only Factor= lines. Only turn 
+  this on if you have BIG worktodo.ini files and each Factor= operation does not 
+  take much time. You must stop prime95 before manually editing the worktodo.ini 
+  file. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>In Advanced/Time, you can enter a value between 9994 and 9999 for the exponent 
+  to run a QA script. The QA file looks like this:
+  <blockquote>
+    <b>64511,0,400,99999999,3389BC878321980A</b>
+  </blockquote>
+  Where the first value is the exponent, the second value is the FFT size where 
+  zero means use the default FFT size. The third value is the number of iterations 
+  to run. The fourth value is the shift count (if the shift count is greater than 
+  the exponent a random shift count is used). The final value is the expected 64-bit 
+  residue. The dialog box values between 9994 and 9999 force slightly different 
+  code to run. 9999 and 9998 run straightforward squaring code, 9998 differs by 
+  gathering some standard deviation data. 9997 does squarings also but exercises 
+  the general purpose add/sub/mul routines too. 9996 does operations typical during 
+  ECM - the final residue won't match but the convolution error data can be useful. 
+  9994 and 9995 probably blow up. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can factor a range of exponents for certain factors between b1 and b2 
+  bits inclusive. This feature is likely to be deleted in a future release. Add 
+  this to your worktodo.ini file:
+  <blockquote>
+    <b>AdvancedFactor=start_exponent,end_exponent,b1,b2</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>AdvancedFactor uses the file p0000000 as the name of the continuation file. 
+  This causes problems if you try to run two prime95s doing Advanced/Factoring on 
+  a dual-CPU machine from the same directory. Add this line to prime.ini to use 
+  a different Advanced/Factor continuation file name:
+  <blockquote>
+    <b>AdvFacFileName=filename</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>In AdvancedFactor, a start exponent of 8888 forces reading of a file called 
+  factors. The program then tries to refind each factor using the factoring code. 
+  This is not an efficient way to verify factors as it goes through the entire sieving 
+  process and trial factoring many potential factors. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>In local.ini, both the DayMemory and NightMemory values can be negative numbers 
+  meaning use all but this many megabytes. Thus on a 128MB system a value of -32 
+  means the program can use 96MB of memory. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can control which FFT sizes are tested by the torture test. In prime.ini 
+  you can set:
+  <blockquote>
+    <b>MinTortureFFT=n<br>
+    MaxTortureFFT=m</b>
+  </blockquote>
+  Where n and m are in "K". The default for n and m is 8 and 1024 which will run 
+  tests on FFT sizes rom 8K to 1024K. Set n to 8 and m to 16 and you will run only 
+  small FFT sizes. These FFTs will fit in the L2 cache and may be more stressful 
+  to the CPU. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can control how many minutes each FFT size is tested by the torture test. 
+  In prime.ini set:
+  <blockquote>
+    <b>TortureTime=n</b>
+  </blockquote>
+  The default value is 15 minutes. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can control how much memory the torture test uses. In prime.ini set:
+  <blockquote>
+    <b>TortureMem=n</b>
+  </blockquote>
+  The default value is the larger of your daytime and nighttime memory settings. 
+  If this is set to 8MB or less, then the torture test does FFTs in-place. This 
+  may be more stressful but could memory errors that only occur at a specific physical 
+  address. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program normally does round-off error checking every 128 iterations. When 
+  you are testing an exponent near the limit of an FFT length, the program does 
+  this error checking every iteration.
+  <blockquote>
+    <b>NearFFTLimitPct=value</b>
+  </blockquote>
+  The default value is 0.5 (if the exponent you are testing is within 0.5% of the 
+  maximum exponent that can be tested using the current FFT length, then the extra 
+  error checking is performed). A value of 0.0 will turn off this extra error checking.
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>When Tray Icon or No Icon is selected the "X" at the right of the title bar 
+  will minimize rather than exit. You can make prime95 exit if you prefer. In prime.ini 
+  set:
+  <blockquote>
+    <b>ExitOnX=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can change the Windows NT/2000/XP service name and service display name. 
+  The default for both is "Prime95 Service". In local.ini, set:
+  <blockquote>
+    <b>ServiceName=your service name<br>
+    DisplayName=your service display name</b>
+  </blockquote>
+  You may need to turn off the "Start at Bootup" and exit, change the local.ini 
+  file, restart prime95 and turn the "Start at Bootup" option on to make this change 
+  effective. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>The program no longer uses hard FFT crossover points. The soft crossovers 
+  have two adjustments in prime.ini:
+  <blockquote>
+    <b>SoftCrossovers=n<br>
+    SoftCrossoverAdjust=n</b>
+  </blockquote>
+  The first setting controls which exponents are examined. The default value is 
+  0.2. This means that an exponent that is 0.2% above or below an FFT crossover 
+  point are tested for the best FFT size to use. A value of 0.0 will turn off this 
+  soft FFT crossovers feature. The second setting defaults to 0.000. This controls 
+  how aggressive or conservative the program is in selecting the best FFT size. 
+  The program normally uses the smaller FFT size if the average roundoff error is 
+  below a value in 0.241 to 0.243 range. If you set SoftCrossoverAdjust to say 0.003 
+  then the program will use the smaller FFT size if the average roundoff error is 
+  below a value in 0.244 to 0.246 range. This will generate more iterations that 
+  generate roundoff error above 0.40 warnings and a time loss returning to the previous 
+  save file. It also increases the chance that a deadly roundoff error above 0.6 
+  will occur. On the plus side, using the smaller FFT size each iteration will be 
+  a bit quicker. I wouldn't set this adjustment to more than 0.006. If you set SoftCrossoverAdjust 
+  to say -0.002, then the program will be more conservative and use the larger FFT 
+  size more often. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>Alexander Kruppa wrote some code that allows the output of ECM stage 1 to 
+  be passed to Paul Zimmermann's more efficient GMP-ECM stage 2. This program is 
+  usually faster in stage 1. You can activate this feature by entering
+  <blockquote>
+    <b>GmpEcmHook=1</b>
+  </blockquote>
+  in prime.ini. Then select ECM bound #2 between 1 and bound #1. Results.txt will 
+  contain data that can be fed to GMP-ECM for stage 2. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>In rare cases, users have reported the program can interfere with the performance 
+  of some programs such as disk defragmenters and some games. You can pause prime95 
+  automatically when these programs are running by adding this line to prime.ini:
+  <blockquote>
+    <b>PauseWhileRunning=prog1,prog2,prog3,etc</b>
+  </blockquote>
+  Note that prime95 will pause if the program name matches any part of the running 
+  program's file name. That is "foobar" will match "c:\foobar.exe", "C:\FOOBAR\name.exe", 
+  and even "C:\myfoobarprog.exe". By default, prime95 will check the list of running 
+  programs every 64 iterations, but not more frequently than every 10 seconds.
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can adjust the time period with this prime.ini setting:
+  <blockquote>
+    <b>PauseCheckInterval=n</b>
+  </blockquote>
+  where n is the number of seconds between checking which programs are running. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>Normally, the program will unreserve an exponent if it is scheduled to start thirty 
+  days after the Test/Primenet Days of work to get value.  You can adjust this interval by setting in prime.ini:
+  <blockquote>
+    <b>UnreserveDays=n</b>
+  </blockquote>
+  where n is the number of days. You should increase this value if you are loading 
+  up worktodo.ini with a large amount of work and do not want any of the work to 
+  be unreserved. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>By default, Prime95 uses RAS routines to determine if your modem is connected 
+  to the Internet. Microsoft now prefers the InternetGetConnectedState call in WININET.DLL. 
+  To use this method instead of the RAS routines, add this line to prime.ini:
+  <blockquote>
+    <b>AlternateModemDetection=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>If you are running on a laptop or in a hot room and you want to slow the program 
+  down to reduce heat, then you can add this line to prime.ini:
+  <blockquote>
+    <b>Throttle=n</b>
+    </blockquote>
+  where n is the number of milliseconds to sleep after each iteration. 
+  </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+  <li>Since P-1 stage 2 runs faster with more memory available you can have the 
+  program only run stage 2 at night when more memory is available. In prime.ini 
+  set:
+  <blockquote>
+    <b>OnlyRunStage2WithMaxMemory=1</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<ul>
+  <li>You can control the maximum prime.log file size. The default is 250K. Add 
+  this line to prime.ini to change the default:
+  <blockquote>
+    <b>MaxLogFileSize=n</b>
+  </blockquote>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<UL>
+  <li>You can control what type of URLs are used to contact the PrimeNet server. 
+  In primenet.ini enter:
+  <blockquote>
+    <b>UseFullURL=n</b>
+  </blockquote>
+  where n is 0 for use relative URLs, 1 for use full URLs, 2 for try full URL and 
+  if an error is returned try a relative URL. The default setting is 2. Note that 
+  a full URL is always sent when using a proxy server.&nbsp; 
+  </li></UL>
+<P>&nbsp;</P>
+<UL>
+  <LI>When using a proxy server, the program sends the port number in http 
+  strings. That is the ":80" in "http://mersenne.org:80/cgibin_text". At least 
+  one proxy server only works if the ":80" is not present. In this case, set:
+  <blockquote>
+    <b>SendPortNumber=0</b>
+  </blockquote>
+  in the primenet.ini file. </LI></UL>
+<P>&nbsp;</P>
+<UL>
+  <LI>You can add additional information to the HTTP request sent to the
+  server. This might be useful in some tough firewall setups.
+  In primenet.ini enter:
+  <blockquote>
+    <b>OtherGetInfo=string</b>
+  </blockquote>
+  where string is any text up to 256 bytes. </LI></UL>
+<P>&nbsp;</P>
+<UL>
+  <LI>The benchmarking code by default only times a subset of the large FFT 
+  sizes. In prime.ini, set
+  <blockquote>
+    <b>FullBench=1</b>
+  </blockquote>
+  to have the benchmarking code time all of the large 
+  FFT sizes. </LI></UL>
+<P>&nbsp;</P>
+<UL>
+  <LI> "AllBench=1" in prime.ini is used to time FFT implementations optimized
+  for other L2 cache sizes. This is only useful during the development cycle
+  to find the optimal FFT implementations for each CPU type. </LI></UL>
+
+</body>
+
+</html>

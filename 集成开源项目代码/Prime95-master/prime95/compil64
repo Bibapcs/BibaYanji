@@ -1,0 +1,42 @@
+# Assembler command lines
+#
+# Uasm is a MASM-compatible assembler that is supported much better than MASM.
+# It can be downloaded at http://www.terraspace.co.uk/hjwasm.html
+#
+# objconv comes courtesy of Agner Fog.  Download available at
+# http://www.agner.org/optimize/#objconv
+
+masm64=uasm64 /c /DX86_64 /DWINDOWS64 /DARCH=FMA3 /I..\gwnum -win64 -safeseh
+#masm64=uasm64 /c /DX86_64 /DWINDOWS64 /DARCH=FMA3 /I..\gwnum /Fl /Sf /Sa /Sg -win64 -safeseh
+#masm64=ml64 /c /DX86_64 /DWINDOWS64 /DARCH=FMA3 /I..\gwnum
+#masm64=ml64 /c /DX86_64 /DWINDOWS64 /DARCH=FMA3 /I..\gwnum /Fl /Sf /Sa
+masm64lx=uasm64 /c /DX86_64 /DLINUX64 /DARCH=FMA3 /I..\gwnum -win64 -safeseh
+#masm64lx=ml64 /c /DX86_64 /DLINUX64 /DARCH=FMA3 /I..\gwnum
+
+# Use the 64-bit C compiler - optimization not necessary
+
+cl64=cl /GF /W3 /MT /DX86_64 /D_CRT_SECURE_NO_DEPRECATE /c
+cl64d=cl /GF /W3 /MT /DX86_64 /D_CRT_SECURE_NO_DEPRECATE /DGDEBUG /Zi /c
+objconv=c:\objconv\objconv
+
+# List of all buildables in this makefile
+
+all:	amd64\factor64.obj linux64\factor64.o
+
+# Create 64-bit object files
+
+amd64\factor64.obj: factor64.asm factor64.mac
+    $(masm64) /Foamd64\factor64.obj factor64.asm
+    ..\gwnum\strip amd64\factor64.obj
+
+# Create Linux 64-bit object files
+
+linux64\factor64.o: factor64.asm factor64.mac
+    $(masm64lx) /Folinux64\factor64.obj factor64.asm
+    $(objconv) -felf64 linux64\factor64.obj linux64\factor64.o
+    attrib -r linux64\factor64.o
+    $(objconv) -fmacho64 -nu+ linux64\factor64.obj macosx64\factor64.o
+    attrib -r macosx64\factor64.o
+    del linux64\factor64.obj
+
+

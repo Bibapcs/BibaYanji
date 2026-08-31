@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 一次性还原用：把 boost_circular_buffer 及其传递依赖（全部头文件包）拉到本地目录，
+       供 prime95 叠加工程编译 pair.cpp 用。还原后可删。 -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RestorePackagesPath>$(MSBuildProjectDirectory)\..\deps\nuget</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="boost" Version="1.76.0" />
+  </ItemGroup>
+</Project>

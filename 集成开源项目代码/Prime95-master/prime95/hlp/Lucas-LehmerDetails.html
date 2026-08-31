@@ -1,0 +1,104 @@
+<html>
+
+<head>
+<title>Lucas-Lehmer Details</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>Math: Lucas-Lehmer Details</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>LUCAS-LEHMER DETAILS</h1>
+
+<p>The <a href="http://www.utm.edu/research/primes/mersenne/index.html">
+Lucas-Lehmer primality</a> test is remarkably simple. It states that for P &gt; 2, 
+2<sup>P</sup>-1 is prime if and only if S<sub>p-2</sub> is zero in this 
+sequence: S<sub>0</sub> = 4, S<sub>N</sub> = (S<sub>N-1</sub><sup>2</sup> - 2) 
+mod (2<sup>P</sup>-1). For example, to prove 2<sup>7</sup> - 1 is prime: </p>
+
+<blockquote>
+<p><br>
+S<sub>0</sub> = 4<br>
+S<sub>1</sub> = (4 * 4 - 2) mod 127 = 14<br>
+S<sub>2</sub> = (14 * 14 - 2) mod 127 = 67<br>
+S<sub>3</sub> = (67 * 67 - 2) mod 127 = 42<br>
+S<sub>4</sub> = (42 * 42 - 2) mod 127 = 111<br>
+S<sub>5</sub> = (111 * 111 - 2) mod 127 = 0<br>
+</blockquote>
+<p>
+<br>
+To implement the Lucas-Lehmer test efficiently, one must find the fastest way to 
+square huge numbers modulo 2<sup>P</sup>-1. Since the late 1960's the fastest algorithm for 
+squaring large numbers is to split the large number into pieces forming a large 
+array, then perform a 
+<a href="http://aurora.phys.utk.edu/~forrest/papers/fourier/index.html">Fast Fourier Transform (FFT)</a>, a squaring, and an Inverse 
+Fast Fourier Transform (IFFT). See the &quot;How Fast Can We Multiply?&quot; section in 
+Knuth's Art of Computer Programming vol. 2. In a January, 1994 Mathematics of 
+Computation article by <a href="http://www.perfsci.com/">Richard Crandall</a> and 
+<a href="http://www.faginfamily.net/barry/">Barry Fagin</a> titled &quot;Discrete 
+Weighted Transforms and Large-Integer Arithmetic&quot;, the concept of using an 
+irrational base FFT was introduced. This improvement more than doubled the speed 
+of the squaring by allowing us to use a smaller FFT and it performs the mod 2P-1 
+step for free. Although GIMPS uses a floating point FFT for reasons specific to 
+the Intel Pentium architecture, Peter Montgomery showed that an all-integer 
+weighted transform can also be used.<br>
+<br>
+As mentioned in the last paragraph, GIMPS uses floating point FFTs written in 
+highly pipelined, cache friendly assembly language. Since floating point 
+computations are inexact, after every iteration the floating point values are 
+rounded back to integers. The discrepancy between the proper integer result and 
+the actual floating point result is called the convolution error. If the 
+convolution error ever exceeds 0.5 then the rounding step will produce incorrect 
+results - meaning a larger FFT should have been used. One of GIMPS' error checks 
+is to make sure the maximum convolution error does not exceed 0.4. 
+Unfortunately, this error check is fairly expensive and is not done on every 
+squaring. There is another error check that is fairly cheap. One property of FFT 
+squaring is that: <br>
+<br>
+(sum of the input FFT values)<sup>2</sup> = (sum of the output IFFT values)<br>
+<br>
+Since we are using floating point numbers we must change the &quot;equals sign&quot; above 
+to &quot;approximately equals&quot;. If the two values differ by a substantial amount, 
+then you get a SUMINP != SUMOUT error as described in the readme.txt file. If 
+the sum of the input FFT values is an illegal floating point value such as 
+infinity, then you get an ILLEGAL SUMOUT error. Unfortunately, these error 
+checks cannot catch all errors, which brings us to our next section. <br>
+What are the chances that the Lucas-Lehmer test will find a new Mersenne prime 
+number? A simple approach is to repeatedly apply the observation that the chance 
+of finding a factor between 2<sup>X</sup> and 2<sup>X+1</sup> is about 1/x. For example, you are 
+testing 2<sup>10000139</sup>-1 for which trial factoring has proved there are no factors 
+less than 2<sup>64</sup>. The chance that it is prime is the chance of no 65-bit factor * 
+chance of no 66 bit factor * ... * chance of no 5000070 bit factor. That is: <br>
+<br>
+<blockquote>
+<u>64</u>&nbsp; <sub>*</sub>&nbsp; <u>65</u>&nbsp; <sub>*</sub> <sub>....</sub>
+<sub>*</sub>&nbsp; <u>5000069</u><br>
+65&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5000070<br>
+</blockquote>
+<br>
+This simplifies to 64 / 5000070 or 1 in 78126. This simple approach isn't quite 
+right. It would give a formula of how_far_factored divided by (exponent divided 
+by 2). However, more rigorous work has shown the formula to be 
+(how_far_factored-1) / (exponent times 
+<a href="http://primes.utm.edu/glossary/page.php?sort=Gamma">Euler's constant</a> (0.577...)). In this 
+case, 1 in 91623. Even these 
+<a href="http://www.utm.edu/research/primes/notes/faq/NextMersenne.html">more 
+rigorous formulas</a> are unproven.</p>
+
+</p>
+
+
+
+</body>
+
+</html>

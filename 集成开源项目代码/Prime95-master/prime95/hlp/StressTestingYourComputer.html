@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<title>Stress Testing Your Computer</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>How to Use Prime95: Stress Testing Your Computer</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>STRESS TESTING YOUR COMPUTER</h1>
+<h2>Background</h2>
+<p>Today&#39;s computers are not perfect. Even brand new systems from major manufacturers 
+can have hidden flaws. If any of several key components such as CPU, memory, cooling, 
+etc. are not up to spec, it can lead to incorrect calculations and/or unexplained 
+system crashes. </p>
+<p>Overclocking is the practice of increasing the speed of the CPU and/or memory 
+to make a machine faster at little cost. Typically, overclocking involves pushing 
+a machine past its limits and then backing off just a little bit. </p>
+<p>For these reasons, both non-overclockers and overclockers need programs that 
+test the stability of their computers. This is done by running programs that put 
+a heavy load on the computer. Though not originally designed for this purpose, this 
+program is one of a few programs that are excellent at stress testing a computer.
+</p>
+<h2>Resourses</h2>
+This program is a good stress test for the CPU, memory, L1 and L2 caches, CPU cooling, 
+and case cooling. The torture test runs continuously, comparing your computer&#39;s 
+results to results that are known to be correct. Any mismatch and you&#39;ve got a problem! 
+Note that the torture test sometimes reads from and writes to disk but cannot be 
+considered a stress test for hard drives.
+<p>You&#39;ll need other programs to stress video cards, PCI bus, disk access, networking 
+and other important components. In addition, this is only one of several good programs 
+that are freely available. Some people report finding problems only when running 
+two or more stress test programs concurrently. You may need to raise prime95&#39;s priority 
+when running two stress test programs so that each gets about 50% of the CPU time.
+</p>
+<p>Forums are a great place to learn about available stability test programs and 
+to get advice on what to do when a problem is found. </p>
+<p>The currently popular stability test programs are (sorry, I don&#39;t have web addresses 
+for these): </p>
+<blockquote>
+  Prime95 (this program&#39;s torture test)<br>
+  3DMark2001<br>
+  CPU Stability test Sisoft sandra<br>
+  Quake and other games<br>
+  <a target="_blank" href="http://folding.stanford.edu/">Folding@Home</a><br>
+  <a href="http://setiathome.ssl.berkeley.edu/" target="_blank">Seti@home</a><br>
+  <a target="_blank" href="http://genomeathome.stanford.edu/">Genome@home</a></blockquote>
+<p>Several useful websites for help (look for overclocking community or forum):
+</p>
+<blockquote>
+  <a href="http://www.overclockers.com" target="_blank">http://www.overclockers.com</a><br>
+  <a href="http://www.arstechnica.com" target="_blank">http://www.arstechnica.com</a><br>
+  <a href="http://www.hardocp.com" target="_blank">http://www.hardocp.com</a><br>
+  <a href="http://www.anandtech.com" target="_blank">http://www.anandtech.com</a><br>
+  <a href="http://www.tomshardware.com" target="_blank">http://www.tomshardware.com</a><br>
+  <a href="http://www.sharkyextreme.com" target="_blank">http://www.sharkyextreme.com</a><br>
+  Also try the alt.comp.hardware.overclocking Usenet newsgroup.
+</blockquote>
+<p></p>
+<p>Utility programs you may find useful (I&#39;m sure there are others - look around):
+</p>
+<blockquote>
+  Motherboard monitor from <a href="http://mbm.livewiredev.com" target="_blank">
+  http://mbm.livewiredev.com</a><br>
+  Memtest86 from <a href="http://www.memtest86.com" target="_blank">http://www.memtest86.com</a><br>
+  TaskInfo2002 from <a href="http://www.iarsn.com/" target="_blank">http://www.iarsn.com/</a></blockquote>
+<h2>What to do if a Problem Found?</h2>
+The exact cause of a hardware problem can be very hard to find.
+<p>If you are not overclocking, the most likely cause is an overheating CPU or memory 
+DIMMs that are not quite up to spec. Another possibility is you might need a better 
+power supply. Try running MotherBoard monitor and browse the forums above to see 
+if your CPU is running too hot. If so, make sure the heat sink is properly attached, 
+fans are operational, and air flow inside the case is good. For isolating memory 
+problems, try swapping memory DIMMs with a co-worker&#39;s or friend&#39;s machine. If the 
+errors go away, then you can be fairly confidant that memory was the cause of the 
+trouble. A power supply problem can often be identified by a significant drop in 
+the voltages when prime95 starts running. Once again the overclocker forums are 
+a good resource for what voltages are acceptable.</p>
+<p>If you are overclocking then try increasing the core voltage, reduce the CPU 
+speed, reduce the front side bus speed, or change the memory timings (CAS latency). 
+Also try asking for help in one of the forums above - they may have other ideas 
+to try.</p>
+<h2>Can I Ignore the Problem?</h2>
+Ignoring the problem is a matter of personal preference. There are two schools of 
+thought on this subject.
+<p>Most programs you run will not stress your computer enough to cause a wrong result 
+or system crash. If you ignore the problem, then video games may stress your machine 
+resulting in a system crash. Also, stay away from distributed computing projects 
+where an incorrect calculation might cause you to return wrong results. Bad data 
+will not help these projects! In conclusion, if you are comfortable with a small 
+risk of an occasional system crash then feel free to live a little dangerously! 
+Keep in mind that the faster prime95 finds a hardware error the more likely it is 
+that other programs will experience problems. </p>
+<p>The second school of thought is, &quot;Why run a stress test if you are going to ignore 
+the results?&quot; These people want a guaranteed 100% rock solid machine. Passing these 
+stability tests gives them the ability to run CPU intensive programs with confidence.
+</p>
+<h2>Frequently Asked Questions</h2>
+Q) My machine is not overclocked. If I&#39;m getting an error, then there must be a 
+bug in the program, right? A) The torture test is comparing your machines results 
+against <b>KNOWN CORRECT RESULTS</b>. If your machine cannot generate correct results, 
+you have a hardware problem. <b>HOWEVER</b>, if you are failing the torture test 
+in the <b>SAME SPOT</b> with the <b>SAME ERROR MESSAGE</b> every time, then ask 
+for help at <a href="http://mersenneforum.org" target="_blank">http://mersenneforum.org</a> 
+- it is possible that a recent change to the torture test code may have introduced 
+a software bug.<p>Q) How long should I run the torture test? </p>
+A) I recommend running it for somewhere between 6 and 24 hours. The program has 
+been known to fail only after several hours and in some cases several weeks of operation. 
+In most cases though, it will fail within a few minutes on a flaky machine.
+<p>Q) Prime95 reports errors during the torture test, but other stability tests 
+don&#39;t. Do I have a problem? </p>
+A) Yes, you&#39;ve reached the point where your machine has been pushed just beyond 
+its limits. Follow the recommendations above to make your machine 100% stable or 
+decide to live with a machine that could have problems in rare circumstances.
+<p>Q) A forum member said &quot;Don&#39;t bother with prime95, it always pukes on me, and 
+my system is stable!. What do you make of that?&quot; or &quot;We had a server at work that 
+ran for <b>2 MONTHS</b> straight, without a reboot I installed Prime95 on it and 
+ran it - a couple minutes later I get an error. You are going to tell me that the 
+server wasn&#39;t stable?&quot; </p>
+A) These users obviously do not subscribe to the 100% rock solid school of thought.
+<b>THEIR MACHINES DO HAVE HARDWARE PROBLEMS</b>. But since they are not presently 
+running any programs that reveal the hardware problem, the machines are quite stable. 
+As long as these machines never run a program that uncovers the hardware problem, 
+then the machines will continue to be stable.<p></p>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+<Solution>
+  <Project Path="验机软件/验机软件.csproj" />
+  <!-- 插件契约（宿主与插件共用类型） -->
+  <Project Path="PluginSdk/YanJi.PluginSdk.csproj" />
+  <!-- 验机模块插件（宿主构建时经 BuildPlugins 构建并拷到输出 plugins/<id>/） -->
+  <Project Path="Plugins/ConfigCheck/YanJi.Plugin.ConfigCheck.csproj" />
+  <Project Path="Plugins/KeyboardTest/YanJi.Plugin.KeyboardTest.csproj" />
+  <Project Path="Plugins/ScreenDeadPixel/YanJi.Plugin.ScreenDeadPixel.csproj" />
+  <Project Path="Plugins/AvConference/YanJi.Plugin.AvConference.csproj" />
+  <Project Path="Plugins/StressTest/YanJi.Plugin.StressTest.csproj" />
+  <!-- GPU 烤机工具（C# / OpenTK 重实现 FurMark-Python，MIT）：构建后自动拷到 验机软件/Tools/furmark/ -->
+  <Project Path="FurMark/FurMark.csproj" />
+  <!-- 开源采集库源码（MPL-2.0），配置核对/散热测试插件以项目引用使用。
+       平台映射：CsWin32 部分 API 只在指定架构生成，AnyCPU 解决方案平台下固定按 x64 构建 -->
+  <Project Path="集成开源项目代码/LibreHardwareMonitor-master/LibreHardwareMonitorLib/LibreHardwareMonitorLib.csproj">
+    <Platform Solution="*|AnyCPU" Project="x64" />
+  </Project>
+</Solution>

@@ -1,0 +1,113 @@
+
+<head>
+<title>General Notes</title>
+<link rel="stylesheet" type="text/css" href="backsdk4.css">
+</head>
+
+<body TOPMARGIN="0">
+
+<table CLASS="buttonbarshade" CELLSPACING="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table CLASS="buttonbartable" CELLSPACING="0">
+  <tr ID="hdr">
+    <td CLASS="runninghead" NOWRAP>Getting Started: General Notes</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h1>NOTES</h1>
+Running prime95 may significantly increase your electric bill.  The amount
+depends on your computer and your local electric rates. <br>
+<br>
+It can take many CPU days to test a large Mersenne number. This program can be safely 
+interrupted by using the ESC key to write intermediate results to disk. This program 
+also saves intermediate results to disk every 30 minutes in case there is a power 
+failure.<br>
+<br>
+To fully utilize a dual processor machine, you must run two copies of prime95.exe. 
+Run one copy of prime95 as described above. Run the second copy of prime95.exe with 
+the -A1 command line argument. Make sure the second copy also has the &quot;<a href="OptionsMenuWin95.html">Start 
+at Bootup</a>&quot; option set.<br>
+<br>
+Dual processor machines can also improve performance by setting processor affinity 
+in Windows NT. Use the Advanced/Affinity dialog box to do this.<br>
+<br>
+<br>
+<img border="0" src="images/AffinityDlg.png" width="338" height="190"><br>
+<br>
+<br>
+You can compare your computer&#39;s speed with other users by checking the site
+<a href="http://www.mersenne.org/bench.htm">http://www.mersenne.org/bench.htm</a>. 
+If you are much slower than comparable machines, there are several utilities available 
+(such as TaskInfo2002, <a href="http://www.iarsn.com/">http://www.iarsn.com/</a>) 
+that can find programs that are stealing prime95&#39;s CPU cycles.<br>
+<br>
+You can get a report of your <a href="http://mersenne.org/primenet/status.shtml">
+PrimeNet</a> server account status on the web (<a href="http://mersenne.org/primenet/status.shtml">http://mersenne.org/primenet/status.shtml</a>). 
+Type your UserID and password into the web form, and click &quot;Get Account Report&quot;. 
+You can get your UserID and password from the Test/User Information dialog box.<br>
+<br>
+Information about running a local
+<a href="http://mersenne.org/primenet/status.shtml">PrimeNet</a> server is also 
+available. See <a href="http://mersenne.org/primenet/status.shtml">http://mersenne.org/primenet/status.shtml</a>. 
+If you have any questions about the
+<a href="http://mersenne.org/primenet/status.shtml">PrimeNet</a> server, you can 
+send e-mail to <a href="mailto:primenet@mersenne.org">primenet@mersenne.org</a> 
+or visit <a href="http://www.mersenneforum.org" target="_blank">http://www.mersenneforum.org</a> 
+for more information.<br>
+<br>
+The first time you run this program it will perform an hour long self-test to make 
+sure the <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> code is running properly 
+on your system. If this self-test is interrupted, the full self-test will be run 
+when you restart prime95. <br>
+<br>
+If you have overclocked your machine, I recommend running the torture test for a 
+couple of days. The longer you run the torture test the greater the chance that 
+you will uncover an error caused by overheating.<br>
+<br>
+Depending on the exponent being tested, the program may decide that it would be 
+wise to invest some time checking for small factors before running a
+<a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test. Furthermore, the program 
+may start factoring exponents before a previous
+<a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> test completes. This is normal! 
+The program will resume the <a href="Lucas-LehmerDetails.html">Lucas-Lehmer</a> 
+test when the factoring completes.<br>
+<br>
+You can configure this program to have different properties at different times of 
+the day and/or to not run during certain times of the day. Unfortunately, you must 
+manual edit the <a href="FileList.html">prime.ini</a> file. Let&#39;s say you want to 
+install the program on a friend&#39;s machine and he runs a screen saver at night. He 
+also runs a disk defragmenter at midnight on weekdays. This
+<a href="FileList.html">prime.ini</a> file will run the program at a higher priority 
+than his screen saver at night and on weekends. It also sleeps for an hour when 
+his defragmenter starts running. Finally, at night fewer save files are generated 
+to allow his disk to stay powered down longer.<br>
+<br>
+<br>
+<blockquote>
+  UserID=foo<br>
+  Other prime.ini entries<br>
+  Time=1-5/8:30-17:30<br>
+  Priority=1<br>
+  DiskWriteTime=30<br>
+  Time=1-5/1:00-8:30,1-5/17:30-24:00,6-7/0:00-24:00<br>
+  Priority=5<br>
+  DiskWriteTime=240<br>
+</blockquote>
+<br>
+<br>
+The 1-5 refers to days of the week, with Monday=1 and Sunday=7. The time portion 
+refers to the hours of the day based on a 24-hour clock. You do not need to specify 
+days of the week (e.g. Time=1-7/0:00-8:00 is the same as Time=0:00-8:00). Unpredictable 
+results will occur if there are overlapping time intervals. Also note that any options 
+that appear in the Time= sections should not appear earlier in the
+<a href="FileList.html">prime.ini</a> file and you can no longer edit these options 
+from the user interface.<br>
+<br>
+&nbsp;
+
+</body>
+
+</html>

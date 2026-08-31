@@ -1,0 +1,9 @@
+{
+  "id": "stress",
+  "name": "散热测试",
+  "version": "1.0.0",
+  "order": 50,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.StressTest.dll",
+  "entryType": "YanJi.Plugin.StressTest.StressTestPlugin"
+}

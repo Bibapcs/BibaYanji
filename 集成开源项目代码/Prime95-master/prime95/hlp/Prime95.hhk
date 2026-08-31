@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="GIMPS">
+		<param name="Name" value="Welcome to GIMPS!">
+		<param name="Local" value="Welcome.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Mersenne Primes">
+		<param name="Name" value="What Are Mersenne Primes and Why Do We Search for Them?">
+		<param name="Local" value="WhatAreMersennePrimes.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="PrimeNet">
+		<param name="Name" value="How Gimps Works">
+		<param name="Local" value="HowGIMPSWorks.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="End User License Agreement">
+		<param name="Name" value="End User License Agreement">
+		<param name="Local" value="EndUser.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Cash Awards for New Mersenne Primes">
+		<param name="Name" value="Cash Awards for New Mersenne Primes">
+		<param name="Local" value="CashAwards.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Disclaimer">
+		<param name="Name" value="Disclaimer">
+		<param name="Local" value="Disclaimer.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Manual Instructions">
+		<param name="Name" value="Instructions for Manual Method">
+		<param name="Local" value="InstructionsManual.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Automatic Instructions">
+		<param name="Name" value="Instructions for Automatic Method">
+		<param name="Local" value="InstructionsAutomatic.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="General Notes">
+		<param name="Name" value="General Notes">
+		<param name="Local" value="Notes.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Proxy Server">
+		<param name="Name" value="Proxy Server">
+		<param name="Local" value="Proxy.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Menus">
+		<param name="Name" value="Advanced Menu">
+		<param name="Local" value="AdvancedMenu.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Start at Bootup">
+			<param name="Name" value="OptionsMenuWin95">
+			<param name="Local" value="OptionsMenuWin95.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Unreserve Exponent">
+			<param name="Name" value="AdvancedMenuUnreserve">
+			<param name="Local" value="AdvancedMenuUnreserve.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Choosing CPU">
+			<param name="Name" value="OptionsMenuCPU">
+			<param name="Local" value="OptionsMenuCPU.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Continue">
+			<param name="Name" value="TestMenuContinue">
+			<param name="Local" value="TestMenuContinue.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ECM">
+			<param name="Name" value="AdvancedMenuECM">
+			<param name="Local" value="AdvancedMenuECM.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Manual Communication">
+			<param name="Name" value="AdvancedMenuManual">
+			<param name="Local" value="AdvancedMenuManual.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="No Icon">
+			<param name="Name" value="OptionsMenuTrayIcon">
+			<param name="Local" value="OptionsMenuTrayIcon.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="P-1">
+			<param name="Name" value="AdvancedMenuP1">
+			<param name="Local" value="AdvancedMenuP1.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Preferences">
+			<param name="Name" value="OptionsMenuPreferences">
+			<param name="Local" value="OptionsMenuPreferences.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="PrimeNet">
+			<param name="Name" value="TestMenuPrimeNet">
+			<param name="Local" value="TestMenuPrimeNet.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Priority">
+			<param name="Name" value="AdvancedMenuPriority">
+			<param name="Local" value="AdvancedMenuPriority.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Quit GIMPS">
+			<param name="Name" value="AdvancedMenuQuit">
+			<param name="Local" value="AdvancedMenuQuit.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Round off checking">
+			<param name="Name" value="AdvancedMenuRoundoff">
+			<param name="Local" value="AdvancedMenuRoundoff.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Benchmark">
+			<param name="Name" value="OptionsMenuBenchmark">
+			<param name="Local" value="OptionsMenuBenchmark.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Status">
+			<param name="Name" value="TestMenuStatus">
+			<param name="Local" value="TestMenuStatus.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stop">
+			<param name="Name" value="TestMenuStop">
+			<param name="Local" value="TestMenuStop.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Test">
+			<param name="Name" value="AdvancedMenuTest">
+			<param name="Local" value="AdvancedMenuTest.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Torture Test">
+			<param name="Name" value="OptionsMenuTortureTest">
+			<param name="Local" value="OptionsMenuTortureTest.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tray Icon">
+			<param name="Name" value="OptionsMenuTrayIcon">
+			<param name="Local" value="OptionsMenuTrayIcon.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Time">
+			<param name="Name" value="AdvancedMenuTime">
+			<param name="Local" value="AdvancedMenuTime.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="User Information">
+			<param name="Name" value="TestMenuUserInfo">
+			<param name="Local" value="TestMenuUserInfo.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Vacation/Holiday">
+			<param name="Name" value="TestMenuVacation">
+			<param name="Local" value="TestMenuVacation.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Files">
+		<param name="Name" value="File List">
+		<param name="Local" value="FileList.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Readme">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="prime.ini">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="local.ini">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="worktodo.ini">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="results.txt">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="prime.log">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="prime.spl">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="pNNNNNNN">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="qNNNNNNN">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="mNNNNNNN">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Prime95">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="whatsnew.txt">
+			<param name="Name" value="File List">
+			<param name="Local" value="FileList.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="What's New">
+		<param name="Name" value="New Features in Version 23 of Prime95">
+		<param name="Local" value="NewFeaturesInVersion_23.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 8.x">
+			<param name="Name" value="New Features in Version 8 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_8.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 10.x">
+			<param name="Name" value="New Features in Version 10 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_10.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 12.x">
+			<param name="Name" value="New Features in Version 12 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_12.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 13.x">
+			<param name="Name" value="New Features in Version 13 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_13.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 14.x">
+			<param name="Name" value="New Features in Version 14 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_14.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 15.x">
+			<param name="Name" value="New Features in Version 15 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_15.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 16.x">
+			<param name="Name" value="New Features in Version 16 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_16.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 17.x">
+			<param name="Name" value="New Features in Version 17 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_17.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 18.x">
+			<param name="Name" value="New Features in Version 18 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_18.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 19.x">
+			<param name="Name" value="New Features in Version 19 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_19.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 20.x">
+			<param name="Name" value="New Features in Version 20 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_20.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 21.x">
+			<param name="Name" value="New Features in Version 21 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_21.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 22.x">
+			<param name="Name" value="New Features in Version 22 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_22.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 23.x">
+			<param name="Name" value="New features in Version 23 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_23.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Version 24.x">
+			<param name="Name" value="New features in Version 24 of Prime95">
+			<param name="Local" value="NewFeaturesInVersion_24.html">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>
