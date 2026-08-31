@@ -67,7 +67,7 @@ Inno Setup 打包的中文安装向导（约 100 MB，lzma2 压缩）：安装�
 
 ### 方式二：便携包 `publish\`
 
-整目录拷走即用（约 350 MB）。复现（两步缺一不可，详见项目交接文档）：
+整目录拷走即用（约 350 MB）。复现（两条 publish 命令缺一不可，详见 AGENTS.md「构建 / 运行 / 发布」）：
 
 ```
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
@@ -89,7 +89,7 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 | [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | 硬件信息采集库（源码项目引用 `集成开源项目代码/LibreHardwareMonitor-master/LibreHardwareMonitorLib`） | MPL-2.0 |
 | [CrystalDiskInfo](https://crystalmark.info/) | 硬盘信息采集的实现参考（C++/MFC 无法直接引用，其思路经由 LibreHardwareMonitorLib 的 DiskInfoToolkit Storage 支持落地） | MIT |
 | [NAudio](https://github.com/naudio/NAudio) 2.2.1 | 麦克风/扬声器（WASAPI 设备枚举、电平监听、录制、播放） | Ms-PL |
-| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（ torture test）。由本项目用 VS18/MSBuild 按其公开源码编译（`prime95-build/` 叠加工程，见项目交接文档），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
+| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（ torture test）。由本项目用 VS18/MSBuild 按其公开源码编译（`prime95-build/` 叠加工程，详见 AGENTS.md），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
 | [FurMark（Python 版）](https://github.com/StanislavPetrovV/FurMark)（StanislavPetrovV） | GPU 烤机的渲染原型：本项目的 GPU 烤机为其 C# / OpenTK 重实现（`FurMark/` 工程），原 GLSL 着色器与贴图随附其许可文件（Assets/LICENSE.FurMark.txt） | MIT |
 | [OpenTK](https://opentk.net/) 4.x | FurMark 重实现的 OpenGL 窗口（GLFW）与绑定 | MIT |
 | [StbImageSharp](https://github.com/StbSharp/StbImageSharp) | FurMark 重实现的贴图解码（stb_image 的 C# 移植） | 公有领域 |
