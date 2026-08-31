@@ -11,7 +11,7 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
     <AssemblyName>验机软件</AssemblyName>
     <RootNamespace>YanJi</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>0.0.1</Version>
     <Product>笔记本电脑验机</Product>
     <Description>笔吧验机：主程序外壳 + plugins/ 插件模块（配置核对/键盘测试/屏幕坏点/影音会议/散热测试/验机结束）</Description>
   </PropertyGroup>

@@ -9,7 +9,7 @@ Windows 桌面验机工具（WPF，net10.0-windows10.0.19041.0，.NET SDK 10.0.4
 
 硬性约束：开源软件，**禁止集成闭源商业软件**（如 HWiNFO）。硬件采集只用
 LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表 / Win32 API）。
-硬件采集的实现要点与已知坑见本文档「已知坑」一节与各模块源码注释（采集相关代码改动前先通读）。
+详细工程背景与硬件采集的坑见 `项目交接文档.md`（先通读再动采集相关代码）。
 
 ## 目录结构
 
@@ -55,7 +55,7 @@ dotnet run --project 验机软件       # 运行（exe 是 requireAdministrator�
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
-# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v1.0.3.exe）
+# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.1.exe）
 "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 
@@ -196,7 +196,7 @@ public interface IHostContext                       // 宿主注入 CreatePage
 ## 修改守则
 
 - 最小改动；新代码风格对齐周边（注释密度、命名、UserControl+code-behind、无第三方 UI 库）。
-- 改采集逻辑前先读对应服务源码的注释（EDID/SMART/色域/LHM 降级矩阵都有实测结论写在注释里）。
+- 改采集逻辑前先读 `项目交接文档.md` 第三节的坑（EDID/SMART/色域/LHM 降级矩阵都有实测结论）。
 - 试音曲署名（AvConference 页面）是用户给定原文，不得改动。
 - 临时探针工程（.ui-probe 等）用完即删；LHM 上游源码不要批量转码/改动。
 - 改了本文件描述的机制（目录、契约、构建链路、安装组件）时同步更新本文件。
