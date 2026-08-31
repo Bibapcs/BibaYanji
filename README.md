@@ -52,33 +52,30 @@ dotnet run --project 验机软件
 > 说明：LibreHardwareMonitorLib 以其上游要求固定按 x64 平台构建（解决方案已配置平台映射，
 > 请勿改回 AnyCPU，否则其 CsWin32 源生成器会跳过部分 API 导致编译失败）。
 
-## 部署
+## 安装
 
-目标机无需安装 .NET 运行时（self-contained win-x64，不裁剪不 AOT）。两种方式：
+**直接下载**：到 [Releases](https://github.com/Bibapcs/BibaYanji/releases) 下载最新安装包
+（当前 v0.0.1：`BibaYanjiSetup-v0.0.1.exe`，约 110 MB，Inno Setup 中文向导）：
 
-### 方式一（推荐）：安装向导 `installer\笔吧验机Setup-v1.0.2.exe`
+- 安装到 `C:\Program Files\BibaInspection`；「自定义安装」可**按模块勾选**要装的验机插件
+  （不勾「散热测试」可省约 130 MB 烤机工具负载）
+- 可选「创建桌面快捷方式」「创建开始菜单项」（默认都勾）
+- 装完从桌面/开始菜单启动（**需管理员**：程序 manifest 会弹一次 UAC，硬盘 SMART 与部分传感器需要）
+- 卸载走系统「应用与功能」或开始菜单卸载项，只删安装目录与快捷方式，不碰用户设置（%APPDATA%\YanJi）
+- 目标机**无需安装 .NET 运行时**（self-contained win-x64）
 
-Inno Setup 打包的中文安装向导（约 100 MB，lzma2 压缩）：安装到 `C:\Program Files\笔吧验机`，
-**「自定义安装」可按模块勾选要装的验机插件**（不勾「散热测试」可省约 130 MB 烤机工具），
-可选「创建桌面快捷方式」「创建开始菜单项」（默认都勾）。装完从桌面/开始菜单启动
-（**需管理员**：程序 manifest 会弹 UAC）。卸载走系统「应用与功能」或开始菜单里的卸载项，
-只删安装目录与快捷方式，不碰用户设置。
-复现构建（先出 publish 再打包）：`"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss`。
-
-### 方式二：便携包 `publish\`
-
-整目录拷走即用（约 350 MB）。复现（两步缺一不可，详见项目交接文档）：
+**自行构建安装包**（先出 publish 再打 Inno 包，顺序不可换）：
 
 ```
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
+"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.1.exe
 ```
 
-两种方式的内容一致：`验机软件.exe`（**需以管理员身份运行**，启动弹 UAC）、
-`YanJi.PluginSdk.dll`（插件契约）、`plugins\`（五个验机模块插件，试音曲 mp3 在 `plugins\av\`）、
-`Tools\prime95\`（CPU 烤机）、`Tools\furmark\`（GPU 烤机）、
-`Tools\pawnio\PawnIO_setup.exe`（PawnIO 驱动官方签名安装器——**不装也能跑**，
-只是散热测试页 CPU 温度/功耗两路不可用，页面有一键安装按钮，用户点击后才装，装完无需重启）。
+安装包内容：`验机软件.exe` + 全套自包含运行时 + `YanJi.PluginSdk.dll`（插件契约）+
+`plugins\`（五个验机模块插件，试音曲 mp3 在 `pluginsv\`）+ `Tools\prime95\`（CPU 烤机）+
+`Toolsurmark\`（GPU 烤机）+ `Tools\pawnio\PawnIO_setup.exe`（PawnIO 驱动官方签名安装器——
+**不装也能跑**，只是散热测试页 CPU 温度/功耗两路不可用，页面有一键安装按钮，用户点击后才装，装完无需重启）。
 
 ## 开源组件与协议（致谢）
 
@@ -89,7 +86,7 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 | [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | 硬件信息采集库（源码项目引用 `集成开源项目代码/LibreHardwareMonitor-master/LibreHardwareMonitorLib`） | MPL-2.0 |
 | [CrystalDiskInfo](https://crystalmark.info/) | 硬盘信息采集的实现参考（C++/MFC 无法直接引用，其思路经由 LibreHardwareMonitorLib 的 DiskInfoToolkit Storage 支持落地） | MIT |
 | [NAudio](https://github.com/naudio/NAudio) 2.2.1 | 麦克风/扬声器（WASAPI 设备枚举、电平监听、录制、播放） | Ms-PL |
-| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（ torture test）。由本项目用 VS18/MSBuild 按其公开源码编译（`prime95-build/` 叠加工程，见项目交接文档），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
+| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（ torture test）。由本项目用 VS18/MSBuild 按其公开源码编译（`prime95-build/` 叠加工程，见 AGENTS.md），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
 | [FurMark（Python 版）](https://github.com/StanislavPetrovV/FurMark)（StanislavPetrovV） | GPU 烤机的渲染原型：本项目的 GPU 烤机为其 C# / OpenTK 重实现（`FurMark/` 工程），原 GLSL 着色器与贴图随附其许可文件（Assets/LICENSE.FurMark.txt） | MIT |
 | [OpenTK](https://opentk.net/) 4.x | FurMark 重实现的 OpenGL 窗口（GLFW）与绑定 | MIT |
 | [StbImageSharp](https://github.com/StbSharp/StbImageSharp) | FurMark 重实现的贴图解码（stb_image 的 C# 移植） | 公有领域 |
