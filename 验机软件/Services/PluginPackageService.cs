@@ -5,12 +5,85 @@ using System.Text.RegularExpressions;
 
 namespace YanJi.Services;
 
-/// <summary>插件包（zip）导入与删除。插件目录 = exe 同级 plugins/&lt;id&gt;/；增删均重启后生效
-/// （运行时不卸载程序集）。</summary>
+/// <summary>插件包（zip）导入与删除。插件目录 = exe 同级 plugins/&lt;id&gt;/。
+/// 生效时机：新插件导入后宿主帅即加载（无需重启）；删除/覆盖安装已加载的插件时，
+/// 其 dll 被默认加载上下文锁定（运行时不卸载程序集），走「待处理操作」——写入
+/// %APPDATA%\YanJi\plugin-ops.json，自动重启后在插件加载前统一执行（此时无文件锁）。</summary>
 public static class PluginPackageService
 {
     /// <summary>插件 id 合法性（同时是目录名）：小写字母/数字/短横线/下划线，防路径穿越。</summary>
     public static bool IsValidId(string id) => Regex.IsMatch(id, @"^[a-z0-9_-]{1,32}$");
+
+    // ═══ 待处理操作（删除/覆盖已加载插件时排队，下次启动在加载前执行） ═══
+
+    public record PendingOp(string Action, string Id, string? ZipPath);
+
+    static string OpsFile => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "YanJi", "plugin-ops.json");
+
+    /// <summary>排队一个待处理操作（delete / import）。</summary>
+    public static void QueuePendingOp(string action, string id, string? zipPath = null)
+    {
+        var ops = ReadOps();
+        ops.RemoveAll(o => o.Action == action && o.Id == id); // 同 id 同动作去重（后排队者覆盖）
+        ops.Add(new PendingOp(action, id, zipPath));
+        WriteOps(ops);
+    }
+
+    /// <summary>启动时（插件加载前）执行全部待处理操作，然后清空队列。</summary>
+    public static void ProcessPendingOps()
+    {
+        var ops = ReadOps();
+        if (ops.Count == 0) return;
+        foreach (var op in ops)
+        {
+            try
+            {
+                if (op.Action == "delete")
+                    Delete(op.Id);
+                else if (op.Action == "import" && op.ZipPath != null && File.Exists(op.ZipPath))
+                    ImportZip(op.ZipPath);
+            }
+            catch (Exception ex)
+            {
+                PluginLoader.Log($"待处理插件操作失败（{op.Action} {op.Id}）：{ex.Message}");
+            }
+            finally
+            {
+                // 导入用的暂存 zip 用完即删
+                if (op.Action == "import" && op.ZipPath != null)
+                    try { File.Delete(op.ZipPath); } catch { }
+            }
+        }
+        try { File.Delete(OpsFile); } catch { /* 下次启动重试 */ }
+    }
+
+    /// <summary>覆盖导入已加载插件用的暂存：把 zip 拷到 %APPDATA%\YanJi\pending-imports\，返回暂存路径。</summary>
+    public static string StageZipForPendingImport(string id, string zipPath)
+    {
+        string dir = Path.Combine(Path.GetDirectoryName(OpsFile)!, "pending-imports");
+        Directory.CreateDirectory(dir);
+        string staged = Path.Combine(dir, id + ".zip");
+        File.Copy(zipPath, staged, overwrite: true);
+        return staged;
+    }
+
+    static List<PendingOp> ReadOps()
+    {
+        try
+        {
+            if (File.Exists(OpsFile))
+                return JsonSerializer.Deserialize<List<PendingOp>>(File.ReadAllText(OpsFile), PluginLoader.JsonOptions) ?? [];
+        }
+        catch { /* 损坏则视为空 */ }
+        return [];
+    }
+
+    static void WriteOps(List<PendingOp> ops)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(OpsFile)!);
+        File.WriteAllText(OpsFile, JsonSerializer.Serialize(ops));
+    }
 
     /// <summary>从 zip 插件包导入插件，返回清单。包结构：plugin.json 在 zip 根或唯一一层包裹目录下。
     /// 同 id 已存在时覆盖（先删旧目录）。校验失败抛 InvalidDataException（消息可直接给用户看）。</summary>

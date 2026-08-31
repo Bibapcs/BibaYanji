@@ -7,19 +7,26 @@ using YanJi.Services;
 
 namespace YanJi.Views;
 
-/// <summary>插件管理窗口：列出 plugins/ 下已安装插件（名称/ID/版本/路径 + 该模块的开源致谢），
-/// 支持删除与导入 zip 插件包。增删都在磁盘上操作 plugins/ 目录，重启程序后由 PluginLoader 重新扫描生效。
+/// <summary>插件管理窗口：列出 plugins/ 下已安装插件（名称/版本/路径 + 该模块的组件致谢），
+/// 支持删除与导入 zip 插件包。
+/// 生效时机：新插件导入后宿主帅即加载（无需重启）；删除/覆盖安装已加载的插件时其 dll
+/// 被运行中的进程锁定，写入待处理操作队列并提示自动重启（下次启动在插件加载前执行）。
 /// 致谢来自各插件的 IYanJiPlugin.Credits（随模块走，模块删了其致谢也随之消失）。</summary>
 public partial class PluginManagerWindow : Window
 {
     readonly IReadOnlyList<LoadedPlugin> _loaded;
+    /// <summary>导入后即时加载回调（MainWindow.TryLoadPluginAtRuntime），返回是否加载成功。</summary>
+    readonly Func<string, bool> _loadPlugin;
 
-    public PluginManagerWindow(IReadOnlyList<LoadedPlugin> loaded)
+    public PluginManagerWindow(IReadOnlyList<LoadedPlugin> loaded, Func<string, bool> loadPlugin)
     {
         _loaded = loaded;
+        _loadPlugin = loadPlugin;
         InitializeComponent();
         Loaded += (_, _) => Reload();
     }
+
+    bool IsPluginLoaded(string id) => _loaded.Any(p => p.Info.Id == id);
 
     void Reload()
     {
@@ -48,13 +55,14 @@ public partial class PluginManagerWindow : Window
         var texts = new StackPanel();
         texts.Children.Add(name);
         texts.Children.Add(detail);
-        // 该模块的开源致谢（插件自带；加载失败的插件显示不出，仅影响展示）
+        // 该模块的组件致谢（插件自带；加载失败的插件显示不出，仅影响展示）。
+        // 注意措辞：其中可能含专有软件（如 Cinebench R23），所以叫「致谢」而非「开源致谢」。
         var credits = _loaded.FirstOrDefault(p => p.Info.Id == m.Id)?.Plugin.Credits;
         if (credits is { Count: > 0 })
         {
             var tb = new TextBlock
             {
-                Text = "开源致谢：" + string.Join("；", credits.Select(c => $"{c.Name}（{c.Usage}，{c.License}）")),
+                Text = "致谢：" + string.Join("；", credits.Select(c => $"{c.Name}（{c.Usage}，{c.License}）")),
                 TextWrapping = TextWrapping.Wrap, FontSize = 11, Margin = new Thickness(0, 4, 0, 0),
             };
             tb.SetResourceReference(TextBlock.ForegroundProperty, "TextSecondaryBrush");
@@ -63,7 +71,7 @@ public partial class PluginManagerWindow : Window
 
         var del = new Button { Content = "删除", Padding = new Thickness(12, 4, 12, 4),
             VerticalAlignment = VerticalAlignment.Center,
-            ToolTip = "删除该插件（重启程序后生效）" };
+            ToolTip = "删除该插件（正在运行的插件会自动重启程序完成删除）" };
         del.Click += (_, _) => OnDeleteClick(m);
 
         var grid = new Grid { Margin = new Thickness(10, 6, 10, 6) };
@@ -83,17 +91,29 @@ public partial class PluginManagerWindow : Window
 
     void OnDeleteClick(PluginManifest m)
     {
-        if (MessageBox.Show(this, $"确定删除插件「{m.Name}」吗？\n插件目录将被移除，重启程序后生效。",
+        if (MessageBox.Show(this, $"确定删除插件「{m.Name}」吗？",
                 "删除插件", MessageBoxButton.OKCancel, MessageBoxImage.Warning) != MessageBoxResult.OK)
             return;
-        try
+        if (IsPluginLoaded(m.Id))
         {
-            PluginPackageService.Delete(m.Id);
-            Reload();
+            // 运行中的插件 dll 被进程锁定，排队待删除并自动重启（启动时在插件加载前执行，无锁）
+            PluginPackageService.QueuePendingOp("delete", m.Id);
+            if (MessageBox.Show(this,
+                    $"「{m.Name}」正在运行中，删除将在程序重启后完成。\n是否立即重启？（选择「否」则下次启动时生效）",
+                    "删除需要重启", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                MainWindow.RestartApp();
         }
-        catch (Exception ex)
+        else
         {
-            MessageBox.Show(this, "删除失败：" + ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            try
+            {
+                PluginPackageService.Delete(m.Id); // 未加载（如损坏）的插件无锁，直接删
+                Reload();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "删除失败：" + ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
@@ -107,16 +127,35 @@ public partial class PluginManagerWindow : Window
         if (dlg.ShowDialog(this) != true) return;
         try
         {
-            // 同 id 已安装时先确认覆盖（ImportZip 的行为是覆盖安装）
-            string? conflictId = PeekId(dlg.FileName);
-            if (conflictId != null && Directory.Exists(Path.Combine(PluginLoader.PluginsRoot, conflictId)) &&
-                MessageBox.Show(this, $"已存在同 ID 插件「{conflictId}」，导入将覆盖它。继续吗？",
+            string? peekId = PeekId(dlg.FileName);
+
+            // 覆盖正在运行的插件：文件被锁定无法直接替换，暂存 zip + 排队 + 提示自动重启
+            if (peekId != null && IsPluginLoaded(peekId))
+            {
+                if (MessageBox.Show(this, $"插件「{peekId}」正在运行中，覆盖安装将在程序重启后完成。\n是否继续并立即重启？（选择「否」取消导入）",
+                        "覆盖需要重启", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+                string staged = PluginPackageService.StageZipForPendingImport(peekId, dlg.FileName);
+                PluginPackageService.QueuePendingOp("import", peekId, staged);
+                MainWindow.RestartApp();
+                return;
+            }
+
+            // 同 id 已安装但未运行（如损坏）时先确认覆盖（ImportZip 的行为是覆盖安装）
+            if (peekId != null && Directory.Exists(Path.Combine(PluginLoader.PluginsRoot, peekId)) &&
+                MessageBox.Show(this, $"该插件已存在，导入将覆盖它。继续吗？",
                     "覆盖确认", MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK)
                 return;
+
             var m = PluginPackageService.ImportZip(dlg.FileName);
             Reload();
-            MessageBox.Show(this, $"插件「{m.Name}」导入成功。\n重启程序后出现在左侧导航。",
-                "导入成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            // 新插件（或此前未加载的插件）导入后立即加载，无需重启
+            if (_loadPlugin(m.Id))
+                MessageBox.Show(this, $"插件「{m.Name}」导入成功，已出现在左侧导航。",
+                    "导入成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show(this, $"插件「{m.Name}」导入成功。\n重启程序后出现在左侧导航。",
+                    "导入成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex) when (ex is InvalidDataException or IOException or UnauthorizedAccessException)
         {

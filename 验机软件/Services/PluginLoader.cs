@@ -46,30 +46,39 @@ public static class PluginLoader
         var result = new List<LoadedPlugin>();
         foreach (var (manifest, dir) in ScanInstalled())
         {
-            try
-            {
-                string asmPath = Path.Combine(dir, manifest.EntryAssembly);
-                if (!File.Exists(asmPath))
-                    throw new FileNotFoundException($"入口程序集不存在：{manifest.EntryAssembly}");
-                var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(asmPath);
-                var type = asm.GetType(manifest.EntryType, throwOnError: true)!;
-                if (Activator.CreateInstance(type) is not IYanJiPlugin plugin)
-                    throw new InvalidDataException($"{manifest.EntryType} 未实现 IYanJiPlugin");
-                result.Add(new LoadedPlugin
-                {
-                    Info = new PluginInfo(manifest.Id, manifest.Name, manifest.Version, manifest.Order, manifest.Terminal),
-                    Plugin = plugin,
-                    Page = plugin.CreatePage(host),
-                    Directory = dir,
-                });
-            }
-            catch (Exception ex)
-            {
-                Log($"插件加载失败（{dir}）：{ex.Message}");
-            }
+            var lp = LoadOne(manifest, dir, host);
+            if (lp != null) result.Add(lp);
         }
         result.Sort((a, b) => a.Info.Order.CompareTo(b.Info.Order));
         return result;
+    }
+
+    /// <summary>加载单个插件（启动批量与「导入后立即加载」共用）。失败写日志并返回 null。</summary>
+    public static LoadedPlugin? LoadOne(PluginManifest manifest, string dir, IHostContext host)
+    {
+        HookDependencyResolution();
+        try
+        {
+            string asmPath = Path.Combine(dir, manifest.EntryAssembly);
+            if (!File.Exists(asmPath))
+                throw new FileNotFoundException($"入口程序集不存在：{manifest.EntryAssembly}");
+            var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(asmPath);
+            var type = asm.GetType(manifest.EntryType, throwOnError: true)!;
+            if (Activator.CreateInstance(type) is not IYanJiPlugin plugin)
+                throw new InvalidDataException($"{manifest.EntryType} 未实现 IYanJiPlugin");
+            return new LoadedPlugin
+            {
+                Info = new PluginInfo(manifest.Id, manifest.Name, manifest.Version, manifest.Order, manifest.Terminal),
+                Plugin = plugin,
+                Page = plugin.CreatePage(host),
+                Directory = dir,
+            };
+        }
+        catch (Exception ex)
+        {
+            Log($"插件加载失败（{dir}）：{ex.Message}");
+            return null;
+        }
     }
 
     /// <summary>扫描 plugins/ 下所有带合法 plugin.json 的目录（不加载程序集，管理窗口与加载器共用）。</summary>

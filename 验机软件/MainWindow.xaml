@@ -20,7 +20,7 @@
                 <TextBlock Text="笔吧验机" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button Content="插件管理" Click="OnPluginManagerClick" Padding="12,4" Margin="0,0,12,0"
-                            ToolTip="查看/删除已安装模块插件，或导入 zip 插件包（增删插件重启后生效）"/>
+                            ToolTip="查看/删除已安装模块插件，或导入 zip 插件包（新插件导入即加载；删除/覆盖自动重启完成）"/>
                     <TextBlock Text="☀" FontSize="14" Margin="0,0,4,0"/>
                     <ToggleButton x:Name="ThemeSwitch" Style="{StaticResource ThemeSwitch}"
                                   ToolTip="切换深色/浅色主题"
@@ -42,7 +42,7 @@
                  圆点/对勾登记进 _navDots（终点页插件用 Collapsed 占位圆点保持文字对齐）。
                  模块通过约定：页面实现 IModulePage 并触发 PassChanged(true) → 圆点变绿并自动跳到下一个
                  未完成模块；没有下一个时在导航底部显示「全部验机项目已完成」（AllDoneHint）。
-                 插件增删见「插件管理」按钮（zip 导入/删除，重启生效）。 -->
+                 插件增删见「插件管理」按钮（zip 导入即载；删除/覆盖走待处理操作 + 自动重启）。 -->
             <Border Grid.Column="0" Background="{DynamicResource SubtleBgBrush}"
                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
                 <DockPanel>

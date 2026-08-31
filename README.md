@@ -31,8 +31,8 @@
 - 每个模块点「确认通过」后自动跳转到下一个未完成模块，全部完成时导航区给出提示
 - 配置核对「重新检测」、键盘测试「重置」可随时复查（会清除通过状态重新核对）
 - **插件化**：以上每个验机模块都是独立插件（程序目录 `plugins\` 下）；安装向导可按模块勾选安装，
-  程序顶栏「插件管理」支持导入 zip 插件包 / 删除插件（重启生效），并逐模块展示其**开源致谢**
-  （致谢随插件走，删除模块其致谢也随之消失）。插件开发见根目录 `AGENTS.md`
+  程序顶栏「插件管理」支持导入 zip 插件包 / 删除插件（导入即加载，删除/覆盖自动重启完成），
+  并逐模块展示其**组件致谢**（致谢随插件走，删除模块其致谢也随之消失）。插件开发见根目录 `AGENTS.md`
 
 ## 运行环境
 
@@ -56,7 +56,7 @@ dotnet run --project 验机软件
 
 目标机无需安装 .NET 运行时（self-contained win-x64，不裁剪不 AOT）。两种方式：
 
-### 方式一（推荐）：安装向导（自行构建产物，不入库，文件名 `笔吧验机Setup-v1.0.3.exe`）
+### 方式一（推荐）：安装向导 `installer\笔吧验机Setup-v1.0.2.exe`
 
 Inno Setup 打包的中文安装向导（约 100 MB，lzma2 压缩）：安装到 `C:\Program Files\笔吧验机`，
 **「自定义安装」可按模块勾选要装的验机插件**（不勾「散热测试」可省约 130 MB 烤机工具），
@@ -82,38 +82,22 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
 ## 开源组件与协议（致谢）
 
-程序内致谢随各模块插件展示（顶栏「插件管理」窗口，逐模块列出）；下表为完整汇总。
-本项目的代码本身以 [MIT](LICENSE) 开源；下列组件与素材各自遵循其原有协议，不以本项目的 MIT 覆盖。
-
-**直接使用的组件：**
+程序内致谢随各模块插件展示（顶栏「插件管理」窗口，逐模块列出）；下表为汇总：
 
 | 组件 | 用途 | 协议 |
 | --- | --- | --- |
-| [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | 硬件信息采集库（源码项目引用 `集成开源项目代码/LibreHardwareMonitor-master/LibreHardwareMonitorLib`，随附其 THIRD-PARTY-NOTICES） | MPL-2.0 |
-| [CrystalDiskInfo](https://crystalmark.info/) | 硬盘信息采集的实现参考（其思路经由 LibreHardwareMonitorLib 的 DiskInfoToolkit Storage 支持落地） | MIT |
-| [NAudio](https://github.com/naudio/NAudio) 2.2.1 | 麦克风/扬声器（WASAPI 设备枚举、电平监听、录制、播放） | MIT |
-| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（torture test）。由本项目按其公开源码编译（`prime95-build/` 叠加工程，见项目交接文档），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
-| [FurMark（Python 版）](https://github.com/StanislavPetrovV/FurMark)（StanislavPetrovV） | GPU 烤机的渲染原型：本项目的 GPU 烤机为其 C# / OpenTK 重实现（`FurMark/` 工程），原 GLSL 着色器与贴图随附其许可文件（FurMark/Assets/LICENSE.FurMark.txt） | MIT |
+| [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | 硬件信息采集库（源码项目引用 `集成开源项目代码/LibreHardwareMonitor-master/LibreHardwareMonitorLib`） | MPL-2.0 |
+| [CrystalDiskInfo](https://crystalmark.info/) | 硬盘信息采集的实现参考（C++/MFC 无法直接引用，其思路经由 LibreHardwareMonitorLib 的 DiskInfoToolkit Storage 支持落地） | MIT |
+| [NAudio](https://github.com/naudio/NAudio) 2.2.1 | 麦克风/扬声器（WASAPI 设备枚举、电平监听、录制、播放） | Ms-PL |
+| [Prime95](https://www.mersenne.org/download/)（GIMPS，George Woltman） | CPU 烤机（ torture test）。由本项目用 VS18/MSBuild 按其公开源码编译（`prime95-build/` 叠加工程，见项目交接文档），附带的 libgmp-gw1.dll / libcurl-x64.dll / libhwloc-15.dll 与其官方构建同源 | GIMPS freeware（随附 license.txt） |
+| [FurMark（Python 版）](https://github.com/StanislavPetrovV/FurMark)（StanislavPetrovV） | GPU 烤机的渲染原型：本项目的 GPU 烤机为其 C# / OpenTK 重实现（`FurMark/` 工程），原 GLSL 着色器与贴图随附其许可文件（Assets/LICENSE.FurMark.txt） | MIT |
 | [OpenTK](https://opentk.net/) 4.x | FurMark 重实现的 OpenGL 窗口（GLFW）与绑定 | MIT |
 | [StbImageSharp](https://github.com/StbSharp/StbImageSharp) | FurMark 重实现的贴图解码（stb_image 的 C# 移植） | 公有领域 |
-| [PawnIO](https://github.com/namazso/PawnIO)（namazso） | CPU/主板传感器的 Ring0 内核驱动（LibreHardwareMonitor 经设备 IOCTL 与其通信）。**分发的是官方签名安装器**（pawnio.eu → PawnIO.Setup releases，原样未修改，随附于 Tools/pawnio/，由用户点击后才安装）；其 PawnIO.Modules 为 LGPL-2.1 | GPL-2.0（带例外：独立模块经设备 IOCTL 接口通信不构成衍生作品） |
+| [PawnIO](https://github.com/namazso/PawnIO)（namazso） | CPU/主板传感器的 Ring0 内核驱动（LibreHardwareMonitor 经设备 IOCTL 与其通信）。**分发的是官方签名安装器**（pawnio.eu → PawnIO.Setup releases，原样未修改，随附于 Tools/pawnio/，由用户点击后才安装） | GPL-2.0（带例外：独立模块经设备 IOCTL 接口通信不构成衍生作品） |
 
-**随上述组件带入的传递依赖：**
+开发/打包工具致谢：[Inno Setup](https://jrsoftware.org/)（安装向导制作，仅打包用不进运行时，免费可商用）。
 
-| 组件 | 用途 | 协议 |
-| --- | --- | --- |
-| DiskInfoToolkit / RAMSPDToolkit-NDD | 硬盘 SMART 直读 / 内存 SPD（LibreHardwareMonitorLib 的 NuGet 依赖） | MPL-2.0 |
-| [HidSharp](https://www.zer7.com/software/hidsharp) | HID 设备访问（LibreHardwareMonitorLib 的 NuGet 依赖） | Apache-2.0 |
-| Mono.Posix.NETStandard | LHM CPUID/RDTSC 动态代码的内存管理（仅其 Unix 路径用到；Windows 走 VirtualAlloc） | Microsoft .NET Library License |
-| [CsWin32](https://github.com/microsoft/CsWin32) | LHM 的 P/Invoke 源生成器（编译期） | MIT |
-| [System.Management](https://dot.net/) | WMI 查询 | MIT |
-| [hwloc](https://www.open-mpi.org/projects/hwloc/) / [curl](https://curl.se/) / [GMP](https://gmplib.org/) / [Boost](https://www.boost.org/) | prime95 编译期/运行期依赖（libhwloc-15.dll、libcurl-x64.dll、libgmp-gw1.dll 来自其官方/同源构建） | BSD-3-Clause / curl / LGPL-3.0+ / BSL-1.0 |
-
-**开发/打包工具致谢：**[Inno Setup](https://jrsoftware.org/)（安装向导制作，仅打包用不进运行时，免费可商用）；[.NET](https://dot.net/)（MIT）。
-
-另使用 Windows 自带接口：WMI、注册表 EDID、Win32 显示 API、WinRT Windows.Media.Capture（摄像头预览）。
-
-**试音曲：**「不死のバイオレット」Copyright© 幻月遠征隊，使用已经著作权人同意
-（含随本 GitHub 仓库公开分发的许可）。该曲不属于 MIT 授权范围，二次分发前请自行取得著作权人许可。
-
+另使用 Windows 自带接口：WMI（System.Management）、注册表 EDID、Win32 显示 API、
+WinRT Windows.Media.Capture（摄像头预览）。
+试音曲「不死のバイオレット」Copyright© 幻月遠征隊，使用已经著作权人同意。
 感谢上述开源项目的作者与贡献者。

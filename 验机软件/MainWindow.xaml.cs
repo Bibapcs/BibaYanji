@@ -34,11 +34,18 @@ public partial class MainWindow : Window
     sealed class HostContext : IHostContext
     {
         readonly Func<string, bool> _isDone;
+        readonly List<PluginInfo> _modules = [];
         public HostContext(Func<string, bool> isDone) => _isDone = isDone;
-        public IReadOnlyList<PluginInfo> Modules { get; set; } = [];
+        public IReadOnlyList<PluginInfo> Modules => _modules;
         public bool IsDone(string moduleId) => _isDone(moduleId);
         public event Action? DoneChanged;
         public void RaiseDoneChanged() => DoneChanged?.Invoke();
+        /// <summary>启动时批量填入 / 运行时追加（导入即载），均保持按 Order 排序。</summary>
+        public void AddModule(PluginInfo info)
+        {
+            _modules.Add(info);
+            _modules.Sort((a, b) => a.Order.CompareTo(b.Order));
+        }
     }
 
     public MainWindow()
@@ -50,10 +57,9 @@ public partial class MainWindow : Window
 
         // 先扫清单建立模块列表（终点页插件的页面构造时就要读 IHostContext.Modules），再加载创建页面
         _hostContext = new HostContext(tag => _doneTags.Contains(tag));
-        _hostContext.Modules = PluginLoader.ScanInstalled()
-            .Select(x => new PluginInfo(x.Manifest.Id, x.Manifest.Name, x.Manifest.Version,
-                x.Manifest.Order, x.Manifest.Terminal))
-            .ToList();
+        foreach (var x in PluginLoader.ScanInstalled())
+            _hostContext.AddModule(new PluginInfo(x.Manifest.Id, x.Manifest.Name, x.Manifest.Version,
+                x.Manifest.Order, x.Manifest.Terminal));
         _plugins = PluginLoader.LoadAll(_hostContext);
         foreach (var lp in _plugins)
         {
@@ -87,7 +93,8 @@ public partial class MainWindow : Window
             ContentHost.Content = MakeEmptyPlaceholder();
     }
 
-    /// <summary>按插件生成导航项（ListBoxItem.Tag = 插件 id；终点页用 Collapsed 占位圆点保持文字对齐）。</summary>
+    /// <summary>按插件生成导航项并按 Order 有序插入（ListBoxItem.Tag = 插件 id；
+    /// 终点页用 Collapsed 占位圆点保持文字对齐）。启动批量与「导入即载」共用。</summary>
     void AddNavItem(LoadedPlugin lp)
     {
         var dot = new Ellipse { Width = 10, Height = 10, StrokeThickness = 1.5, Fill = Brushes.Transparent };
@@ -107,9 +114,61 @@ public partial class MainWindow : Window
         var panel = new StackPanel { Orientation = Orientation.Horizontal };
         panel.Children.Add(dotGrid);
         panel.Children.Add(new TextBlock { Text = lp.Info.Name });
-        NavList.Items.Add(new ListBoxItem { Tag = lp.Info.Id, Content = panel });
+        var newItem = new ListBoxItem { Tag = lp.Info.Id, Content = panel };
+        int insertAt = NavList.Items.Count;
+        for (int i = 0; i < NavList.Items.Count; i++)
+            if (NavList.Items[i] is ListBoxItem ex && ex.Tag is string exId
+                && _plugins.FirstOrDefault(p => p.Info.Id == exId) is { } exLp
+                && exLp.Info.Order > lp.Info.Order)
+            { insertAt = i; break; }
+        NavList.Items.Insert(insertAt, newItem);
         if (!lp.Info.Terminal)
             _navDots[lp.Info.Id] = (dot, check);
+    }
+
+    /// <summary>导入后立即加载新插件（免重启）：登记页面/导航/通过订阅/HostContext 模块清单，
+    /// 并选中它。已加载或加载失败返回 false。注意：默认加载上下文运行时不卸载程序集，
+    /// 之后要删除/覆盖该插件仍走「待处理操作 + 自动重启」。</summary>
+    public bool TryLoadPluginAtRuntime(string id)
+    {
+        if (_pages.ContainsKey(id)) return false;
+        var hit = PluginLoader.ScanInstalled().FirstOrDefault(x => x.Manifest.Id == id);
+        if (hit.Manifest == null) return false;
+        var lp = PluginLoader.LoadOne(hit.Manifest, hit.Dir, _hostContext);
+        if (lp == null) return false;
+        _plugins.Add(lp);
+        _plugins.Sort((a, b) => a.Info.Order.CompareTo(b.Info.Order));
+        _pages[lp.Info.Id] = lp.Page;
+        _hostContext.AddModule(lp.Info);
+        AddNavItem(lp);
+        if (!lp.Info.Terminal) _passableTags.Add(lp.Info.Id);
+        if (lp.Page is IModulePage mp)
+            mp.PassChanged += done => OnModulePassChanged(lp.Info.Id, done);
+        // 首次插入时 NavList 从无选中项：选中它
+        if (NavList.SelectedIndex < 0)
+            NavList.SelectedItem = NavList.Items.Cast<object>().FirstOrDefault(
+                i => i is ListBoxItem li && li.Tag as string == id);
+        return true;
+    }
+
+    /// <summary>重启程序（删除/覆盖已加载插件后调用）：插件 dll 被默认加载上下文锁定，
+    /// 只能等新进程在加载前执行待处理操作。新进程继承当前提升权限，不再弹 UAC。</summary>
+    public static void RestartApp()
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = Environment.ProcessPath!,
+                UseShellExecute = true,
+            });
+        }
+        catch (Exception ex)
+        {
+            PluginLoader.Log("自动重启失败：" + ex.Message);
+            return;
+        }
+        Application.Current.Shutdown();
     }
 
     static UIElement MakeEmptyPlaceholder() => new TextBlock
@@ -204,7 +263,7 @@ public partial class MainWindow : Window
 
     void OnPluginManagerClick(object sender, RoutedEventArgs e)
     {
-        new PluginManagerWindow(_plugins) { Owner = this }.ShowDialog();
+        new PluginManagerWindow(_plugins, TryLoadPluginAtRuntime) { Owner = this }.ShowDialog();
     }
 
     /// <summary>窗口图标取 exe 内嵌图标（Win32 提取，多尺寸 ico 在各 DPI 下都清晰）。</summary>

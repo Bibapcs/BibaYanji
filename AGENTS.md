@@ -14,7 +14,7 @@ LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表
 ## 目录结构
 
 ```
-BibaYanji/
+【视频】验机软件/
 ├── 验机软件.slnx              # 解决方案
 ├── 验机软件/                   # ★ 宿主外壳（WinExe，AssemblyName=验机软件，RootNamespace=YanJi）
 │   ├── App.xaml(.cs)          # 启动：加载主题 + 全局异常落盘 %TEMP%\YanJi-crash.log
@@ -49,15 +49,14 @@ dotnet build 验机软件.slnx          # 构建全部（宿主 BuildPlugins tar
 dotnet run --project 验机软件       # 运行（exe 是 requireAdministrator，开发期弹 UAC 属正常）
 
 # 注意：全新克隆首次构建后再执行一次（或先单独 dotnet build FurMark）——
-# 宿主把 Tools/furmark 随输出拷贝用的 None glob 在评估期求值，而 FurMark 负载是构建期生成的，
-# 第一次构建时它还不存在，第二次构建才会进输出目录（plugins/ 不受影响，它的拷贝在执行期求值）。
+# Tools/furmark 的 None glob 在评估期求值而 FurMark 负载是构建期生成的，第二次构建才进输出。
 
 # 发布（两条命令顺序不可换；publish/ 为自包含便携包，目标机无需装 .NET）
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
 # 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v1.0.3.exe）
-"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "<仓库绝对路径>\installer\setup.iss"  # Git Bash 里选项写 //Q 防 MSYS 路径转换
+"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 
 宿主构建链路：`BuildPlugins`（BeforeBuild，MSBuild 任务建 5 个插件工程）→ 插件构建 →
@@ -87,8 +86,10 @@ publish 时另有 `CopyPluginsToPublish`（AfterTargets=Publish）同步到 `pub
   默认解析失败时到各插件目录找同名 dll（先加载者胜出，同名同版本天然去重），
   **并会下钻 `runtimes/win-x64/lib/**` 找 RID 专属托管资产**（如 LHM 的传递依赖
   Mono.Posix.NETStandard——缺它 LHM 的 OpCode.Open 在 JIT 时抛异常，采集功能全灭）。
-- **增删插件 = 增删 `plugins/<id>/` 目录，重启生效**（运行时不卸载程序集）。
-  「插件管理」窗口（顶栏按钮）就是对这个目录的图形化操作 + zip 导入。
+- **增删插件 = 增删 `plugins/<id>/` 目录**。生效时机：**新插件导入后宿主帅即加载（免重启）**；
+  删除/覆盖安装正在运行的插件时其 dll 被默认加载上下文锁定（运行时不卸载程序集），
+  写入 `%APPDATA%\YanJi\plugin-ops.json` 待处理队列，提示后**自动重启**——下次启动在插件
+  加载前统一执行（此时无文件锁）。「插件管理」窗口（顶栏按钮）封装了这套流程。
 - ⚠️ 插件与宿主同进程、同**管理员权限**（宿主 manifest 是 requireAdministrator）——只安装可信来源插件。
 
 ### plugin.json 字段
@@ -111,7 +112,7 @@ publish 时另有 `CopyPluginsToPublish`（AfterTargets=Publish）同步到 `pub
 public interface IYanJiPlugin                       // 入口，必需
 {
     PluginInfo Info { get; }                        // 与 plugin.json 一致
-    IReadOnlyList<PluginCredit> Credits => [];      // 本模块的开源致谢（随插件展示在插件管理窗口；无则默认空）
+    IReadOnlyList<PluginCredit> Credits => [];      // 本模块的致谢（开源组件/专有软件/素材版权；展示在插件管理窗口）
     UserControl CreatePage(IHostContext host);      // 宿主调用一次，页面实例常驻（切导航不丢状态）
 }
 
@@ -155,8 +156,9 @@ public interface IHostContext                       // 宿主注入 CreatePage
    并加 `Private="false"`。
 2. 写页面：一个 `UserControl`（XAML + code-behind，无 MVVM 框架）。需要「确认通过」就实现
    `IModulePage`；需要按键实现 `IKeyHandlerPage`；关程序要清理实现 `IPluginShutdown`（在入口类上）。
-3. 写入口类：公共无参类实现 `IYanJiPlugin`，`CreatePage` 返回页面实例；**模块用到的开源组件/素材
-   必须填 `Credits`**（名称/用途/协议，展示在插件管理窗口——致谢随插件走，插件删了致谢也消失）。
+3. 写入口类：公共无参类实现 `IYanJiPlugin`，`CreatePage` 返回页面实例；**模块用到的第三方组件/素材
+   必须填 `Credits`**（名称/用途/协议或许可，展示在插件管理窗口——致谢随插件走，插件删了致谢也消失；
+   专有软件也可列，注明许可即可，不要叫「开源致谢」）。
 4. 写 `plugin.json`（`None Update` + `CopyToOutputDirectory=PreserveNewest` 随输出拷贝）。
 5. 本地调试：把插件输出目录（含 plugin.json 与依赖）整体拷到宿主输出
    `验机软件/bin/<cfg>/net10.0-windows10.0.19041.0/plugins/<id>/`，启动宿主即可；

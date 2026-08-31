@@ -8,6 +8,8 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        // 插件待处理操作（上次会话排队的删除/覆盖导入）：必须在插件加载前执行，此时无文件锁
+        Services.PluginPackageService.ProcessPendingOps();
         // 在窗口创建前加载主题字典（读取设置或跟随系统）
         Services.ThemeManager.ApplyInitial();
         DispatcherUnhandledException += (_, args) =>
