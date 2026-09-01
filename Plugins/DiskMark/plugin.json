@@ -1,7 +1,7 @@
 {
   "id": "disk",
   "name": "硬盘跑分",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "order": 80,
   "terminal": false,
   "entryAssembly": "YanJi.Plugin.DiskMark.dll",

@@ -87,7 +87,11 @@ public static class PluginPackageService
 
     /// <summary>从 zip 插件包导入插件，返回清单。包结构：plugin.json 在 zip 根或唯一一层包裹目录下。
     /// 同 id 已存在时覆盖（先删旧目录）。校验失败抛 InvalidDataException（消息可直接给用户看）。</summary>
-    public static PluginManifest ImportZip(string zipPath)
+    public static PluginManifest ImportZip(string zipPath) => ImportZip(zipPath, null);
+
+    /// <summary>带进度回报的导入（大插件包解压耗时，UI 须走后台线程 + 进度条）：
+    /// progress 收到 (已解压文件数, 总文件数)，约每 8 个文件一报，最后一次为 (Total, Total)。</summary>
+    public static PluginManifest ImportZip(string zipPath, IProgress<(int Done, int Total)>? progress)
     {
         using var zip = ZipFile.OpenRead(zipPath);
 
@@ -120,18 +124,26 @@ public static class PluginPackageService
             Directory.Delete(targetDir, recursive: true); // 同 id 覆盖安装
         Directory.CreateDirectory(targetDir);
 
-        string targetRoot = Path.GetFullPath(targetDir) + Path.DirectorySeparatorChar;
-        foreach (var entry in zip.Entries)
+        // 先算出待提取条目（进度条分母），再逐个提取
+        var toExtract = zip.Entries.Where(e =>
         {
-            string name = entry.FullName.Replace('\\', '/');
-            if (!name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) continue;
-            string rel = name[prefix.Length..];
-            if (rel.Length == 0 || entry.Name.Length == 0) continue; // 目录条目
+            string name = e.FullName.Replace('\\', '/');
+            return name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) &&
+                   name[prefix.Length..].Length > 0 && e.Name.Length > 0;
+        }).ToList();
+        string targetRoot = Path.GetFullPath(targetDir) + Path.DirectorySeparatorChar;
+        int done = 0;
+        foreach (var entry in toExtract)
+        {
+            string rel = entry.FullName.Replace('\\', '/')[prefix.Length..];
             string dest = Path.GetFullPath(Path.Combine(targetDir, rel));
             if (!dest.StartsWith(targetRoot, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException($"插件包含非法路径：{entry.FullName}");
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             entry.ExtractToFile(dest, overwrite: true);
+            done++;
+            if (done % 8 == 0 || done == toExtract.Count)
+                progress?.Report((done, toExtract.Count));
         }
         return manifest;
     }

@@ -8,7 +8,7 @@ namespace YanJi.Plugin.DiskMark;
 /// 实现 IPluginShutdown：程序关闭时兜底杀掉跑分进程树（连带 diskspd）。</summary>
 public class DiskMarkPlugin : IYanJiPlugin, IPluginShutdown
 {
-    public PluginInfo Info => new("disk", "硬盘跑分", "1.0.0", 80, false);
+    public PluginInfo Info => new("disk", "硬盘跑分", "1.0.1", 80, false);
 
     public IReadOnlyList<PluginCredit> Credits =>
     [

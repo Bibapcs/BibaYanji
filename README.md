@@ -33,7 +33,7 @@
 - 每个模块点「确认通过」后自动跳转到下一个未完成模块，全部完成时导航区给出提示
 - 配置核对「重新检测」、键盘测试「重置」可随时复查（会清除通过状态重新核对）
 - **插件化**：以上每个验机模块都是独立插件（程序目录 `plugins\` 下）；安装向导可按模块勾选安装，
-  程序顶栏「插件管理」支持导入 zip 插件包 / 删除插件（导入即加载，删除/覆盖自动重启完成），
+  程序顶栏「插件管理」支持导入 zip 插件包（0.0.2 起可多选批量导入）/ 删除插件（导入即加载，删除/覆盖自动重启完成），
   并逐模块展示其**组件致谢**（致谢随插件走，删除模块其致谢也随之消失）。插件开发见根目录 `AGENTS.md`
 
 ## 运行环境
@@ -57,13 +57,17 @@ dotnet run --project 验机软件
 ## 安装
 
 **直接下载**：到 [Releases](https://github.com/Bibapcs/BibaYanji/releases) 下载最新安装包
-（当前 v0.0.1：`BibaYanjiSetup-v0.0.1.exe`，约 110 MB，Inno Setup 中文向导）：
+（当前 v0.0.2：`BibaYanjiSetup-v0.0.2.exe`，约 116 MB，Inno Setup 中文向导）：
 
 - 安装到 `C:\Program Files\BibaInspection`；「自定义安装」可**按模块勾选**要装的验机插件
   （不勾「散热测试」可省约 130 MB 烤机工具负载）
-- 可选「创建桌面快捷方式」「创建开始菜单项」（默认都勾）
+- 附加任务（默认都勾）：「创建桌面快捷方式」「创建开始菜单项」
+  「安装 PawnIO 内核驱动」（0.0.2 起，安装末尾静默完成、无需额外点击；
+  未装散热组件或系统已装 PawnIO 时自动跳过）
 - 装完从桌面/开始菜单启动（**需管理员**：程序 manifest 会弹一次 UAC，硬盘 SMART 与部分传感器需要）
-- 卸载走系统「应用与功能」或开始菜单卸载项，只删安装目录与快捷方式，不碰用户设置（%APPDATA%\YanJi）
+- 卸载走系统「应用与功能」或开始菜单卸载项：删安装目录与快捷方式
+  （0.0.2 起连安装后导入的插件目录一并删除）；卸载时弹出「删除用户数据（软件设置、跑分结果等）」
+  勾选框（默认勾选，可取消保留 %APPDATA%\YanJi）
 - 目标机**无需安装 .NET 运行时**（self-contained win-x64）
 
 **自行构建安装包**（先出 publish 再打 Inno 包，顺序不可换）：
@@ -71,13 +75,14 @@ dotnet run --project 验机软件
 ```
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
-"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.1.exe
+"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.2.exe
 ```
 
 安装包内容：`验机软件.exe` + 全套自包含运行时 + `YanJi.PluginSdk.dll`（插件契约）+
-`plugins\`（五个验机模块插件，试音曲 mp3 在 `pluginsv\`）+ `Tools\prime95\`（CPU 烤机）+
-`Toolsurmark\`（GPU 烤机）+ `Tools\pawnio\PawnIO_setup.exe`（PawnIO 驱动官方签名安装器——
-**不装也能跑**，只是散热测试页 CPU 温度/功耗两路不可用，页面有一键安装按钮，用户点击后才装，装完无需重启）。
+`plugins\`（六个验机模块插件，试音曲 mp3 在 `plugins\av\`）+ `Tools\prime95\`（CPU 烤机）+
+`Tools\furmark\`（GPU 烤机）+ `Tools\pawnio\PawnIO_setup.exe`（PawnIO 驱动官方签名安装器——
+0.0.2 起安装向导默认安装该驱动；不装也能跑，只是散热测试页 CPU 温度/功耗两路不可用，
+页面也有一键安装按钮，装完无需重启）。
 
 ## 开源组件与协议（致谢）
 

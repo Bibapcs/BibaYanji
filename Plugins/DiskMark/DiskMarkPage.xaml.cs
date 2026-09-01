@@ -23,6 +23,8 @@ public partial class DiskMarkPage : UserControl, IModulePage
     public DiskMarkPage()
     {
         InitializeComponent();
+        // 运行日志行（后台线程触发，封送 UI 追加 LogBox）
+        _cdm.Logged += line => Dispatcher.BeginInvoke(() => Log(line));
         // 目标盘下拉：全部就绪的固定盘，默认系统盘
         string systemRoot = Path.GetPathRoot(Environment.SystemDirectory) ?? "C:\\";
         foreach (var d in DriveInfo.GetDrives())
@@ -72,8 +74,8 @@ public partial class DiskMarkPage : UserControl, IModulePage
         Score4KRead.Text = "—";
         Score4KWrite.Text = "—";
         DetailText.Text = "";
+        TestProgress.Maximum = CdmService.TotalRuns;
         TestProgress.Value = 0;
-        TestProgress.IsIndeterminate = false;
 
         _cts = new CancellationTokenSource();
         RunButton.IsEnabled = false;
@@ -81,13 +83,15 @@ public partial class DiskMarkPage : UserControl, IModulePage
         SetRunning();
         try
         {
-            Log($"开始硬盘基准（{drive.TrimEnd('\\')} 盘，SEQ1M Q8T1 + RND4K Q1T1）");
-            TestProgress.IsIndeterminate = true;
-            var progress = new Progress<string>(p =>
-                Dispatcher.BeginInvoke(() => PhaseText.Text = p));
+            Log($"开始硬盘基准（{drive.TrimEnd('\\')} 盘，SEQ1M Q8T1 + RND4K Q1T1，共 {CdmService.TotalRuns} 轮）");
+            var progress = new Progress<CdmService.RunProgress>(p =>
+                Dispatcher.BeginInvoke(() =>
+                {
+                    PhaseText.Text = p.Phase;
+                    TestProgress.Value = p.RunsDone;
+                }));
             var res = await _cdm.RunAsync(drive, progress, _cts.Token);
-            TestProgress.IsIndeterminate = false;
-            TestProgress.Value = 100;
+            TestProgress.Value = CdmService.TotalRuns;
             _result = res;
             ScoreSeqRead.Text = res.SeqRead.ToString("0.0");
             ScoreSeqWrite.Text = res.SeqWrite.ToString("0.0");
@@ -114,7 +118,6 @@ public partial class DiskMarkPage : UserControl, IModulePage
             _cts = null;
             RunButton.IsEnabled = true;
             CancelButton.IsEnabled = false;
-            TestProgress.IsIndeterminate = false;
             PhaseText.Text = "";
             UpdatePassHint();
         }

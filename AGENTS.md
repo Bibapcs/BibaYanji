@@ -5,7 +5,7 @@
 Windows 桌面验机工具（WPF，net10.0-windows10.0.19041.0，.NET SDK 10.0.400）。
 **主程序 + 插件架构**：主程序只是外壳（顶栏 / 左侧导航 / 主题 / 插件加载与管理），
 每个验机功能模块都是一个独立插件（class library），放在 exe 同级 `plugins/<id>/` 目录下，
-用户可在安装向导勾选模块、也可在程序内「插件管理」里导入 zip 插件包或删除插件（重启生效）。
+用户可在安装向导勾选模块、也可在程序内「插件管理」里导入 zip 插件包（0.0.2 起支持多选批量导入）或删除插件（重启生效）。
 
 硬性约束：开源软件，**禁止集成闭源商业软件**（如 HWiNFO）。硬件采集只用
 LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表 / Win32 API）。
@@ -29,12 +29,13 @@ LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表
 ├── PluginSdk/                 # ★ 插件契约（YanJi.PluginSdk.dll）：接口 + 共享服务
 │   ├── Contracts.cs           # IYanJiPlugin / IModulePage / IKeyHandlerPage / IPluginShutdown / IHostContext
 │   └── Services/              # DisplayInfoService + EdidParser（多个插件共用才放这里）
-├── Plugins/                   # ★ 五个内置模块插件（每个 = 一个 class lib 工程 + plugin.json）
+├── Plugins/                   # ★ 六个内置模块插件（每个 = 一个 class lib 工程 + plugin.json）
 │   ├── ConfigCheck/           # 配置核对（LHM + WMI 采集）      id=config    order=10
 │   ├── KeyboardTest/          # 键盘测试（104 键）             id=keyboard  order=20
 │   ├── ScreenDeadPixel/       # 屏幕坏点（全屏纯色）           id=screen    order=30
 │   ├── AvConference/          # 影音会议（摄像头/麦/扬声器）   id=av        order=40
-│   └── StressTest/            # 散热测试（烤机+传感器监控）    id=stress    order=50
+│   ├── StressTest/            # 散热测试（烤机+传感器监控）    id=stress    order=50
+│   └── DiskMark/              # 硬盘跑分（CDM 源码集成 CdmHost） id=disk      order=80
 ├── FurMark/                   # GPU 烤机工具工程（构建后拷到 验机软件/Tools/furmark/）
 ├── prime95-build/             # prime95 叠加构建工作区（不进 slnx）
 ├── 集成开源项目代码/           # 开源组件源码（LibreHardwareMonitorLib 被插件项目引用）
@@ -55,7 +56,7 @@ dotnet run --project 验机软件       # 运行（exe 是 requireAdministrator�
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
-# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.1.exe）
+# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.2.exe）
 "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 
@@ -165,7 +166,8 @@ public interface IHostContext                       // 宿主注入 CreatePage
    要内置随包就把工程加进 slnx + 宿主 csproj 的 BuildPlugins/CopyPlugins 两个 target +
    installer/setup.iss 的 [Components]/[Files]。
 6. 打包分发：把插件目录（plugin.json 在 zip 根或一层包裹目录下）压成 zip，
-   用户经「插件管理 → 导入插件包 (.zip)…」导入，重启生效。示例：
+   用户经「插件管理 → 导入插件包 (.zip)…」导入（0.0.2 起文件对话框可多选批量导入，
+   覆盖确认合并为一次，结果统一汇总），重启生效。示例：
    `powershell Compress-Archive -Path "plugins\myplugin\*" -DestinationPath myplugin.zip`
    （plugin.json 直接在 zip 根；或 `Compress-Archive -Path "plugins\myplugin" ...` 形成一层包裹目录，两种都支持）。
 
@@ -192,6 +194,9 @@ public interface IHostContext                       // 宿主注入 CreatePage
 - 发布时插件工程不能继承宿主的 RuntimeIdentifier/SelfContained——宿主 BuildPlugins 的
   MSBuild 任务已 `RemoveProperties="RuntimeIdentifier;SelfContained"`，仿建即可。
 - 安装向导的「可选组件」与 `plugins/<id>/` 目录一一对应；Tools/ 随散热组件安装。
+  0.0.2 起附加任务新增「安装 PawnIO 内核驱动」（默认勾选，安装末尾
+  `Tools\pawnio\PawnIO_setup.exe -install -silent` 静默完成、用户零点击——只传 `-install` 会弹版权确认窗；
+  未装散热组件或系统已装 PawnIO 时 Check 自动跳过，后者避免其「请先卸载」阻塞弹窗）。
 
 ## 修改守则
 
