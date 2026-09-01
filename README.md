@@ -94,7 +94,8 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
 开发/打包工具致谢：[Inno Setup](https://jrsoftware.org/)（安装向导制作，仅打包用不进运行时，免费可商用）。
 
-另使用 Windows 自带接口：WMI（System.Management）、注册表 EDID、Win32 显示 API、
-WinRT Windows.Media.Capture（摄像头预览）。
-试音曲「不死のバイオレット」Copyright© 幻月遠征隊，使用已经著作权人同意。
+另使用 Windows 自带接口：WMI（System.Management）、注册表 EDID、Win32 显示 API、WinRT Windows.Media.Capture（摄像头预览）。
+
+试音曲「不死のバイオレット」Copyright© 幻月遠征隊，使用已经著作权人同意，详见AUDIO-LICENSE.md。
+
 感谢上述开源项目的作者与贡献者。
