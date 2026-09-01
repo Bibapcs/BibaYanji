@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 硬盘跑分插件（独立分发，不入主仓库 slnx）：CrystalDiskMark 9.0.3（MIT）源码集成——
+       CdmHost.exe 是用 CDM 源码原封编译的控制台宿主（引擎 DiskBench 驱动定制 diskspd64.exe 子进程实测），
+       负载就两个 exe（MIT 许可，已随本目录入库）。只跑 SEQ1M Q8T1 顺序读/写 + RND4K Q1T1 随机读/写四项。
+       构建：dotnet build；输出整体放 plugins/disk/ 即可。 -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>YanJi.Plugin.DiskMark</AssemblyName>
+    <RootNamespace>YanJi.Plugin.DiskMark</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 插件契约由宿主提供：Private=false 不拷进插件目录，运行时与宿主共享同一类型 -->
+    <ProjectReference Include="..\..\PluginSdk\YanJi.PluginSdk.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- CdmHost 负载（CdmHost.exe + CdmResource\diskspd\diskspd64.exe，相对布局是引擎硬编码路径，不可动） -->
+    <None Update="CdmHost\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

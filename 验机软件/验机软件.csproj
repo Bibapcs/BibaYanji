@@ -52,6 +52,8 @@
              Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
     <MSBuild Projects="..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" Targets="Build"
              Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\DiskMark\YanJi.Plugin.DiskMark.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
   </Target>
 
   <!-- %(RecursiveDir) 保留子目录结构；插件目录按 plugin.json 的 id 命名 -->
@@ -62,6 +64,7 @@
       <_PluginScreenFiles Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginAvFiles Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginStressFiles Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginDiskFiles Include="..\Plugins\DiskMark\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(_PluginConfigFiles)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PluginConfigFiles->'$(OutDir)plugins\config\%(RecursiveDir)%(Filename)%(Extension)')" />
@@ -73,6 +76,8 @@
           DestinationFiles="@(_PluginAvFiles->'$(OutDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PluginStressFiles)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PluginStressFiles->'$(OutDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginDiskFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginDiskFiles->'$(OutDir)plugins\disk\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
   <!-- 发布时把插件负载同步到 publish 目录（publish 不扫 OutDir，需要单独拷一次） -->
@@ -83,6 +88,7 @@
       <_PubScreen Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubAv Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubStress Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubDisk Include="..\Plugins\DiskMark\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(_PubConfig)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PubConfig->'$(PublishDir)plugins\config\%(RecursiveDir)%(Filename)%(Extension)')" />
@@ -94,6 +100,8 @@
           DestinationFiles="@(_PubAv->'$(PublishDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PubStress)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PubStress->'$(PublishDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubDisk)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubDisk->'$(PublishDir)plugins\disk\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
   <ItemGroup>

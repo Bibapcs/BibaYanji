@@ -1,0 +1,110 @@
+<UserControl x:Class="YanJi.Plugin.DiskMark.DiskMarkPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:YanJi.Plugin.DiskMark">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16" MaxWidth="860">
+
+            <!-- 状态行：通过后变绿（通用约定） -->
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="测试状态：" FontWeight="SemiBold"/>
+                <TextBlock x:Name="StatusText" Text="待跑分" Margin="8,0,0,0"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+
+            <!-- 控制卡：目标盘 + 开始/取消 + 进度 -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,8,0,0" Padding="14,10">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="目标盘" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <ComboBox x:Name="DriveBox" Width="90" Margin="8,0,0,0"
+                                  ToolTip="CDM 在该盘创建 1 GiB 临时测速文件（测完自动删除），需要该盘根目录可写且剩余空间 &gt; 2 GiB"/>
+                        <Button x:Name="RunButton" Content="开始测试" FontSize="14" FontWeight="SemiBold"
+                                Padding="16,7" Margin="12,3,2,3" Click="RunButton_Click"
+                                ToolTip="对目标盘跑 SEQ1M Q8T1 顺序读/写 + RND4K Q1T1 随机读/写四项（约 2 分钟）"/>
+                        <Button x:Name="CancelButton" Content="取消" IsEnabled="False"
+                                Padding="16,7" Margin="8,3,2,3" Click="CancelButton_Click"/>
+                        <ProgressBar x:Name="TestProgress" Width="220" Height="8" Margin="14,0,0,0"
+                                     VerticalAlignment="Center" Minimum="0" Maximum="100"/>
+                        <TextBlock x:Name="PhaseText" Margin="10,0,0,0" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                    <TextBlock Text="口径：CrystalDiskMark 源码集成（引擎原封编译 + 定制 diskspd 子进程），SEQ1M Q8T1 顺序读/写 + RND4K Q1T1 随机读/写，1 GiB 随机数据 × 5 轮（+1 预热）"
+                               Margin="0,6,0,0" TextWrapping="Wrap" FontSize="11"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBlock Text="⚠ 测试期间会占满目标盘读写：请勿在该盘进行大文件操作；成绩受温度/占用影响，仅供参考对比"
+                               Margin="0,2,0,0" TextWrapping="Wrap" FontSize="11"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 成绩卡：四项大数字 + 打开成绩目录 -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                            <TextBlock Text="顺序读取 (MB/s)" FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="ScoreSeqRead" Text="—" FontSize="24" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,24,0">
+                            <TextBlock Text="顺序写入 (MB/s)" FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="ScoreSeqWrite" Text="—" FontSize="24" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="0,0,24,0">
+                            <TextBlock Text="4K 随机读取 (MB/s)" FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="Score4KRead" Text="—" FontSize="24" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Margin="0,0,24,0">
+                            <TextBlock Text="4K 随机写入 (MB/s)" FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="Score4KWrite" Text="—" FontSize="24" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4" VerticalAlignment="Center">
+                            <Button x:Name="OpenResultDirButton" Content="打开成绩目录" Padding="12,3"
+                                    FontSize="11" HorizontalAlignment="Right" Click="OpenResultDir_Click"
+                                    ToolTip="成绩 JSON 与成绩记录 CSV 保存在 %APPDATA%\YanJi\disk_result"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock x:Name="DetailText" Margin="0,6,0,0" TextWrapping="Wrap" FontSize="11"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 运行日志：Consolas（LogBox 惯例），自动滚底，上限 500 条；圆角 = 外套圆角 Border -->
+            <Border Style="{StaticResource CardBorder}" Width="Auto" Margin="0,12,0,0" Padding="14,10">
+                <StackPanel>
+                    <TextBlock Text="运行日志" FontWeight="SemiBold" FontSize="13"/>
+                    <Border Margin="0,6,0,0" CornerRadius="6"
+                            Background="{DynamicResource SurfaceBgBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <TextBox x:Name="LogBox" Height="110" Padding="6,4"
+                                 IsReadOnly="True" FontFamily="Consolas" FontSize="11"
+                                 VerticalScrollBarVisibility="Auto"
+                                 BorderThickness="0" Background="Transparent"
+                                 Foreground="{DynamicResource TextBrush}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- 通过区 -->
+            <StackPanel Orientation="Horizontal" Margin="0,14,0,4">
+                <Button x:Name="PassButton" Content="确认跑分完成，通过"
+                        FontSize="14" FontWeight="SemiBold" Padding="16,7" Click="PassButton_Click"
+                        ToolTip="人工判断成绩合格后点击（跑分中会先取消再跳转）"/>
+                <TextBlock x:Name="PassHintText" Margin="10,0,0,0" VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

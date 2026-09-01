@@ -26,6 +26,9 @@
   **数据监控**四路实时折线（CPU 温度/功耗、GPU 温度/功耗，LibreHardwareMonitor 2 秒轮询；
   CPU 两路需要 PawnIO 内核驱动，未安装时页面可一键静默安装官方签名安装器，装后立即可用无需重启）；「显示界面」可关（烤机进程完全无窗口后台跑，负载不变）；
   运行日志框记录起停/异常退出事件；停止/切页/退出多层兜底，不会留下后台烤机进程
+- **硬盘跑分**：CrystalDiskMark 源码集成（引擎原封编译为 CdmHost 控制台宿主 + 定制 diskspd 子进程，全程无窗口），
+  对目标盘跑 SEQ1M Q8T1 顺序读/写 + RND4K Q1T1 随机读/写四项（1 GiB 随机数据 × 5 轮）；
+  成绩 JSON 与记录 CSV 保存在 `%APPDATA%\YanJi\disk_result`（页面上可一键打开成绩目录）
 - **验机清单**：各模块通过状态实时反映在左侧导航（绿点 + ✓），全部完成时导航区给出提示
 - 深/浅主题切换（默认跟随系统），左侧导航显示各验机项完成状态（绿点 + ✓）
 - 每个模块点「确认通过」后自动跳转到下一个未完成模块，全部完成时导航区给出提示
@@ -91,6 +94,8 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 | [OpenTK](https://opentk.net/) 4.x | FurMark 重实现的 OpenGL 窗口（GLFW）与绑定 | MIT |
 | [StbImageSharp](https://github.com/StbSharp/StbImageSharp) | FurMark 重实现的贴图解码（stb_image 的 C# 移植） | 公有领域 |
 | [PawnIO](https://github.com/namazso/PawnIO)（namazso） | CPU/主板传感器的 Ring0 内核驱动（LibreHardwareMonitor 经设备 IOCTL 与其通信）。**分发的是官方签名安装器**（pawnio.eu → PawnIO.Setup releases，原样未修改，随附于 Tools/pawnio/，由用户点击后才安装） | GPL-2.0（带例外：独立模块经设备 IOCTL 接口通信不构成衍生作品） |
+| [CrystalDiskMark](https://github.com/hiyohiyo/CrystalDiskMark) 9.0.3（hiyohiyo / Crystal Dew World） | 硬盘跑分引擎：源码原封编译为 CdmHost 控制台宿主（`Plugins/DiskMark/CdmHost/`，全程无窗口），引擎 DiskBench 直接驱动测速 | MIT |
+| [diskspd](https://github.com/microsoft/diskspd) 2.0.20a（Microsoft，hiyohiyo 定制 fork） | 硬盘测速子进程（由 CDM 引擎拉起，吞吐经退出码回报；随插件分发于 `Plugins/DiskMark/CdmHost/CdmResource/diskspd/`） | MIT |
 
 开发/打包工具致谢：[Inno Setup](https://jrsoftware.org/)（安装向导制作，仅打包用不进运行时，免费可商用）。
 

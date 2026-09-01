@@ -8,6 +8,7 @@
   <Project Path="Plugins/ScreenDeadPixel/YanJi.Plugin.ScreenDeadPixel.csproj" />
   <Project Path="Plugins/AvConference/YanJi.Plugin.AvConference.csproj" />
   <Project Path="Plugins/StressTest/YanJi.Plugin.StressTest.csproj" />
+  <Project Path="Plugins/DiskMark/YanJi.Plugin.DiskMark.csproj" />
   <!-- GPU 烤机工具（C# / OpenTK 重实现 FurMark-Python，MIT）：构建后自动拷到 验机软件/Tools/furmark/ -->
   <Project Path="FurMark/FurMark.csproj" />
   <!-- 开源采集库源码（MPL-2.0），配置核对/散热测试插件以项目引用使用。
