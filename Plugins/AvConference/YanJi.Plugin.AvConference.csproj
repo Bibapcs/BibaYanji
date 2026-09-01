@@ -25,6 +25,9 @@
     <None Include="..\..\不死のバイオレット - 幻月遠征隊.mp3"
           Link="不死のバイオレット - 幻月遠征隊.mp3"
           CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\AUDIO-LICENSE.md"
+          Link="AUDIO-LICENSE.md"
+          CopyToOutputDirectory="PreserveNewest" />
     <None Update="plugin.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
