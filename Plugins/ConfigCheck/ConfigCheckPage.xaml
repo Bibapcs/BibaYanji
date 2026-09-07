@@ -20,7 +20,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8">
             <Button x:Name="RunButton" Content="重新检测"
                     FontSize="14" FontWeight="SemiBold" Padding="16,7" Click="RunButton_Click"
-                    ToolTip="重新采集 CPU / 显卡 / 内存 / 硬盘 / 屏幕信息（会清除已通过状态）"/>
+                    ToolTip="重新采集 CPU / 显卡 / 内存 / 硬盘 / 屏幕 / 电池信息（会清除已通过状态）"/>
             <Button x:Name="PassButton" Content="确认无误，通过" IsEnabled="False"
                     Margin="8,3,2,3" Click="PassButton_Click"
                     ToolTip="人工逐项核对下方信息与订单配置一致后点击"/>

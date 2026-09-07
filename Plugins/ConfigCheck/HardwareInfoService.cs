@@ -15,11 +15,11 @@ public static class HardwareInfoService
     /// <summary>采集进度（Step 从 0 起，Total 为总阶段数）。</summary>
     public record CollectProgress(int Step, int Total, string Stage);
 
-    /// <summary>采集整机硬件信息（CPU / 显卡 / 内存 / 硬盘 / 屏幕）。</summary>
+    /// <summary>采集整机硬件信息（CPU / 显卡 / 内存 / 硬盘 / 屏幕 / 电池）。</summary>
     public static HardwareReport Collect(IProgress<CollectProgress>? progress = null)
     {
         var report = new HardwareReport();
-        const int total = 6;
+        const int total = 7;
 
         // LibreHardwareMonitor 整体只 Open 一次，快照分给各分组用
         progress?.Report(new(0, total, "处理器（CPU）"));
@@ -36,6 +36,8 @@ public static class HardwareInfoService
         report.Groups.Add(SafeGroup("网卡", CollectNics));
         progress?.Report(new(5, total, "屏幕"));
         report.Groups.Add(SafeGroup("屏幕", CollectDisplays));
+        progress?.Report(new(6, total, "电池"));
+        report.Groups.Add(SafeGroup("电池", g => CollectBattery(g, lhm)));
         return report;
     }
 
@@ -396,6 +398,69 @@ public static class HardwareInfoService
                 ? $"≈ {e.SrgbVolume:0}% sRGB / {e.P3Volume:0}% DCI-P3（EDID 容积比）"
                 : "无法读取");
         }
+    }
+
+    // ═══ 电池 ═══
+
+    /// <summary>root\WMI：电池类驱动注册的 WMI 类所在命名空间（BatteryStaticData 等）。</summary>
+    const string WmiRoot = @"root\WMI";
+
+    static void CollectBattery(InfoGroup g, LhmService.Snapshot lhm)
+    {
+        // 容量：LHM（电池类驱动 IOCTL 封装）优先，退回 root\WMI 电池 WMI 类
+        // （BatteryStaticData / BatteryFullChargedCapacity，powercfg /batteryreport 同源）；
+        // 循环次数 LHM 未导出（BATTERY_INFORMATION.CycleCount 被其丢弃），只有
+        // root\WMI BatteryCycleCount 一条通道，读不到显示「无法读取」，不反推。
+        var wmiBatteries = WmiQuery(Cimv2, "SELECT Name FROM Win32_Battery");
+        var statics = QueryRootWmiBattery("BatteryStaticData", "DesignedCapacity");
+        var fulls = QueryRootWmiBattery("BatteryFullChargedCapacity", "FullChargedCapacity");
+        var cycles = QueryRootWmiBattery("BatteryCycleCount", "CycleCount");
+
+        int count = Math.Max(wmiBatteries.Count,
+            Math.Max(lhm.Batteries.Count, Math.Max(statics.Count, fulls.Count)));
+        if (count == 0)
+        {
+            g.Add("电池", "未检测到（台式机或无电池设备）");
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            Separator(g, i);
+            string tag = count > 1 ? $" #{i + 1}" : "";
+            // 双通道实例顺序都与电池序号一致，按索引对应
+            double? designed = i < lhm.Batteries.Count ? lhm.Batteries[i].DesignedMWh : null;
+            designed ??= i < statics.Count ? statics[i] : null;
+            double? full = i < lhm.Batteries.Count ? lhm.Batteries[i].FullChargedMWh : null;
+            full ??= i < fulls.Count ? fulls[i] : null;
+
+            g.Add("设计容量" + tag, designed is > 0 ? $"{designed:N0} mWh" : "无法读取");
+            g.Add("完全充电容量" + tag, full is > 0 ? $"{full:N0} mWh" : "无法读取");
+
+            if (designed is > 0 && full is > 0)
+            {
+                double health = Math.Clamp(full.Value / designed.Value * 100.0, 0.0, 100.0);
+                g.Add("损耗" + tag, $"{100.0 - health:0.#} %（健康度 {health:0.#} %）");
+            }
+            else
+                g.Add("损耗" + tag, "无法读取");
+
+            uint cycle = i < cycles.Count ? cycles[i] : 0;
+            g.Add("循环次数" + tag, cycle is > 0 and < 0xFFFFFFFF ? $"{cycle} 次" : "无法读取");
+        }
+    }
+
+    /// <summary>root\WMI 电池类单属性查询（实例顺序与电池序号一致）；类未注册/查询失败返回空表。</summary>
+    static List<uint> QueryRootWmiBattery(string className, string prop)
+    {
+        var values = new List<uint>();
+        try
+        {
+            foreach (var mo in WmiQuery(WmiRoot, $"SELECT {prop} FROM {className}"))
+                values.Add(GetU32(mo, prop));
+        }
+        catch { /* 电池 WMI 类未注册（无电池/驱动不支持） */ }
+        return values;
     }
 
     // ═══ 通用辅助 ═══

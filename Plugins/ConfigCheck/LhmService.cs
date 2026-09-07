@@ -17,6 +17,9 @@ public static class LhmService
     /// <summary>内存条：SPD 名称（厂商 + 料号）+ 容量（GB）；仅 PawnIO 驱动可用时才有。</summary>
     public record LhmDimm(string Name, double? CapacityGB);
 
+    /// <summary>电池：名称 + 设计容量（mWh）+ 完全充电容量（mWh）；IOCTL 读不到对应项时为 null。</summary>
+    public record LhmBattery(string Name, double? DesignedMWh, double? FullChargedMWh);
+
     /// <summary>LHM 一次采集的快照；各列表为空表示 LHM 没拿到（退回 WMI）。</summary>
     public class Snapshot
     {
@@ -24,6 +27,7 @@ public static class LhmService
         public List<LhmGpu> Gpus { get; } = [];
         public List<LhmDisk> Disks { get; } = [];
         public List<LhmDimm> Dimms { get; } = [];
+        public List<LhmBattery> Batteries { get; } = [];
         /// <summary>物理内存总量（GB，GlobalMemoryStatusEx 口径）。</summary>
         public double? MemoryTotalGB { get; set; }
         /// <summary>整体失败原因（Computer.Open 抛异常时记录，供诊断展示）。</summary>
@@ -40,6 +44,7 @@ public static class LhmService
             IsGpuEnabled = true,
             IsMemoryEnabled = true,
             IsStorageEnabled = true,
+            IsBatteryEnabled = true,
         };
         try
         {
@@ -83,6 +88,12 @@ public static class LhmService
 
             case HardwareType.Storage:
                 CollectStorage(hw, snap);
+                break;
+
+            case HardwareType.Battery:
+                // 容量传感器构造期即有值（来自 BATTERY_INFORMATION），单位 mWh
+                snap.Batteries.Add(new LhmBattery(hw.Name.Trim(),
+                    FindSensorMWh(hw, "Designed Capacity"), FindSensorMWh(hw, "Fully-Charged Capacity")));
                 break;
         }
 
@@ -180,4 +191,9 @@ public static class LhmService
     static double? FindSensorGB(IHardware hw, string name) =>
         hw.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Data && s.Name == name)
             ?.Value is float v && v >= 0 ? v : null;
+
+    /// <summary>Energy 传感器值（mWh）。</summary>
+    static double? FindSensorMWh(IHardware hw, string name) =>
+        hw.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Energy && s.Name == name)
+            ?.Value is float v && v > 0 ? v : null;
 }
