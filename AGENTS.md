@@ -30,7 +30,7 @@ LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表
 │   ├── Contracts.cs           # IYanJiPlugin / IModulePage / IKeyHandlerPage / IPluginShutdown / IHostContext
 │   └── Services/              # DisplayInfoService + EdidParser（多个插件共用才放这里）
 ├── Plugins/                   # ★ 六个内置模块插件（每个 = 一个 class lib 工程 + plugin.json）
-│   ├── ConfigCheck/           # 配置核对（LHM + WMI 采集）      id=config    order=10
+│   ├── ConfigCheck/           # 配置核对（LHM + WMI 采集，含电池容量/损耗/循环次数） id=config    order=10
 │   ├── KeyboardTest/          # 键盘测试（104 键）             id=keyboard  order=20
 │   ├── ScreenDeadPixel/       # 屏幕坏点（全屏纯色）           id=screen    order=30
 │   ├── AvConference/          # 影音会议（摄像头/麦/扬声器）   id=av        order=40
@@ -56,7 +56,7 @@ dotnet run --project 验机软件       # 运行（exe 是 requireAdministrator�
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
-# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.2.exe）
+# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.3.exe）
 "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 

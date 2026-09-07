@@ -1,6 +1,6 @@
 # 笔吧验机
 
-二手/新机到手后的硬件配置核对工具：一键采集 CPU、显卡、内存、硬盘、网卡、屏幕（含色域估算）信息，
+二手/新机到手后的硬件配置核对工具：一键采集 CPU、显卡、内存、硬盘、网卡、屏幕（含色域估算）、电池信息，
 人工与订单配置逐项核对，确认无误后标记通过（左侧导航圆点变绿）。
 
 全部硬件采集基于**开源组件与 Windows 自带接口**，不含任何闭源商业软件。
@@ -15,6 +15,8 @@
   - **网卡**：型号（全部物理网卡，与设备管理器显示一致）
   - **屏幕**：分辨率、刷新率、尺寸（对角线英寸）、面板名称、色域 —— 由 EDID 色度坐标估算的
     sRGB / DCI-P3 **容积比**（面板顶点可超出标准色域，比值可能 >100%，是容积比而非覆盖率）
+  - **电池**：设计容量、完全充电容量、损耗（健康度）、循环次数 —— 与 `powercfg /batteryreport`
+    同源（电池类驱动 IOCTL / root\WMI 电池类）；读不到的项显示「无法读取」，无电池设备显示提示
 - **键盘测试**：全尺寸 ANSI 104 键可视化键盘，按物理键实时反馈（按住高亮、松开变绿），
   显示「已测试 X / 104」进度，可重置；笔记本没有的键（如小键盘）保持灰色即可
 - **屏幕坏点**：选显示器后全屏纯色检测（白→红→绿→蓝→黑），按任意键或单击鼠标切换、Esc 退出，
@@ -57,7 +59,7 @@ dotnet run --project 验机软件
 ## 安装
 
 **直接下载**：到 [Releases](https://github.com/Bibapcs/BibaYanji/releases) 下载最新安装包
-（当前 v0.0.2：`BibaYanjiSetup-v0.0.2.exe`，约 116 MB，Inno Setup 中文向导）：
+（当前 v0.0.3：`BibaYanjiSetup-v0.0.3.exe`，约 116 MB，Inno Setup 中文向导）：
 
 - 安装到 `C:\Program Files\BibaInspection`；「自定义安装」可**按模块勾选**要装的验机插件
   （不勾「散热测试」可省约 130 MB 烤机工具负载）
@@ -75,7 +77,7 @@ dotnet run --project 验机软件
 ```
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
-"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.2.exe
+"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.3.exe
 ```
 
 安装包内容：`验机软件.exe` + 全套自包含运行时 + `YanJi.PluginSdk.dll`（插件契约）+
