@@ -11,8 +11,9 @@ public static class LhmService
     public record LhmGpu(string Name, double? VramMB);
 
     /// <summary>硬盘：型号 + 容量（字节）+ 健康度（%，SMART，null=未知）+ 通电时间（小时，null=未知）
-    /// + 物理盘号（StorageDeviceNumber，与 Win32_DiskDrive.Index 对应，用于关联盘符，null=未知）。</summary>
-    public record LhmDisk(string Name, ulong? SizeBytes, int? HealthPercent, long? PowerOnHours, uint? DeviceNumber);
+    /// + 物理盘号（StorageDeviceNumber，与 Win32_DiskDrive.Index 对应，用于关联盘符，null=未知）
+    /// + 0E 介质与数据完整性错误计数（NVMe SMART，null=未知/非 NVMe）。</summary>
+    public record LhmDisk(string Name, ulong? SizeBytes, int? HealthPercent, long? PowerOnHours, uint? DeviceNumber, long? MediaErrors);
 
     /// <summary>内存条：SPD 名称（厂商 + 料号）+ 容量（GB）；仅 PawnIO 驱动可用时才有。</summary>
     public record LhmDimm(string Name, double? CapacityGB);
@@ -136,11 +137,12 @@ public static class LhmService
                 s.DiskSizeBytes,
                 ComputeHealth(s),
                 ComputePowerOnHours(s),
-                s.StorageDeviceNumber));
+                s.StorageDeviceNumber,
+                ComputeMediaErrors(s)));
         }
         else
         {
-            snap.Disks.Add(new LhmDisk(hw.Name.Trim(), null, null, null, null));
+            snap.Disks.Add(new LhmDisk(hw.Name.Trim(), null, null, null, null, null));
         }
     }
 
@@ -176,6 +178,22 @@ public static class LhmService
         {
             if (s.PowerOnHours.HasValue) return (long)s.PowerOnHours.Value;
             var attr = s.SmartAttributes.FirstOrDefault(a => a.ID == 0x09 && a.RawValue > 0);
+            if (attr != null) return (long)attr.RawValue;
+        }
+        catch { /* SMART 读取失败 → 未知 */ }
+        return null;
+    }
+
+    /// <summary>0E 介质与数据完整性错误计数（CrystalDiskInfo 的 NVMe 列表第 0E 项 = NVMe SMART log
+    /// 偏移 160 的 Media and Data Integrity Errors；验机关注项，正常应为 0，非 0 多为盘体/主控异常前兆）。
+    /// 注意 DiskInfoToolkit 对 NVMe 属性用 0xE0+ 序号编号，此项实为 <b>0xED</b>（0x0E 是 CDI 显示序号，
+    /// 直接按 0x0E 匹配永远落空）。仅 NVMe 盘有此语义（SATA 的 0x0E 含义不同，不显示）；读不到返回 null。</summary>
+    static long? ComputeMediaErrors(DiskInfoToolkit.StorageDevice s)
+    {
+        try
+        {
+            if (s.TransportKind != DiskInfoToolkit.StorageTransportKind.Nvme) return null;
+            var attr = s.SmartAttributes.FirstOrDefault(a => a.ID == 0xED);
             if (attr != null) return (long)attr.RawValue;
         }
         catch { /* SMART 读取失败 → 未知 */ }

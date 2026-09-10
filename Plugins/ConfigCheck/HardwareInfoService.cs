@@ -254,8 +254,8 @@ public static class HardwareInfoService
 
     static void CollectDisks(InfoGroup g, LhmService.Snapshot lhm)
     {
-        // 每块盘三行：容量　(盘符)　型号（一行；盘符可多个，无盘符不显示括号）+ 健康度 + 通电时间
-        //（SMART，拿不到显示「未知」）；盘变多行后恢复盘间空行（与 GPU/屏幕一致）
+        // 每块盘四行：容量　(盘符)　型号（一行；盘符可多个，无盘符不显示括号）+ 健康度 + 通电时间
+        // + 0E 介质与数据完整性错误（SMART，拿不到显示「未知」）；盘变多行后恢复盘间空行（与 GPU/屏幕一致）
         if (lhm.Disks.Count > 0)
         {
             // 盘符按物理盘号关联：LHM StorageDeviceNumber = Windows 物理盘号 = Win32_DiskDrive.Index；
@@ -272,11 +272,12 @@ public static class HardwareInfoService
                     + $"　{(d.Name.Length > 0 ? d.Name : "未知型号")}");
                 g.Add("健康度" + tag, d.HealthPercent is int hp ? $"{hp} %" : "未知");
                 g.Add("通电时间" + tag, FormatHours(d.PowerOnHours));
+                g.Add("0E（介质与数据完整性错误）" + tag, d.MediaErrors is long me ? $"{me} 次" : "未知");
             }
             return;
         }
 
-        // WMI 兜底通道没有 SMART：容量/型号照列，健康度/通电时间「未知」（不强行反推）；
+        // WMI 兜底通道没有 SMART：容量/型号照列，健康度/通电时间/0E「未知」（不强行反推）；
         // 本通道本来就有 Win32_DiskDrive.Index，直接关联盘符
         var disks = WmiQuery(Cimv2, "SELECT Model, Size, Index FROM Win32_DiskDrive");
         var wmiLetters = QueryDiskLetters();
@@ -292,6 +293,7 @@ public static class HardwareInfoService
                 + $"　{(model.Length > 0 ? model : "未知型号")}");
             g.Add("健康度" + tag, "未知");
             g.Add("通电时间" + tag, "未知");
+            g.Add("0E（介质与数据完整性错误）" + tag, "未知");
         }
     }
 
