@@ -272,7 +272,7 @@ public static class HardwareInfoService
                     + $"　{(d.Name.Length > 0 ? d.Name : "未知型号")}");
                 g.Add("健康度" + tag, d.HealthPercent is int hp ? $"{hp} %" : "未知");
                 g.Add("通电时间" + tag, FormatHours(d.PowerOnHours));
-                g.Add("0E（介质与数据完整性错误）" + tag, d.MediaErrors is long me ? $"{me} 次" : "未知");
+                g.Add("介质与数据完整性错误" + tag, d.MediaErrors is long me ? $"{me} 次" : "未知");
             }
             return;
         }
@@ -293,7 +293,7 @@ public static class HardwareInfoService
                 + $"　{(model.Length > 0 ? model : "未知型号")}");
             g.Add("健康度" + tag, "未知");
             g.Add("通电时间" + tag, "未知");
-            g.Add("0E（介质与数据完整性错误）" + tag, "未知");
+            g.Add("介质与数据完整性错误" + tag, "未知");
         }
     }
 
