@@ -59,7 +59,7 @@ dotnet run --project 验机软件
 ## 安装
 
 **直接下载**：到 [Releases](https://github.com/Bibapcs/BibaYanji/releases) 下载最新安装包
-（当前 v0.0.3：`BibaYanjiSetup-v0.0.3.exe`，约 116 MB，Inno Setup 中文向导）：
+（当前 v0.0.4：`BibaYanjiSetup-v0.0.4.exe`，约 116 MB，Inno Setup 中文向导）：
 
 - 安装到 `C:\Program Files\BibaInspection`；「自定义安装」可**按模块勾选**要装的验机插件
   （不勾「散热测试」可省约 130 MB 烤机工具负载）
@@ -77,7 +77,7 @@ dotnet run --project 验机软件
 ```
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
-"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.3.exe
+"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss   # 产物 installer\笔吧验机Setup-v0.0.4.exe
 ```
 
 安装包内容：`验机软件.exe` + 全套自包含运行时 + `YanJi.PluginSdk.dll`（插件契约）+

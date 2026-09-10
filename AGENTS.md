@@ -56,7 +56,7 @@ dotnet run --project 验机软件       # 运行（exe 是 requireAdministrator�
 dotnet publish FurMark/FurMark.csproj -p:PublishProfile=FolderProfile
 dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 
-# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.3.exe）
+# 安装向导（Inno Setup 6，产物 installer/笔吧验机Setup-v0.0.4.exe）
 "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 

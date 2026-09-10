@@ -1,6 +1,6 @@
 ; 笔吧验机 安装向导脚本（Inno Setup 6，中文界面）
 ; 构建："%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" installer\setup.iss
-; 源 = publish\ 整目录（self-contained 便携包）；产物 = installer\笔吧验机Setup-v0.0.3.exe
+; 源 = publish\ 整目录（self-contained 便携包）；产物 = installer\笔吧验机Setup-v0.0.4.exe
 ; 注意：OutputBaseFilename 不能含多余的点（"Setup-0.0.2" 的 ".0" 会被 Inno 当扩展名剥掉），用 v0.0.2 形式
 ;
 ; 插件化结构：主程序 = 验机软件.exe + 运行时 + YanJi.PluginSdk.dll（组件 main，固定必装）；
@@ -10,6 +10,7 @@
 ; 安装末尾静默执行 Tools\pawnio\PawnIO_setup.exe -install -silent（用户零点击，无需重启；
 ; 未装散热组件或系统已装 PawnIO 时自动跳过）。
 ; 0.0.3：配置核对新增「电池」分组（设计/完全充电容量、损耗、循环次数），无电池设备显示提示。
+; 0.0.4：配置核对硬盘部分新增「介质与数据完整性错误」（NVMe SMART，即 CrystalDiskInfo 的 0E 项）。
 
 ; LZMA2 块级并行线程数：自动取本机逻辑处理器线程数（NUMBER_OF_PROCESSORS），取不到回落 8
 #define BlockThreads GetEnv("NUMBER_OF_PROCESSORS")
@@ -20,8 +21,8 @@
 
 [Setup]
 AppName=笔吧验机
-AppVersion=0.0.3
-AppVerName=笔吧验机 0.0.3
+AppVersion=0.0.4
+AppVerName=笔吧验机 0.0.4
 AppPublisher=笔吧验机
 ; 只面向 x64 Windows（self-contained win-x64），且装到 C:\Program Files（而非 (x86)）
 ArchitecturesAllowed=x64compatible
@@ -31,13 +32,13 @@ DefaultDirName={autopf}\BibaInspection
 DefaultGroupName=笔吧验机
 PrivilegesRequired=admin
 OutputDir=.
-OutputBaseFilename=笔吧验机Setup-v0.0.3
+OutputBaseFilename=笔吧验机Setup-v0.0.4
 Compression=lzma2/max
 SolidCompression=yes
 ; 块级并行压缩：多线程各压一块（压缩率略降）；独立 64 位压缩进程，规避 32 位编译器内存上限
 LZMANumBlockThreads={#BlockThreads}
 LZMAUseSeparateProcess=yes
-VersionInfoVersion=0.0.3.0
+VersionInfoVersion=0.0.4.0
 VersionInfoCompany=笔吧验机
 VersionInfoDescription=笔吧验机 安装向导
 VersionInfoProductName=笔吧验机
