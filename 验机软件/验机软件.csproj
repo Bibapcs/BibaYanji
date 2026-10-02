@@ -28,6 +28,16 @@
     <ProjectReference Include="..\PluginSdk\YanJi.PluginSdk.csproj" />
   </ItemGroup>
 
+  <!--需要先构建插件-->
+  <ItemGroup>
+    <ProjectReference Include="..\Plugins\ConfigCheck\YanJi.Plugin.ConfigCheck.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Plugins\KeyboardTest\YanJi.Plugin.KeyboardTest.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Plugins\ScreenDeadPixel\YanJi.Plugin.ScreenDeadPixel.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Plugins\AvConference\YanJi.Plugin.AvConference.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Plugins\DiskMark\YanJi.Plugin.DiskMark.csproj" ReferenceOutputAssembly="False" />
+  </ItemGroup>
+
   <!-- FurMark 烤机工具：构建序依赖（先构建它 → 它把负载拷到下面的 Tools/furmark/）。
        用 MSBuild 任务而非 ProjectReference：ProjectReference 会把 FurMark 的输出文件
        一并流入本工程输出/发布根目录（多出一份框架依赖 FurMark.exe 与 Assets 副本）。
@@ -37,23 +47,6 @@
     <MSBuild Projects="..\FurMark\FurMark.csproj" Targets="Build"
              Properties="Configuration=$(Configuration)"
              RemoveProperties="RuntimeIdentifier;SelfContained" />
-  </Target>
-
-  <!-- 插件工程：先构建（同样用 MSBuild 任务避免输出流入本工程），再把各插件输出拷到
-       $(OutDir)plugins/<id>/。ItemGroup 写在 Target 内：文件是构建产生的，必须在执行期求值 -->
-  <Target Name="BuildPlugins" BeforeTargets="BeforeBuild">
-    <MSBuild Projects="..\Plugins\ConfigCheck\YanJi.Plugin.ConfigCheck.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
-    <MSBuild Projects="..\Plugins\KeyboardTest\YanJi.Plugin.KeyboardTest.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
-    <MSBuild Projects="..\Plugins\ScreenDeadPixel\YanJi.Plugin.ScreenDeadPixel.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
-    <MSBuild Projects="..\Plugins\AvConference\YanJi.Plugin.AvConference.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
-    <MSBuild Projects="..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
-    <MSBuild Projects="..\Plugins\DiskMark\YanJi.Plugin.DiskMark.csproj" Targets="Build"
-             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
   </Target>
 
   <!-- %(RecursiveDir) 保留子目录结构；插件目录按 plugin.json 的 id 命名 -->
