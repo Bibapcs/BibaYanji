@@ -1,6 +1,12 @@
 <UserControl x:Class="YanJi.Plugin.KeyboardTest.KeyboardTestPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:YanJi.Plugin.KeyboardTest">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter" 
+                                                  InvisibleVisibility="Hidden"/>
+    </UserControl.Resources>
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -37,11 +43,34 @@
         </StackPanel>
 
         <!-- 键盘区：u 单位坐标在 code-behind 生成（Canvas 尺寸也在代码里设定），Viewbox 自适应缩放 -->
-        <Border Grid.Row="3" Style="{StaticResource CardBorder}" Width="Auto" Margin="0" Padding="14">
-            <Viewbox Stretch="Uniform">
-                <Canvas x:Name="KeyboardCanvas"/>
-            </Viewbox>
-        </Border>
+        <local:FocusableBorder 
+            x:Name="KeyboardArea"
+            Grid.Row="3" Width="Auto" Margin="0"
+            Padding="0"
+            Style="{StaticResource CardBorder}"
+            InputMethod.IsInputMethodEnabled="False"
+            Background="Transparent">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0 4 0 0">
+                    <TextBlock
+                           HorizontalAlignment="Center"
+                           Text="点击此区域然后按键盘上的键进行测试"
+                           Visibility="{Binding ElementName=KeyboardArea, Path=IsFocused, Converter={StaticResource InvertBooleanToVisibilityConverter}}"/>
+                    <TextBlock
+                           HorizontalAlignment="Center"
+                           Text="正在进行测试"
+                           Visibility="{Binding ElementName=KeyboardArea, Path=IsFocused, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+                <Viewbox Grid.Row="1" Stretch="Uniform"
+                         Margin="14">
+                    <Canvas x:Name="KeyboardCanvas"/>
+                </Viewbox>
+            </Grid>
+        </local:FocusableBorder>
 
         <!-- 按键历史 Log 区：Consolas（LogBox 惯例），自动滚底，上限 500 条；
              圆角 = 外套圆角 Border（TextBox 本身无圆角，去边框去底色嵌进去），与分组卡片/键帽一致 -->
