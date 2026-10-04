@@ -23,6 +23,9 @@
   多屏逐台可测，检查坏点/亮点/暗点
 - **影音会议**：摄像头（设备可选 + 实时预览，离开页面自动关闭）、麦克风（电平条实时跳动 + 录制/回放）、
   扬声器（设备可选 + 播放试音曲），三项确认后一键通过
+- **性能模式**（待用户真机验收）：品牌中立的三档调度基座，识别主机与交流供电；Windows 通用策略兜底，
+  华硕通过统一 Provider 接口接入参考适配，联想/戴尔/惠普为待实现插槽。增强需要交流供电，
+  未知状态与部分成功会明确说明。社区扩展见 [适配指南](Plugins/PowerMode/CONTRIBUTING.md)。
 - **散热测试**：CPU 单烤（prime95，本项目按 GIMPS 源码编译）/ GPU 单烤（FurMark 毛球，C# / OpenTK 重实现）
   / 双烤三模式；FurMark 分辨率/全屏/抗锯齿与 prime95 线程数/FFT 模式可调，已烤时长实时显示；
   **数据监控**四路实时折线（CPU 温度/功耗、GPU 温度/功耗，LibreHardwareMonitor 2 秒轮询；
@@ -81,7 +84,7 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 ```
 
 安装包内容：`验机软件.exe` + 全套自包含运行时 + `YanJi.PluginSdk.dll`（插件契约）+
-`plugins\`（六个验机模块插件，试音曲 mp3 在 `plugins\av\`）+ `Tools\prime95\`（CPU 烤机）+
+`plugins\`（七个验机模块插件，试音曲 mp3 在 `plugins\av\`）+ `Tools\prime95\`（CPU 烤机）+
 `Tools\furmark\`（GPU 烤机）+ `Tools\pawnio\PawnIO_setup.exe`（PawnIO 驱动官方签名安装器——
 0.0.2 起安装向导默认安装该驱动；不装也能跑，只是散热测试页 CPU 温度/功耗两路不可用，
 页面也有一键安装按钮，装完无需重启）。

@@ -50,6 +50,8 @@
              Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
     <MSBuild Projects="..\Plugins\AvConference\YanJi.Plugin.AvConference.csproj" Targets="Build"
              Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
+    <MSBuild Projects="..\Plugins\PowerMode\YanJi.Plugin.PowerMode.csproj" Targets="Build"
+             Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
     <MSBuild Projects="..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" Targets="Build"
              Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained" />
     <MSBuild Projects="..\Plugins\DiskMark\YanJi.Plugin.DiskMark.csproj" Targets="Build"
@@ -63,6 +65,7 @@
       <_PluginKeyboardFiles Include="..\Plugins\KeyboardTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginScreenFiles Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginAvFiles Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PluginPowerFiles Include="..\Plugins\PowerMode\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginStressFiles Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PluginDiskFiles Include="..\Plugins\DiskMark\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
     </ItemGroup>
@@ -74,6 +77,8 @@
           DestinationFiles="@(_PluginScreenFiles->'$(OutDir)plugins\screen\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PluginAvFiles)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PluginAvFiles->'$(OutDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PluginPowerFiles)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PluginPowerFiles->'$(OutDir)plugins\power\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PluginStressFiles)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PluginStressFiles->'$(OutDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PluginDiskFiles)" SkipUnchangedFiles="true"
@@ -87,6 +92,7 @@
       <_PubKeyboard Include="..\Plugins\KeyboardTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubScreen Include="..\Plugins\ScreenDeadPixel\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubAv Include="..\Plugins\AvConference\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
+      <_PubPower Include="..\Plugins\PowerMode\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubStress Include="..\Plugins\StressTest\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
       <_PubDisk Include="..\Plugins\DiskMark\bin\$(Configuration)\net10.0-windows10.0.19041.0\**\*" />
     </ItemGroup>
@@ -98,6 +104,8 @@
           DestinationFiles="@(_PubScreen->'$(PublishDir)plugins\screen\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PubAv)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PubAv->'$(PublishDir)plugins\av\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_PubPower)" SkipUnchangedFiles="true"
+          DestinationFiles="@(_PubPower->'$(PublishDir)plugins\power\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PubStress)" SkipUnchangedFiles="true"
           DestinationFiles="@(_PubStress->'$(PublishDir)plugins\stress\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(_PubDisk)" SkipUnchangedFiles="true"

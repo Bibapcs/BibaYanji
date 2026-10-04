@@ -29,11 +29,12 @@ LibreHardwareMonitor 源码（MPL-2.0）+ Windows 自带接口（WMI / 注册表
 ├── PluginSdk/                 # ★ 插件契约（YanJi.PluginSdk.dll）：接口 + 共享服务
 │   ├── Contracts.cs           # IYanJiPlugin / IModulePage / IKeyHandlerPage / IPluginShutdown / IHostContext
 │   └── Services/              # DisplayInfoService + EdidParser（多个插件共用才放这里）
-├── Plugins/                   # ★ 六个内置模块插件（每个 = 一个 class lib 工程 + plugin.json）
+├── Plugins/                   # ★ 七个内置模块插件（每个 = 一个 class lib 工程 + plugin.json）
 │   ├── ConfigCheck/           # 配置核对（LHM + WMI 采集，含电池容量/损耗/循环次数） id=config    order=10
 │   ├── KeyboardTest/          # 键盘测试（104 键）             id=keyboard  order=20
 │   ├── ScreenDeadPixel/       # 屏幕坏点（全屏纯色）           id=screen    order=30
 │   ├── AvConference/          # 影音会议（摄像头/麦/扬声器）   id=av        order=40
+│   ├── PowerMode/             # 品牌中立性能调度基座 + 华硕参考适配 id=power order=45（待用户真机验收）
 │   ├── StressTest/            # 散热测试（烤机+传感器监控）    id=stress    order=50
 │   └── DiskMark/              # 硬盘跑分（CDM 源码集成 CdmHost） id=disk      order=80
 ├── FurMark/                   # GPU 烤机工具工程（构建后拷到 验机软件/Tools/furmark/）
@@ -60,7 +61,7 @@ dotnet publish 验机软件/验机软件.csproj -p:PublishProfile=FolderProfile
 "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" //Q "D:\【视频】验机软件\installer\setup.iss"
 ```
 
-宿主构建链路：`BuildPlugins`（BeforeBuild，MSBuild 任务建 5 个插件工程）→ 插件构建 →
+宿主构建链路：`BuildPlugins`（BeforeBuild，MSBuild 任务建 7 个插件工程）→ 插件构建 →
 `CopyPluginsToOutput`（AfterTargets=Build，插件输出拷到 `$(OutDir)plugins/<id>/`）；
 publish 时另有 `CopyPluginsToPublish`（AfterTargets=Publish）同步到 `publish\plugins\`。
 **新增内置插件时，这两个 target 与 installer/setup.iss 的 [Components]/[Files] 都要加对应条目。**

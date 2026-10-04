@@ -1,0 +1,9 @@
+{
+  "id": "power",
+  "name": "性能模式",
+  "version": "1.0.0",
+  "order": 45,
+  "terminal": false,
+  "entryAssembly": "YanJi.Plugin.PowerMode.dll",
+  "entryType": "YanJi.Plugin.PowerMode.PowerModePlugin"
+}

@@ -55,13 +55,14 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 Name: "full"; Description: "完整安装"
 Name: "custom"; Description: "自定义安装"; Flags: iscustom
 
-; 可选组件：主程序固定必装；六个验机模块插件逐项可选（默认全勾）
+; 可选组件：主程序固定必装；七个验机模块插件逐项可选（默认全勾）
 [Components]
 Name: "main"; Description: "主程序（必需）"; Types: full custom; Flags: fixed
 Name: "config"; Description: "配置核对（CPU/显卡/内存/硬盘/网卡/屏幕/电池采集核对）"; Types: full
 Name: "keyboard"; Description: "键盘测试（104 键可视化）"; Types: full
 Name: "screen"; Description: "屏幕坏点（全屏纯色检测）"; Types: full
 Name: "av"; Description: "影音会议（摄像头/麦克风/扬声器）"; Types: full
+Name: "power"; Description: "性能模式（Windows 通用三档调度，支持社区原厂适配）"; Types: full
 Name: "stress"; Description: "散热测试（CPU/GPU/双烤 + 传感器监控，含 prime95/FurMark 工具）"; Types: full
 Name: "disk"; Description: "硬盘跑分（CrystalDiskMark 源码集成，SEQ1M/RND4K 四项）"; Types: full
 
@@ -80,6 +81,7 @@ Source: "..\publish\plugins\config\*"; DestDir: "{app}\plugins\config"; Componen
 Source: "..\publish\plugins\keyboard\*"; DestDir: "{app}\plugins\keyboard"; Components: keyboard; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\screen\*"; DestDir: "{app}\plugins\screen"; Components: screen; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\av\*"; DestDir: "{app}\plugins\av"; Components: av; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\publish\plugins\power\*"; DestDir: "{app}\plugins\power"; Components: power; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\stress\*"; DestDir: "{app}\plugins\stress"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\disk\*"; DestDir: "{app}\plugins\disk"; Components: disk; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 烤机工具负载只有散热测试用：随 stress 组件安装（不勾散热可省约 130MB）

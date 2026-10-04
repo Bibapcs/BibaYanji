@@ -1,0 +1,81 @@
+<UserControl x:Class="YanJi.Plugin.PowerMode.UI.PowerModePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="16">
+            <TextBlock Text="性能模式" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="烤机与跑分前，建议插好电源并开启增强模式。" TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,6,0,14"/>
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock x:Name="IdentityText" Text="正在识别主机…" TextWrapping="Wrap" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock x:Name="SupplyText" Text="供电状态：正在检测" Margin="0,8,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBlock x:Name="ProviderText" Text="模式控制：正在检测" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBlock x:Name="CurrentModeText" Text="当前模式：未知" Margin="0,8,0,0" FontWeight="SemiBold"
+                               Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock x:Name="SourceText" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="QuietButton" Tag="Quiet" Click="Mode_Click" IsEnabled="False"
+                        Margin="0,0,6,0" Padding="8,16" ToolTip="适合轻度使用，优先节省电量">
+                    <StackPanel>
+                        <TextBlock Text="静音" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="节能 · 日常轻负载" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="BalancedButton" Grid.Column="1" Tag="Balanced" Click="Mode_Click" IsEnabled="False"
+                        Margin="3,0" Padding="8,16" ToolTip="适合日常使用，兼顾性能与耗电">
+                    <StackPanel>
+                        <TextBlock Text="平衡" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="兼顾性能与能耗" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TurboButton" Grid.Column="2" Tag="Turbo" Click="Mode_Click" IsEnabled="False"
+                        Margin="6,0,0,0" Padding="8,16" ToolTip="请先插好电源；烤机与跑分前推荐">
+                    <StackPanel>
+                        <TextBlock Text="增强" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="烤机与跑分前推荐" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <TextBlock x:Name="SupportText" TextWrapping="Wrap" LineHeight="20" Margin="0,0,0,8"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <TextBlock Text="仅切换电脑已有的性能模式，不超频。退出软件后会保留所选模式，需要恢复时请切回平衡。"
+                       TextWrapping="Wrap" LineHeight="20" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <WrapPanel Margin="0,8,0,6">
+                <Button x:Name="RefreshButton" Content="重新检测" Click="Refresh_Click" IsEnabled="False"/>
+                <Button Content="系统电源设置" Click="SystemSettings_Click"/>
+                <Button x:Name="DriverButton" Content="前往官网下载驱动" Click="Driver_Click" Visibility="Collapsed"/>
+            </WrapPanel>
+            <TextBlock x:Name="ResultText" Text="正在读取性能模式…" TextWrapping="Wrap" Margin="0,4,0,8"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                <TextBlock Text="准备状态：" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}"/>
+                <TextBlock x:Name="StatusText" Text="待确认" Margin="8,0,0,0"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </StackPanel>
+            <Button x:Name="PassButton" Content="确认性能准备，通过" Click="Pass_Click" IsEnabled="False"
+                    HorizontalAlignment="Left" Margin="0,8,0,0" Padding="16,7"
+                    ToolTip="亲自核对当前供电与性能模式后确认；模式切换不会自动通过"/>
+            <Expander Header="操作记录" Style="{StaticResource DetailsExpander}" Margin="0,10,0,0">
+                <Border CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                        Background="{DynamicResource SubtleBgBrush}" Margin="0,6,0,0">
+                    <TextBox x:Name="LogBox" IsReadOnly="True" FontFamily="Consolas" FontSize="11"
+                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="130" BorderThickness="0"
+                             Foreground="{DynamicResource TextBrush}" Background="{DynamicResource SubtleBgBrush}"/>
+                </Border>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
