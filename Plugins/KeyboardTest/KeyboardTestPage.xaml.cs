@@ -154,6 +154,11 @@ public partial class KeyboardTestPage : UserControl, YanJi.PluginSdk.IModulePage
     /// 调用方（MainWindow）已过滤 IsRepeat，长按连发不会刷到这里。</summary>
     public bool HandleKey(Key key, bool down)
     {
+        if (!KeyboardArea.IsFocused)
+        {
+            return false; // 仅当键盘测试区有焦点时才处理按键，避免干扰其他模块
+        }
+
         if (!_keyMap.TryGetValue(key, out var visuals)) return false;
         Log(visuals[0].Label, down);
         foreach (var v in visuals)
