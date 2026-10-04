@@ -55,7 +55,7 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 Name: "full"; Description: "完整安装"
 Name: "custom"; Description: "自定义安装"; Flags: iscustom
 
-; 可选组件：主程序固定必装；七个验机模块插件逐项可选（默认全勾）
+; 可选组件：主程序固定必装；六个验机模块插件逐项可选（默认全勾）
 [Components]
 Name: "main"; Description: "主程序（必需）"; Types: full custom; Flags: fixed
 Name: "config"; Description: "配置核对（CPU/显卡/内存/硬盘/网卡/屏幕/电池采集核对）"; Types: full
