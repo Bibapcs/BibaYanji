@@ -141,6 +141,7 @@ public partial class DiskMarkPage : UserControl, IModulePage
     void SetRunning()
     {
         _passed = false;
+        PassChanged?.Invoke(false);
         StatusText.Text = "跑分中…";
         StatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextSecondaryBrush");
     }

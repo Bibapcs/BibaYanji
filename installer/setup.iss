@@ -64,6 +64,7 @@ Name: "screen"; Description: "屏幕坏点（全屏纯色检测）"; Types: full
 Name: "av"; Description: "影音会议（摄像头/麦克风/扬声器）"; Types: full
 Name: "stress"; Description: "散热测试（CPU/GPU/双烤 + 传感器监控，含 prime95/FurMark 工具）"; Types: full
 Name: "disk"; Description: "硬盘跑分（CrystalDiskMark 源码集成，SEQ1M/RND4K 四项）"; Types: full
+Name: "report"; Description: "验机报告（硬件配置/确认记录/性能摘要，导出 PDF）"; Types: full
 
 ; 附加任务默认都勾选（用户可取消）：桌面快捷方式 / 开始菜单项 / PawnIO 驱动
 [Tasks]
@@ -82,6 +83,7 @@ Source: "..\publish\plugins\screen\*"; DestDir: "{app}\plugins\screen"; Componen
 Source: "..\publish\plugins\av\*"; DestDir: "{app}\plugins\av"; Components: av; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\stress\*"; DestDir: "{app}\plugins\stress"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\publish\plugins\disk\*"; DestDir: "{app}\plugins\disk"; Components: disk; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\publish\plugins\report\*"; DestDir: "{app}\plugins\report"; Components: report; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 烤机工具负载只有散热测试用：随 stress 组件安装（不勾散热可省约 130MB）
 Source: "..\publish\Tools\*"; DestDir: "{app}\Tools"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
 

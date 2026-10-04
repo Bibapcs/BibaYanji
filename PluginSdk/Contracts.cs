@@ -17,6 +17,8 @@ public interface IHostContext
     bool IsDone(string moduleId);
     /// <summary>任一模块通过状态变化后触发（UI 线程）。</summary>
     event Action? DoneChanged;
+    /// <summary>本次验机共享快照；默认 null 兼容未提供报告能力的旧宿主。</summary>
+    InspectionData? Inspection => null;
 }
 
 /// <summary>插件用到的开源组件/素材致谢（名称/用途/协议），在「插件管理」窗口随插件展示——

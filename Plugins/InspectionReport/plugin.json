@@ -1,0 +1,9 @@
+{
+  "id": "report",
+  "name": "验机报告",
+  "version": "1.0.0",
+  "order": 90,
+  "terminal": true,
+  "entryAssembly": "YanJi.Plugin.InspectionReport.dll",
+  "entryType": "YanJi.Plugin.InspectionReport.InspectionReportPlugin"
+}

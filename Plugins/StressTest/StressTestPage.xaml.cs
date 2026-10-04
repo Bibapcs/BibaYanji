@@ -13,6 +13,8 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     readonly DispatcherTimer _tick = new() { Interval = TimeSpan.FromMilliseconds(500) };
     TimeSpan _lastRun = TimeSpan.Zero; // 最近一次烤了多久（未烤过为 0，状态行提示用）
     DateTime? _runStart;               // 本轮烤机起点（running→停止 的那一拍结算进 _lastRun）
+    readonly YanJi.PluginSdk.InspectionData? _inspection;
+    StressReportSummary? _reportRun;
 
     /// <summary>核对完成状态变化（true = 已通过，false = 回到待核对）；MainWindow 据此同步导航圆点。</summary>
     public event Action<bool>? PassChanged;
@@ -20,8 +22,9 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     /// <summary>当前是否已核对通过。</summary>
     public bool Passed { get; private set; }
 
-    public StressTestPage()
+    public StressTestPage(YanJi.PluginSdk.IHostContext host)
     {
+        _inspection = host.Inspection;
         InitializeComponent();
 
         // 线程数下拉：1 .. 逻辑核心数，默认拉满
@@ -43,6 +46,7 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
         {
             _tick.Stop();
             StressTestService.Stop();
+            FinishReportRun();
             SensorMonitorService.Stop();
         };
         // 页面可见时才开传感器轮询（Loaded 在切回时会重发，Start 幂等）
@@ -54,6 +58,8 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     void StartButton_Click(object sender, RoutedEventArgs e)
     {
         SetPassed(false);
+        FinishReportRun();
+        if (_inspection != null) _inspection.Stress = null;
         var mode = ParseTag<StressTestService.StressMode>(ModeBox);
         var fft = ParseTag<StressTestService.FftPreset>(FftBox);
         int threads = ParseTag<int>(ThreadsBox);
@@ -65,6 +71,7 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
                 new StressTestService.Prime95Settings(threads, fft, P95ShowUiCheck.IsChecked == true),
                 new StressTestService.FurMarkSettings(w, h, FullscreenCheck.IsChecked == true, msaa,
                     FurShowUiCheck.IsChecked == true));
+            _reportRun = new StressReportSummary(StressTestService.StartedAt ?? DateTime.Now, mode);
         }
         catch (Exception ex)
         {
@@ -86,12 +93,17 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
             LogBox.ScrollToEnd();
         });
 
-    void StopButton_Click(object sender, RoutedEventArgs e) => StressTestService.Stop();
+    void StopButton_Click(object sender, RoutedEventArgs e)
+    {
+        StressTestService.Stop();
+        FinishReportRun();
+    }
 
     void PassButton_Click(object sender, RoutedEventArgs e)
     {
         // 通过即停烤（随后自动跳转切页，Unloaded 也会再兜一次）
         StressTestService.Stop();
+        FinishReportRun();
         SetPassed(true);
     }
 
@@ -109,14 +121,25 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     bool _cpuTempDown, _cpuPowerDown, _gpuTempDown, _gpuPowerDown;
     SensorMonitorService.SensorMap? _sensorMap;
 
-    void OnSensorSampled(SensorMonitorService.Reading r) =>
+    void OnSensorSampled(SensorMonitorService.Reading r)
+    {
+        var sampledAt = DateTime.Now;
         Dispatcher.BeginInvoke(() =>
         {
+            if (StressTestService.IsRunning) _reportRun?.Add(sampledAt, r);
             UpdateChart(CpuTempChart, CpuTempOverlay, r.CpuTemp, ref _cpuTempDown);
             UpdateChart(CpuPowerChart, CpuPowerOverlay, r.CpuPower, ref _cpuPowerDown);
             UpdateChart(GpuTempChart, null, r.GpuTemp, ref _gpuTempDown);
             UpdateChart(GpuPowerChart, null, r.GpuPower, ref _gpuPowerDown);
         });
+    }
+
+    void FinishReportRun()
+    {
+        if (_reportRun == null) return;
+        if (_inspection != null) _inspection.Stress = _reportRun.Finish(DateTime.Now, _sensorMap);
+        _reportRun = null;
+    }
 
     /// <summary>单图更新：有值推点（收起叠层）；无值置占位——CPU 两路显示「文案 + 安装按钮」叠层，
     /// GPU 两路用图表自带占位文案（状态不变时不重复操作）。</summary>
@@ -228,6 +251,8 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     void RefreshRunningState()
     {
         bool running = StressTestService.IsRunning;
+        GpuBox.IsEnabled = !running;
+        if (!running) FinishReportRun();
         StartButton.IsEnabled = !running;
         StopButton.IsEnabled = running;
 
