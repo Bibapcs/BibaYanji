@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PluginSdk\YanJi.PluginSdk.csproj" />
+    <ProjectReference Include="..\..\Plugins\InspectionReport\YanJi.Plugin.InspectionReport.csproj" />
+    <ProjectReference Include="..\..\Plugins\StressTest\YanJi.Plugin.StressTest.csproj" />
+    <Compile Include="..\..\Plugins\InspectionReport\ReportSnapshot.cs" Link="ReportSnapshot.cs" />
+    <Compile Include="..\..\Plugins\InspectionReport\ReportDocument.cs" Link="ReportDocument.cs" />
+    <Compile Include="..\..\Plugins\InspectionReport\PdfExporter.cs" Link="PdfExporter.cs" />
+    <Compile Include="..\..\Plugins\StressTest\StressReportSummary.cs" Link="StressReportSummary.cs" />
+    <None Include="..\..\验机软件\Themes\*.xaml" Link="Themes\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

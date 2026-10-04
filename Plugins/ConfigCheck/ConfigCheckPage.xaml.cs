@@ -12,6 +12,7 @@ public partial class ConfigCheckPage : UserControl, YanJi.PluginSdk.IModulePage
 {
     bool _running;
     bool _autoStarted; // 页面常驻机制下 Loaded 可能重入（切走再切回），自动检测只触发一次
+    readonly YanJi.PluginSdk.InspectionData? _inspection;
 
     /// <summary>核对完成状态变化（true = 已通过，false = 重新检测回到待核对）；MainWindow 据此同步导航圆点。</summary>
     public event Action<bool>? PassChanged;
@@ -19,8 +20,9 @@ public partial class ConfigCheckPage : UserControl, YanJi.PluginSdk.IModulePage
     /// <summary>当前是否已核对通过。</summary>
     public bool Passed { get; private set; }
 
-    public ConfigCheckPage()
+    public ConfigCheckPage(YanJi.PluginSdk.IHostContext host)
     {
+        _inspection = host.Inspection;
         InitializeComponent();
         // 进入页面即自动检测一次（手动再次采集走「重新检测」按钮）
         Loaded += (_, _) =>
@@ -37,6 +39,7 @@ public partial class ConfigCheckPage : UserControl, YanJi.PluginSdk.IModulePage
     {
         if (_running) return;
         _running = true;
+        if (_inspection != null) _inspection.Hardware = null;
         SetPassed(false);
         RunButton.IsEnabled = false;
         PassButton.IsEnabled = false;
@@ -52,6 +55,11 @@ public partial class ConfigCheckPage : UserControl, YanJi.PluginSdk.IModulePage
             });
             var report = await Task.Run(() => HardwareInfoService.Collect(progress));
             ResultsHost.ItemsSource = report.Groups;
+            if (_inspection != null)
+                _inspection.Hardware = new(report.CollectedAt, report.Groups.Select(g =>
+                    new YanJi.PluginSdk.ReportGroup(g.Title,
+                        g.Entries.Select(x => new YanJi.PluginSdk.ReportEntry(x.Name, x.Value)).ToArray(),
+                        g.Details.Select(x => new YanJi.PluginSdk.ReportEntry(x.Name, x.Value)).ToArray())).ToArray());
             DetectProgress.Value = 100;
             PhaseText.Text = $"检测完成（{report.CollectedAt:HH:mm:ss}），请逐项核对下方配置信息";
             PassButton.IsEnabled = true;

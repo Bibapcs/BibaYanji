@@ -14,5 +14,5 @@ public class ConfigCheckPlugin : IYanJiPlugin
         new("CrystalDiskInfo", "硬盘信息采集的实现参考（SMART 直读思路）", "MIT"),
     ];
 
-    public UserControl CreatePage(IHostContext host) => new ConfigCheckPage();
+    public UserControl CreatePage(IHostContext host) => new ConfigCheckPage(host);
 }

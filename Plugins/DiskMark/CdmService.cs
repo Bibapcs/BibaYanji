@@ -173,8 +173,17 @@ public class CdmService
             throw new InvalidOperationException($"CdmHost 未输出成绩（退出码 {proc.ExitCode}）：\n{Tail(sb.ToString(), 1200)}");
 
         Directory.CreateDirectory(ResultDir);
-        File.WriteAllText(JsonPath, jsonLine + "\n", new UTF8Encoding(false));
         var result = ParseScores(jsonLine, JsonPath);
+        // 成绩和来源一起原子替换，报告不会把上次结果配上本次时间/盘符。
+        string savedJson = JsonSerializer.Serialize(new
+        {
+            seq_read = result.SeqRead, seq_write = result.SeqWrite,
+            rnd4k_read = result.Rnd4KRead, rnd4k_write = result.Rnd4KWrite,
+            drive = drive + ":", tested_at = DateTimeOffset.Now, machine_name = Environment.MachineName
+        });
+        string temporary = JsonPath + ".tmp";
+        File.WriteAllText(temporary, savedJson + "\n", new UTF8Encoding(false));
+        File.Move(temporary, JsonPath, overwrite: true);
         AppendScore(drive + ":", result);
         return result;
     }

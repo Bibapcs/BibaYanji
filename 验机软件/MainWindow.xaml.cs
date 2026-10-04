@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -39,7 +40,9 @@ public partial class MainWindow : Window
         public IReadOnlyList<PluginInfo> Modules => _modules;
         public bool IsDone(string moduleId) => _isDone(moduleId);
         public event Action? DoneChanged;
+        public InspectionData Inspection { get; } = new();
         public void RaiseDoneChanged() => DoneChanged?.Invoke();
+        public void RetainLoadedModules(HashSet<string> ids) => _modules.RemoveAll(m => !ids.Contains(m.Id));
         /// <summary>启动时批量填入 / 运行时追加（导入即载），均保持按 Order 排序。</summary>
         public void AddModule(PluginInfo info)
         {
@@ -61,6 +64,7 @@ public partial class MainWindow : Window
             _hostContext.AddModule(new PluginInfo(x.Manifest.Id, x.Manifest.Name, x.Manifest.Version,
                 x.Manifest.Order, x.Manifest.Terminal));
         _plugins = PluginLoader.LoadAll(_hostContext);
+        _hostContext.RetainLoadedModules(_plugins.Select(p => p.Info.Id).ToHashSet());
         foreach (var lp in _plugins)
         {
             _pages[lp.Info.Id] = lp.Page;
@@ -266,19 +270,30 @@ public partial class MainWindow : Window
         new PluginManagerWindow(_plugins, TryLoadPluginAtRuntime) { Owner = this }.ShowDialog();
     }
 
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    static extern int ExtractIconEx(string lpszFile, int nIconIndex, out IntPtr phiconLarge, out IntPtr phiconSmall, int nIcons);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    static extern bool DestroyIcon(IntPtr hIcon);
+
     /// <summary>窗口图标取 exe 内嵌图标（Win32 提取，多尺寸 ico 在各 DPI 下都清晰）。</summary>
     void UpdateIcon()
     {
         try
         {
-            using var sysIcon = System.Drawing.Icon.ExtractAssociatedIcon(
-                Process.GetCurrentProcess().MainModule!.FileName);
-            if (sysIcon is not null)
+            string exePath = Process.GetCurrentProcess().MainModule!.FileName;
+            if (ExtractIconEx(exePath, 0, out IntPtr hLarge, out IntPtr hSmall, 1) > 0)
             {
-                Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-                    sysIcon.Handle,
-                    System.Windows.Int32Rect.Empty,
-                    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                IntPtr hIcon = hLarge != IntPtr.Zero ? hLarge : hSmall;
+                if (hIcon != IntPtr.Zero)
+                {
+                    Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                        hIcon,
+                        System.Windows.Int32Rect.Empty,
+                        System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                }
+                if (hLarge != IntPtr.Zero) DestroyIcon(hLarge);
+                if (hSmall != IntPtr.Zero) DestroyIcon(hSmall);
             }
         }
         catch { /* 图标加载失败不影响功能 */ }

@@ -19,6 +19,6 @@ public class StressTestPlugin : IYanJiPlugin, IPluginShutdown
         new("PawnIO（namazso）", "CPU/主板传感器 Ring0 内核驱动（官方签名安装器随附 Tools/pawnio/，用户点击后才安装）", "GPL-2.0（带 IOCTL 通信例外）"),
     ];
 
-    public UserControl CreatePage(IHostContext host) => new StressTestPage();
+    public UserControl CreatePage(IHostContext host) => new StressTestPage(host);
     public void Shutdown() => StressTestService.Stop();
 }
