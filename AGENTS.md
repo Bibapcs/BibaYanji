@@ -198,7 +198,25 @@ public interface IHostContext                       // 宿主注入 CreatePage
   `Tools\pawnio\PawnIO_setup.exe -install -silent` 静默完成、用户零点击——只传 `-install` 会弹版权确认窗；
   未装散热组件或系统已装 PawnIO 时 Check 自动跳过，后者避免其「请先卸载」阻塞弹窗）。
 
+## 本地预览封装与验收（2026-10-15）
+
+- `installer/build-release.ps1` 将 FurMark→宿主/六插件自包含发布到新目录，核对六插件与关键原生负载，再调用 Inno 生成预览 EXE、ZIP、SHA256。要求干净提交；脚本受执行策略阻止时不修改策略，改用其中的原生命令，并明示脚本仅静态校验。
+- `installer/setup.iss` 支持 `Preview`、`MeetingPreview`、`PackageVersion`、`PackageFileVersion`、`PublishSource` 预处理参数；`Preview + MeetingPreview` 使用 BibaInspection.MeetingPreview / BibaInspectionMeetingPreview，避免覆盖既有普通预览；预览驱动安装默认不勾选，卸载保留用户数据。
+- 预览负载含 `preview-mode` 标记；宿主设置及插件待处理队列改用 `%APPDATA%/YanJiPreview`，正式版继续 `%APPDATA%/YanJi`。硬盘跑分结果仍共享，不能宣称所有数据完全隔离。
+- `installer/VerifyRelease.csproj` 是独立自包含验收程序，不加入产品解决方案；以 `PayloadDir` 指向待验目录，驱动真实 MainWindow、插件加载和采集。先要求 PawnIO 已运行，并将 `AllowAutomaticDriverStart=false`，不安装/启动驱动，不启动烤机。图表对照最新真实样本，检查切页/重启/关闭；另跑产品 EXE 入口冒烟。可加 `--soak-seconds 10800` 做三小时持续监控，逐次落盘 samples.ndjson，每10秒记录进程资源、每5分钟输出进度，采样中断超过30秒即失败；仍不能识别上游未抛异常的旧传感器值。
+- 用户负责电池异常场景；本地验收包不等于公开发行，驱动重装、全新系统和满载烤机未自动纳入验收。
+
 ## 修改守则
+
+- 当前主线（2026-10-15）：简单 C# 服务整合 LHM 公开对象，配置核对复用现有报告模型；
+  BIOS、整机、主板、CPU、内存补充由用户确认全选。Windows 补充保留并标明来源。
+  `Plugins/LhmComputerAccess.cs` 由配置/散热两个工程链接，按进程内同名信号量串行管理
+  Computer 的完整打开/读取/关闭；等待可取消，原生调用仅在返回后协作取消。初始化/释放失败
+  记录进程故障，提示重启，不用反射清理上游私有资源。SDK 不承担 LHM 依赖。
+- `hardware-evidence/` 的旧 Java/Caller/契约作为历史保留，不再作为本任务开发主线，
+  尚未接入宿主 slnx、插件或安装链。原 `demo-args-v1` 不变，人工结果接口见
+  `hardware-evidence/contracts/result-demo-v1.md`；人工数据不得表示硬件通过。
+  不继续新增独立证据引擎、跨语言交接或 HTML 报告；清理另经用户确认。
 
 - 最小改动；新代码风格对齐周边（注释密度、命名、UserControl+code-behind、无第三方 UI 库）。
 - 改采集逻辑前先读 `项目交接文档.md` 第三节的坑（EDID/SMART/色域/LHM 降级矩阵都有实测结论）。

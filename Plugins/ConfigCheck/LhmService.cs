@@ -1,4 +1,5 @@
 using LibreHardwareMonitor.Hardware;
+using YanJi.Hardware;
 
 namespace YanJi.Plugin.ConfigCheck;
 
@@ -31,12 +32,15 @@ public static class LhmService
         public List<LhmBattery> Batteries { get; } = [];
         /// <summary>物理内存总量（GB，GlobalMemoryStatusEx 口径）。</summary>
         public double? MemoryTotalGB { get; set; }
-        /// <summary>整体失败原因（Computer.Open 抛异常时记录，供诊断展示）。</summary>
+        /// <summary>复用已打开 Computer 的公开固件快照，关闭后仍可读取普通数据对象。</summary>
+        public SMBios? Smbios { get; set; }
+        public List<string> Errors { get; } = [];
+        /// <summary>整体失败原因，供诊断展示。</summary>
         public string? Error { get; set; }
     }
 
-    /// <summary>采集整机快照。任何阶段异常都只影响对应类别，不向外抛。</summary>
-    public static Snapshot Collect()
+    /// <summary>采集整机快照；设备失败保留其他结果，取消向调用方传播。</summary>
+    public static Snapshot Collect(CancellationToken cancellationToken = default)
     {
         var snap = new Snapshot();
         var computer = new Computer
@@ -49,28 +53,33 @@ public static class LhmService
         };
         try
         {
-            computer.Open();
-            foreach (IHardware hw in computer.Hardware)
+            LhmComputerAccess.Run(computer, opened =>
             {
-                try { CollectHardware(hw, snap); }
-                catch { /* 单设备失败跳过 */ }
-            }
+                snap.Smbios = opened.SMBios;
+                foreach (IHardware hw in opened.Hardware)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    try { CollectHardware(hw, snap, cancellationToken); }
+                    catch (Exception ex) when (ex is not OperationCanceledException)
+                    { snap.Errors.Add($"{hw.Name}：{ex.Message}"); }
+                }
+            }, cancellationToken);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OperationCanceledException)
         {
             snap.Error = ex.Message;
-        }
-        finally
-        {
-            try { computer.Close(); } catch { /* 关闭失败不影响结果 */ }
         }
         return snap;
     }
 
-    static void CollectHardware(IHardware hw, Snapshot snap)
+    static void CollectHardware(IHardware hw, Snapshot snap, CancellationToken token)
     {
+        token.ThrowIfCancellationRequested();
         // 多数「总量/显存」传感器要 Update 一次才有值
-        try { hw.Update(); } catch { /* 更新失败仍用构造期数据 */ }
+        try { hw.Update(); }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        { snap.Errors.Add($"{hw.Name} 更新失败，使用已取得数据：{ex.Message}"); }
+        token.ThrowIfCancellationRequested();
 
         switch (hw.HardwareType)
         {
@@ -101,8 +110,10 @@ public static class LhmService
         // 内嵌子硬件（如主板下的 SuperIO）也一并扫，防御性处理
         foreach (IHardware sub in hw.SubHardware)
         {
-            try { CollectHardware(sub, snap); }
-            catch { /* 单设备失败跳过 */ }
+            token.ThrowIfCancellationRequested();
+            try { CollectHardware(sub, snap, token); }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            { snap.Errors.Add($"{sub.Name}：{ex.Message}"); }
         }
     }
 

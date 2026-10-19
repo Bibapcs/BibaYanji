@@ -1,0 +1,168 @@
+{
+  "reportVersion": 1,
+  "date": "2026-10-14",
+  "contract": "demo-args-v1",
+  "workspace": "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013",
+  "summary": "独立C# Caller首次编译成功（此前为未编译状态），并完成8项实跑测试：4项真实Java 21联调（含中文空格路径）、2项调用方失败负例、1项JVM级失败、2项标注替身测试（退出2与超时）。契约C1-C5由静态审阅升级为已实跑。",
+  "build": {
+    "evidenceLevel": "已实跑",
+    "sdkVersion": "10.0.401",
+    "command": "dotnet build Caller.csproj -c Release",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "durationSeconds": 3.07,
+    "restoreMilliseconds": 71,
+    "artifacts": [
+      "bin/Release/net10.0/Caller.exe",
+      "bin/Release/net10.0/Caller.dll",
+      "bin/Release/net10.0/Caller.deps.json",
+      "bin/Release/net10.0/Caller.runtimeconfig.json"
+    ],
+    "note": "此前validation.json记录compiled=false；本次为该项目首次编译通过，TreatWarningsAsErrors=true下0警告0错误。"
+  },
+  "integrationTests": [
+    {
+      "id": "T1",
+      "name": "真实Java·正常路径（runsRoot含中文空格）",
+      "classDirectory": "learning-space参考版DemoCommand.class（javac 21.0.12.1编译产物）",
+      "runsRoot": "runs-验证 中文",
+      "status": "validated",
+      "javaExitCode": 0,
+      "callerExitCode": 0,
+      "executionId": "ef1912e2db52478fb8070618eb87b589",
+      "stdout": "REQUEST_VALIDATED / executionId=... / outputDirectory=...（中文空格路径完整无损）",
+      "stderr": "",
+      "evidenceLevel": "已实跑·真实Java联调"
+    },
+    {
+      "id": "T2",
+      "name": "错误java路径（D:/not-exist/java.exe）",
+      "status": "caller_failure",
+      "javaExitCode": null,
+      "callerExitCode": 1,
+      "executionId": null,
+      "taskDirectory": null,
+      "error": "DirectoryNotFoundException: Could not find a part of the path 'D:\\not-exist\\java.exe'",
+      "evidenceLevel": "已实跑"
+    },
+    {
+      "id": "T3",
+      "name": "class目录缺DemoCommand.class（empty-classes）",
+      "status": "caller_failure",
+      "javaExitCode": null,
+      "callerExitCode": 1,
+      "executionId": null,
+      "error": "FileNotFoundException: DemoCommand.class",
+      "evidenceLevel": "已实跑"
+    },
+    {
+      "id": "T4",
+      "name": "第二次真实调用（C1身份/目录不同）",
+      "status": "validated",
+      "javaExitCode": 0,
+      "callerExitCode": 0,
+      "executionId": "03f7d5bd3c414c36bdfe185f827d42fc",
+      "note": "与T1身份不同，两次任务目录均独立",
+      "evidenceLevel": "已实跑·真实Java联调"
+    },
+    {
+      "id": "T5",
+      "name": "假class（非字节码）→ JVM ClassFormatError",
+      "classDirectory": "fake-classes（内含文本伪装的DemoCommand.class）",
+      "status": "java_failure",
+      "javaExitCode": 1,
+      "callerExitCode": 1,
+      "executionId": "3b4762dba002433a9d3582af195ed4c1",
+      "stderr": "java.lang.ClassFormatError: Incompatible magic value ...（JVM级错误）",
+      "note": "JVM/入口加载错误未被伪装为2，保留原退出码1，分类正确",
+      "evidenceLevel": "已实跑·真实JVM错误"
+    },
+    {
+      "id": "T6",
+      "name": "替身·恒定打印受控失败并以2退出",
+      "classDirectory": "proxy-exit2-classes（明确标注的测试替身，非真实目标Java）",
+      "status": "request_invalid",
+      "javaExitCode": 2,
+      "callerExitCode": 2,
+      "executionId": "28944231e123407898ce5127350b2d45",
+      "stderr": "DEMO_REQUEST_INVALID: （替身输出）",
+      "note": "分类依据退出码而非日志标记；替身测试不计真实Java联调",
+      "evidenceLevel": "已实跑·替身"
+    },
+    {
+      "id": "T7",
+      "name": "替身·睡眠60秒 → 10秒超时",
+      "classDirectory": "proxy-sleep-classes（明确标注的测试替身）",
+      "status": "timeout",
+      "javaExitCode": null,
+      "callerExitCode": 1,
+      "executionId": "ce924d60bbe34b0484aa2dc743cadb49",
+      "measuredSeconds": 10.4,
+      "stdout": "proxy sleeping...（超时前日志被捕获）",
+      "error": "超时收尾退出码未作为Java自然退出码；收尾等待已确认本次进程退出",
+      "postCheck": "tasklist 无 java 进程残留（Kill(entireProcessTree)生效）",
+      "note": "10秒自然等待+0.4秒收尾；无自动重试；任务目录保留",
+      "evidenceLevel": "已实跑·替身"
+    },
+    {
+      "id": "T8",
+      "name": "真实Java·class目录含中文空格（C2完整）",
+      "classDirectory": "class 目录 中文 空格（参考版两个class文件的复制）",
+      "runsRoot": "runs-验证 中文",
+      "status": "validated",
+      "javaExitCode": 0,
+      "callerExitCode": 0,
+      "executionId": "bb87024d73444f51b2e9b6fd1266dcbc",
+      "note": "javaExecutable与目标目录的ArgumentList逐项传递在中文空格下无损坏",
+      "evidenceLevel": "已实跑·真实Java联调"
+    }
+  ],
+  "artifactChecks": {
+    "taskDirectoriesCreated": 6,
+    "retainedDirectories": [
+      "run-ef1912e2db52478fb8070618eb87b589",
+      "run-03f7d5bd3c414c36bdfe185f827d42fc",
+      "run-3b4762dba002433a9d3582af195ed4c1",
+      "run-28944231e123407898ce5127350b2d45",
+      "run-ce924d60bbe34b0484aa2dc743cadb49",
+      "run-bb87024d73444f51b2e9b6fd1266dcbc"
+    ],
+    "spawnPreFailuresCreatedNoDirectory": "T2/T3在创建前失败，无任务目录产生",
+    "sampleDirectoryEmpty": "run-ef1912e2... 内部为空，Java未写入任何文件",
+    "noAutoDelete": "全部目录保留供核查，无清理"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "title": "JVM级错误信息的编码差异（GBK vs UTF-8）",
+      "detail": "JVM在main执行前失败时（如ClassFormatError），其错误输出走JVM内部通道，使用系统编码（中文Windows为GBK）；C#按UTF-8读取时该部分显示乱码。真实DemoCommand的日志正常——因其在main中显式将System.out/err设为UTF-8。",
+      "impact": "不影响分类（分类依据退出码）；影响JVM级错误的诊断可读性",
+      "recommendation": "记录为观察项；如需JVM级错误也可读，可在启动参数追加 -Dsun.stderr.encoding=UTF-8（Java 19+）——属契约参数结构调整，本版不改动"
+    },
+    {
+      "id": "F2",
+      "title": "替身stderr乱码同理",
+      "detail": "T6替身未显式设UTF-8，其stderr在中文Windows下以GBK输出，C#按UTF-8读取显示乱码。反证契约中Java侧必须显式设置UTF-8输出的必要性。",
+      "impact": "仅影响替身诊断输出，与C#实现无关"
+    }
+  ],
+  "contractCoverage": {
+    "C1": {"level": "已实跑", "evidence": "T1 vs T4 身份/目录不同；创建目录先于Process.Start（源码顺序+实跑无异常）"},
+    "C2": {"level": "已实跑", "evidence": "T1/T4/T8：runsRoot与classDirectory均含中文空格，逐项传参无损；javaExecutable路径含空格（Program Files）"},
+    "C3": {"level": "已实跑", "evidence": "0→T1/T4/T8 validated；2→T6 request_invalid；其他(1)→T5 java_failure；双管道并发读取在全部测试中生效"},
+    "C4": {"level": "已实跑", "evidence": "T2/T3 caller_failure与退出2区分，创建前失败identity=null；T6保留完整上下文"},
+    "C5": {"level": "已实跑", "evidence": "T7：10.4秒（10+0.4），javaExitCode=null，无残留进程，无重试无删除"},
+    "C6": {"level": "已落实", "evidence": "T6/T7为明确标注替身；T1/T4/T8为真实Java联调，两者分离"}
+  },
+  "evidenceBoundary": {
+    "javaUsed": "learning-space参考版DemoCommand.class（助手参考实现，非用户新写Java）",
+    "notCovered": [
+      "用户自写DemoCommand（E:/Documents/ChatGPT/java 小白箱）的联调——待用户完成",
+      "存在但不可执行启动器的启动失败场景（Windows下难以构造）",
+      "大量并发输出的管道压力（本版有限短日志已覆盖）",
+      "用户取消/宿主崩溃/生产生命周期"
+    ],
+    "preexistingValidation": "本目录原validation.json记录的未编译、未运行状态已被本次实跑取代（文件保留为历史）"
+  }
+}

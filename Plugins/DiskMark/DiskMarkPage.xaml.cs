@@ -141,8 +141,11 @@ public partial class DiskMarkPage : UserControl, IModulePage
     void SetRunning()
     {
         _passed = false;
+        PassButton.IsEnabled = true;
         StatusText.Text = "跑分中…";
         StatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextSecondaryBrush");
+        UpdatePassHint();
+        PassChanged?.Invoke(false);
     }
 
     void SetIdle(string text)
@@ -158,6 +161,7 @@ public partial class DiskMarkPage : UserControl, IModulePage
         _passed = true;
         StatusText.Text = "已通过";
         StatusText.Foreground = Brushes.ForestGreen;
+        PassButton.IsEnabled = false;
         PassChanged?.Invoke(true);
     }
 

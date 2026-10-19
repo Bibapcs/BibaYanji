@@ -1,0 +1,625 @@
+{
+  "date": "2026-10-14",
+  "executor": "assistant",
+  "count": 91,
+  "checks": [
+    {
+      "name": "Shared success sample has artificial semantics",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Valid controlled failure",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Harmless optional keys accepted",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Missing required root key: schemaVersion",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：schemaVersion"
+    },
+    {
+      "name": "Missing required root key: engineVersion",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：engineVersion"
+    },
+    {
+      "name": "Missing required root key: ruleSetVersion",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：ruleSetVersion"
+    },
+    {
+      "name": "Missing required root key: mode",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：mode"
+    },
+    {
+      "name": "Missing required root key: executionId",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：executionId"
+    },
+    {
+      "name": "Missing required root key: captureId",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：captureId"
+    },
+    {
+      "name": "Missing required root key: executionStatus",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：executionStatus"
+    },
+    {
+      "name": "Missing required root key: sources",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：sources"
+    },
+    {
+      "name": "Missing required root key: fields",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：fields"
+    },
+    {
+      "name": "Missing required root key: checks",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：checks"
+    },
+    {
+      "name": "Missing required root key: diagnostics",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少对象属性：diagnostics"
+    },
+    {
+      "name": "Null collection: sources",
+      "passed": true,
+      "evidence": "InvalidDataException: sources 必须是非 null 数组。"
+    },
+    {
+      "name": "Null collection: fields",
+      "passed": true,
+      "evidence": "InvalidDataException: fields 必须是非 null 数组。"
+    },
+    {
+      "name": "Null collection: checks",
+      "passed": true,
+      "evidence": "InvalidDataException: checks 必须是非 null 数组。"
+    },
+    {
+      "name": "Null collection: diagnostics",
+      "passed": true,
+      "evidence": "InvalidDataException: diagnostics 必须是非 null 数组。"
+    },
+    {
+      "name": "Wrong identity",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应身份不是本次任务。"
+    },
+    {
+      "name": "Unsupported version",
+      "passed": true,
+      "evidence": "InvalidDataException: schemaVersion 必须是 JSON 整数 1。"
+    },
+    {
+      "name": "Version string",
+      "passed": true,
+      "evidence": "InvalidDataException: schemaVersion 必须是 JSON 整数 1。"
+    },
+    {
+      "name": "Version boolean",
+      "passed": true,
+      "evidence": "InvalidDataException: schemaVersion 必须是 JSON 整数 1。"
+    },
+    {
+      "name": "Version decimal",
+      "passed": true,
+      "evidence": "InvalidDataException: schemaVersion 必须是 JSON 整数 1。"
+    },
+    {
+      "name": "Unknown mode",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应模式不匹配。"
+    },
+    {
+      "name": "Wrong artificial capture marker",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工采集标记不匹配。"
+    },
+    {
+      "name": "Unknown rule set",
+      "passed": true,
+      "evidence": "InvalidDataException: 规则版本不支持。"
+    },
+    {
+      "name": "Empty engine version",
+      "passed": true,
+      "evidence": "InvalidDataException: engineVersion 不能为空。"
+    },
+    {
+      "name": "Unknown execution status",
+      "passed": true,
+      "evidence": "InvalidDataException: 执行状态与 Java 自然退出码不相容。"
+    },
+    {
+      "name": "Hardware source cannot replace synthetic",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示不能伪装硬件来源。"
+    },
+    {
+      "name": "Synthetic source cannot become required",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工来源 required 必须为 false。"
+    },
+    {
+      "name": "Required is strictly boolean",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工来源 required 必须为 false。"
+    },
+    {
+      "name": "Extra source",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示必须恰好包含一个来源。"
+    },
+    {
+      "name": "Wrong source status",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工来源状态不相容。"
+    },
+    {
+      "name": "Artificial source has no evidence paths",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示的 evidencePaths 必须为空数组。"
+    },
+    {
+      "name": "Artificial fields must be empty",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示的 fields 必须为空数组。"
+    },
+    {
+      "name": "Artificial result cannot assert hardware pass",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示不能输出硬件通过结论。"
+    },
+    {
+      "name": "Unknown rule",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示不能输出硬件通过结论。"
+    },
+    {
+      "name": "No artificial rule on success",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工规则数量不符合契约。"
+    },
+    {
+      "name": "Rule cannot cite fake fields",
+      "passed": true,
+      "evidence": "InvalidDataException: 人工演示的 fieldIds 必须为空数组。"
+    },
+    {
+      "name": "Rule reason cannot be null",
+      "passed": true,
+      "evidence": "InvalidDataException: reason 必须是字符串。"
+    },
+    {
+      "name": "Missing artificial diagnostic",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少有效的 ARTIFICIAL_DEMO 标记。"
+    },
+    {
+      "name": "Unknown diagnostic severity",
+      "passed": true,
+      "evidence": "InvalidDataException: 未知诊断级别。"
+    },
+    {
+      "name": "Unknown diagnostic stage",
+      "passed": true,
+      "evidence": "InvalidDataException: 未知诊断阶段。"
+    },
+    {
+      "name": "Dangling source reference",
+      "passed": true,
+      "evidence": "InvalidDataException: 诊断引用来源不存在。"
+    },
+    {
+      "name": "Invalid artificial marker severity",
+      "passed": true,
+      "evidence": "InvalidDataException: 缺少有效的 ARTIFICIAL_DEMO 标记。"
+    },
+    {
+      "name": "Failed without error diagnostic",
+      "passed": true,
+      "evidence": "InvalidDataException: 失败响应缺少 error 诊断。"
+    },
+    {
+      "name": "Success response conflicts with exit 2",
+      "passed": true,
+      "evidence": "InvalidDataException: 执行状态与 Java 自然退出码不相容。"
+    },
+    {
+      "name": "Failure response conflicts with exit 0",
+      "passed": true,
+      "evidence": "InvalidDataException: 执行状态与 Java 自然退出码不相容。"
+    },
+    {
+      "name": "Other exit code cannot carry accepted response",
+      "passed": true,
+      "evidence": "InvalidDataException: 执行状态与 Java 自然退出码不相容。"
+    },
+    {
+      "name": "BOM",
+      "passed": true,
+      "evidence": "InvalidDataException: 结果须为不超过 16 MiB 的 UTF-8 无 BOM JSON。"
+    },
+    {
+      "name": "Invalid UTF-8",
+      "passed": true,
+      "evidence": "DecoderFallbackException: Unable to translate bytes [FF] at index 8 from specified code page to Unicode."
+    },
+    {
+      "name": "Broken JSON",
+      "passed": true,
+      "evidence": "JsonReaderException: 'b' is an invalid start of a property name. Expected a '\"'. LineNumber: 0 | BytePositionInLine: 1."
+    },
+    {
+      "name": "Root must be object",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应根必须是对象。"
+    },
+    {
+      "name": "Trailing JSON",
+      "passed": true,
+      "evidence": "JsonReaderException: '{' is invalid after a single JSON value. Expected end of data. LineNumber: 19 | BytePositionInLine: 0."
+    },
+    {
+      "name": "Duplicate root key",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应包含重复键：schemaVersion"
+    },
+    {
+      "name": "Escaped duplicate key",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应包含重复键：schemaVersion"
+    },
+    {
+      "name": "Duplicate nested key",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应包含重复键：sourceId"
+    },
+    {
+      "name": "Duplicate in ignored extension",
+      "passed": true,
+      "evidence": "InvalidDataException: 响应包含重复键：x"
+    },
+    {
+      "name": "Excessive depth",
+      "passed": true,
+      "evidence": "JsonReaderException: The maximum configured depth of 32 has been exceeded. Cannot read next JSON array. LineNumber: 0 | BytePositionInLine: 32."
+    },
+    {
+      "name": "String limit",
+      "passed": true,
+      "evidence": "InvalidDataException: JSON 字符串过长。"
+    },
+    {
+      "name": "Too many diagnostics",
+      "passed": true,
+      "evidence": "InvalidDataException: 诊断数量须为 1–128。"
+    },
+    {
+      "name": "Missing final response",
+      "passed": true,
+      "evidence": "Could not find file 'F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\files\\result.json'."
+    },
+    {
+      "name": "Temporary file is never accepted",
+      "passed": true,
+      "evidence": "Could not find file 'F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\files\\result.json'."
+    },
+    {
+      "name": "File size rejected before allocating response buffer",
+      "passed": true,
+      "evidence": "result.json 为空或超过 16 MiB 上限。"
+    },
+    {
+      "name": "Only current final file is read",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Real Java and C# result interface",
+      "passed": true,
+      "evidence": {
+        "Status": 5,
+        "JavaExitCode": 0,
+        "ExecutionId": "7e8fa260ff984fa48202de8594221818",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\中文 runs 目录\\run-7e8fa260ff984fa48202de8594221818",
+        "Error": null,
+        "stdoutLength": 20,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": true
+      }
+    },
+    {
+      "name": "Final file committed and temporary absent",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Repeated real tasks stay isolated",
+      "passed": true,
+      "evidence": {
+        "Status": 5,
+        "JavaExitCode": 0,
+        "ExecutionId": "12b4c408771044658f907764ad979c01",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\中文 runs 目录\\run-12b4c408771044658f907764ad979c01",
+        "Error": null,
+        "stdoutLength": 20,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": true
+      }
+    },
+    {
+      "name": "Original demo contract preserved",
+      "passed": true,
+      "evidence": {
+        "Status": 0,
+        "JavaExitCode": 0,
+        "ExecutionId": "09ce8d79f7b64ccbaa81cdd5b7734fd6",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\中文 runs 目录\\run-09ce8d79f7b64ccbaa81cdd5b7734fd6",
+        "Error": null,
+        "stdoutLength": 215,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "CLI structured entry and exit",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "CLI exposes only validated structured response",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "CLI legacy entry and exit",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "CLI legacy output remains seven fields",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Cancellation before directory or process creation",
+      "passed": true,
+      "evidence": {
+        "Status": 7,
+        "JavaExitCode": null,
+        "ExecutionId": null,
+        "TaskDirectory": null,
+        "Error": "本次任务已取消；不接收结果，收尾退出码不作为自然退出码。",
+        "stdoutLength": 0,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Fault fixture: missing",
+      "passed": true,
+      "evidence": {
+        "Status": 6,
+        "JavaExitCode": 0,
+        "ExecutionId": "f73877b8872e48889fea773deeb512d3",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\missing\\run-f73877b8872e48889fea773deeb512d3",
+        "Error": "结果校验失败：FileNotFoundException: Could not find file 'F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\missing\\run-f73877b8872e48889fea773deeb512d3\\result.json'.",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Rejected response never exposed: missing",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fault fixture: wrong-identity",
+      "passed": true,
+      "evidence": {
+        "Status": 6,
+        "JavaExitCode": 0,
+        "ExecutionId": "a51fefd5aa614e22b266bd4ba76cf5d9",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\wrong-identity\\run-a51fefd5aa614e22b266bd4ba76cf5d9",
+        "Error": "结果校验失败：InvalidDataException: 响应身份不是本次任务。",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Rejected response never exposed: wrong-identity",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fault fixture: bad-json",
+      "passed": true,
+      "evidence": {
+        "Status": 6,
+        "JavaExitCode": 0,
+        "ExecutionId": "6d09b9e158db497d9a6ea1d3b4dc8caa",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\bad-json\\run-6d09b9e158db497d9a6ea1d3b4dc8caa",
+        "Error": "结果校验失败：JsonReaderException: 'b' is an invalid start of a property name. Expected a '\"'. LineNumber: 0 | BytePositionInLine: 1.",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Rejected response never exposed: bad-json",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fault fixture: exit-mismatch",
+      "passed": true,
+      "evidence": {
+        "Status": 6,
+        "JavaExitCode": 2,
+        "ExecutionId": "3acdc4c66fc04a669b19b547b1ed9818",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\exit-mismatch\\run-3acdc4c66fc04a669b19b547b1ed9818",
+        "Error": "结果校验失败：InvalidDataException: 执行状态与 Java 自然退出码不相容。",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Rejected response never exposed: exit-mismatch",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fault fixture: failed",
+      "passed": true,
+      "evidence": {
+        "Status": 1,
+        "JavaExitCode": 2,
+        "ExecutionId": "0fd5e383947e496b8bc2544b60ec2081",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\failed\\run-0fd5e383947e496b8bc2544b60ec2081",
+        "Error": null,
+        "stdoutLength": 17,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": true
+      }
+    },
+    {
+      "name": "Fault fixture: exit-other",
+      "passed": true,
+      "evidence": {
+        "Status": 2,
+        "JavaExitCode": 7,
+        "ExecutionId": "13b54d3748bb413ba6b8d1e6b357448a",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\exit-other\\run-13b54d3748bb413ba6b8d1e6b357448a",
+        "Error": null,
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Rejected response never exposed: exit-other",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fault fixture: pressure",
+      "passed": true,
+      "evidence": {
+        "Status": 5,
+        "JavaExitCode": 0,
+        "ExecutionId": "3969808798244c339b5871c45f69dce3",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\pressure\\run-3969808798244c339b5871c45f69dce3",
+        "Error": null,
+        "stdoutLength": 349707,
+        "stderrLength": 349696,
+        "StdoutTruncated": true,
+        "StderrTruncated": true,
+        "accepted": true
+      }
+    },
+    {
+      "name": "Both oversized pipes drained with bounded retention",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Timeout rejects response and preserves directory",
+      "passed": true,
+      "evidence": {
+        "Status": 4,
+        "JavaExitCode": null,
+        "ExecutionId": "91c5a28699ce4fc8869da44705cbc154",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\timeout\\run-91c5a28699ce4fc8869da44705cbc154",
+        "Error": "Java 未在启动后的 10 秒期限内自然结束；超时收尾退出码不作为 Java 自然退出码。\r\n收尾等待已确认本次进程退出；未验证所有后代进程的退出状态。",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Timeout cleanup bounded and owned process gone",
+      "passed": true,
+      "evidence": 10.0671274
+    },
+    {
+      "name": "Cancelled task rejects already complete JSON",
+      "passed": true,
+      "evidence": {
+        "Status": 7,
+        "JavaExitCode": null,
+        "ExecutionId": "bb99f0f012934d1c9cd42f6e586521de",
+        "TaskDirectory": "F:\\BibaYanji-dev\\hardware-evidence\\out\\result-tests-aca6bf759c084ec5a3e65a2bd8ca4573\\cancel\\run-bb99f0f012934d1c9cd42f6e586521de",
+        "Error": "本次任务已取消；不接收结果，收尾退出码不作为自然退出码。\r\n收尾等待已确认本次进程退出；未验证所有后代进程的退出状态。",
+        "stdoutLength": 18,
+        "stderrLength": 0,
+        "StdoutTruncated": false,
+        "StderrTruncated": false,
+        "accepted": false
+      }
+    },
+    {
+      "name": "Cancellation stops only owned process",
+      "passed": true,
+      "evidence": null
+    }
+  ],
+  "limitations": [
+    "WPF host and publishing not integrated",
+    "No permission-denied or reparse-point runtime case",
+    "Failure/pressure/timeout/cancellation cases use explicitly separate Java fault fixtures"
+  ],
+  "javaUnitTests": {
+    "evidence": "target/surefire-reports/cn.bibapcs.evidence.cli.ResultCommandTest.txt",
+    "failures": 0,
+    "tests": 8,
+    "errors": 0,
+    "skipped": 0
+  },
+  "environment": {
+    "jdk": "21.0.12.1",
+    "jacksonAnnotations": "2.22",
+    "maven": "3.9.16",
+    "jacksonDatabind": "2.22.3",
+    "jacksonCore": "2.22.3",
+    "dotnetSdk": "10.0.401"
+  }
+}

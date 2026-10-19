@@ -1,22 +1,35 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- 深色主题语义令牌：与 Light.xaml 键集完全一致 -->
-    <SolidColorBrush x:Key="WindowBgBrush" Color="#1E1E1E"/>
-    <SolidColorBrush x:Key="SurfaceBgBrush" Color="#2A2A2D"/>
-    <SolidColorBrush x:Key="SubtleBgBrush" Color="#252527"/>
-    <SolidColorBrush x:Key="TextBrush" Color="#E8E8E8"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9CA3AF"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="#3F3F46"/>
-    <SolidColorBrush x:Key="BorderStrongBrush" Color="#5A5A62"/>
-    <SolidColorBrush x:Key="AccentBrush" Color="#4CA6F0"/>
-    <SolidColorBrush x:Key="AccentHoverBrush" Color="#62B4F5"/>
-    <SolidColorBrush x:Key="NavHoverBrush" Color="#333337"/>
-    <SolidColorBrush x:Key="NavSelectedBrush" Color="#264F78"/>
-    <SolidColorBrush x:Key="ErrorBrush" Color="#FF6B5E"/>
-    <SolidColorBrush x:Key="ChartGridBrush" Color="#3A3A3E"/>
-    <SolidColorBrush x:Key="ChartTextBrush" Color="#9CA3AF"/>
-    <SolidColorBrush x:Key="ChartNoDataBrush" Color="#4A4A50"/>
-    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#4A4E55"/>
-    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#6B7280"/>
-    <SolidColorBrush x:Key="ScrollTrackBrush" Color="#252527"/>
+    <!-- 星夜工坊：深浅主题保持同一语义键集，控件只消费令牌。 -->
+    <SolidColorBrush x:Key="WindowBgBrush" Color="#111321"/>
+    <SolidColorBrush x:Key="SurfaceBgBrush" Color="#1C2033"/>
+    <SolidColorBrush x:Key="SubtleBgBrush" Color="#161A2B"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#F3F1FC"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#ABB1CC"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#30364E"/>
+    <SolidColorBrush x:Key="BorderStrongBrush" Color="#5E6684"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#F4A9C7"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#FFD0E2"/>
+    <SolidColorBrush x:Key="NavHoverBrush" Color="#272C43"/>
+    <SolidColorBrush x:Key="NavSelectedBrush" Color="#382E48"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#FF9CA9"/>
+    <SolidColorBrush x:Key="ChartGridBrush" Color="#333A54"/>
+    <SolidColorBrush x:Key="ChartTextBrush" Color="#B4BBD4"/>
+    <SolidColorBrush x:Key="ChartNoDataBrush" Color="#ADB4D0"/>
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#515B7B"/>
+    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#8C98BD"/>
+    <SolidColorBrush x:Key="ScrollTrackBrush" Color="#161A2B"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#332B44"/>
+    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#8DE1E5"/>
+    <SolidColorBrush x:Key="AccentOnBrush" Color="#241C30"/>
+    <SolidColorBrush x:Key="SidebarBgBrush" Color="#171A2B"/>
+    <SolidColorBrush x:Key="PosterTextBrush" Color="#FFFFFF"/>
+    <LinearGradientBrush x:Key="HeroBgBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#28283F" Offset="0"/>
+        <GradientStop Color="#1D2538" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="PosterShadeBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#00131626" Offset="0.25"/>
+        <GradientStop Color="#EB131626" Offset="1"/>
+    </LinearGradientBrush>
 </ResourceDictionary>

@@ -22,6 +22,7 @@ public partial class DeadPixelPage : UserControl, YanJi.PluginSdk.IModulePage
     {
         InitializeComponent();
         Loaded += (_, _) => RefreshMonitors();
+        Unloaded += (_, _) => _testWindow?.Close();
     }
 
     /// <summary>枚举活动显示器填充下拉框（默认选主屏 = 坐标原点 (0,0) 的那台）。</summary>
@@ -52,7 +53,10 @@ public partial class DeadPixelPage : UserControl, YanJi.PluginSdk.IModulePage
         PassButton.IsEnabled = true;
 
         var d = _monitors[MonitorBox.SelectedIndex];
-        _testWindow = new ColorTestWindow(d.X, d.Y, d.Width, d.Height);
+        _testWindow = new ColorTestWindow(d.X, d.Y, d.Width, d.Height)
+        {
+            Owner = Window.GetWindow(this),
+        };
         _testWindow.Closed += (_, _) =>
         {
             _testWindow = null;

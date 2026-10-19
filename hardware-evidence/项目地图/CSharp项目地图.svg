@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1460" width="100%" role="img">
+<title>C# 项目地图：七层职责栈与交界地</title>
+<desc>笔吧验机 C# 侧七层职责（宿主接入→日志）。demo-args-v1 与 result-demo-v1 人工结果接口已实跑；真实证据、宿主和发布待接入。2026-10-14。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<style>
+.bA{fill:#FAEEDA;stroke:#BA7517;stroke-width:1}
+.bB{fill:#E6F1FB;stroke:#85B7EB;stroke-width:0.8}
+.bJ{fill:#EAF3DE;stroke:#639922;stroke-width:0.8;stroke-dasharray:5 3}
+.bP{fill:#F8F9FB;stroke:#9AA6B5;stroke-width:0.6;stroke-dasharray:5 3}
+.bS{fill:#E1F5EE;stroke:#1D9E75;stroke-width:0.8}
+.h1{font:500 16px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#111827}
+.h2{font:500 13px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#111827}
+.bt{font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#0C447C}
+.btA{font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#854F0B}
+.btJ{font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#27500A}
+.btG{font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#444441}
+.tx{font:400 11px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#374151}
+.tm{font:400 11px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#6B7280}
+.tb{font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#185FA5}
+.chip{font:500 10.5px 'Segoe UI','Microsoft YaHei',sans-serif}
+</style>
+
+<text class="h1" x="40" y="52">C# 项目地图</text>
+<text class="tm" x="40" y="72">笔吧验机 · C# 侧七层职责栈：接入宿主、建目录、采CPUID、启Java、收result、校验、展示、导出</text>
+<rect x="436" y="38" width="204" height="36" rx="8" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+<text class="tb" x="448" y="53">当前位置：人工 JSON 结果接口</text>
+<text class="tb" x="448" y="68">result-demo-v1 · F盘dev</text>
+
+<circle cx="44" cy="87" r="3.5" fill="#1D9E75"/><text class="tm" x="52" y="91">已实跑</text>
+<circle cx="112" cy="87" r="3.5" fill="#185FA5"/><text class="tm" x="120" y="91">已确认/已认可</text>
+<circle cx="222" cy="87" r="3.5" fill="#BA7517"/><text class="tm" x="230" y="91">候选未冻结</text>
+<circle cx="322" cy="87" r="3.5" fill="#9AA6B5"/><text class="tm" x="330" y="91">未实现/未实跑</text>
+<line x1="40" y1="104" x2="640" y2="104" stroke="#E5E7EB" stroke-width="0.5"/>
+
+<text class="h2" x="40" y="126">01 C# 七层职责栈（从下到上 L1→L7）</text>
+<text class="tm" x="40" y="142">依据：30 完整方案 §5–§15 + HANDOFF · 每层标注条款来源与确认状态 · 两侧不共享内存，靠文件 JSON 交接</text>
+
+<!-- L7 日志 -->
+<rect class="bS" x="40" y="156" width="600" height="88" rx="8"/>
+<text class="btG" x="52" y="174">L7 日志 · 30 §14</text>
+<rect x="470" y="163" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#9AA6B5" stroke-width="0.8"/>
+<text class="chip" x="549" y="176" text-anchor="middle" fill="#0F6E56">1 MiB 限制 · 压力已实跑</text>
+<text class="tx" x="52" y="194">持续同时消费 stdout/stderr，不先 ReadToEnd 再截断</text>
+<text class="tx" x="52" y="210">新接口每路保留 1 MiB 原始字节，超限继续消费并标注截断，不依赖行结束</text>
+<text class="tx" x="52" y="226">进程退出与日志结束分别收尾，收尾等待有上限（demo 级 UTF-8 双管道已实跑）</text>
+
+<!-- L6 结果接收与校验 -->
+<rect class="bS" x="40" y="252" width="600" height="88" rx="8"/>
+<text class="btG" x="52" y="270">L6 结果接收与校验 · 30 §13 §14</text>
+<rect x="470" y="259" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#9AA6B5" stroke-width="0.8"/>
+<text class="chip" x="549" y="272" text-anchor="middle" fill="#0F6E56">人工 JSON 已实跑</text>
+<text class="tx" x="52" y="290">进程结束后只接收最终名 result.json；临时文件关闭后提交</text>
+<text class="tx" x="52" y="306">已验：取消拒收、16 MiB/UTF-8/重复键、版本/身份/类型/人工语义；硬件证据定位待接入</text>
+<text class="tx" x="52" y="322">result-demo-v1：0=completed、2=failed；缺文件或坏响应拒收，不回读旧 result</text>
+
+<!-- L5 进程启动 -->
+<rect class="bS" x="40" y="348" width="600" height="88" rx="8"/>
+<text class="btJ" x="52" y="366">L5 进程启动 · 30 §9</text>
+<rect x="470" y="355" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#1D9E75" stroke-width="0.8"/>
+<text class="chip" x="549" y="368" text-anchor="middle" fill="#0F6E56">部分已实跑 · demo 路径</text>
+<text class="tx" x="52" y="386">ProcessStartInfo：FileName=java.exe，UseShellExecute=false</text>
+<text class="tx" x="52" y="402">参数：-jar、JAR 路径、命令 demo/collect、身份、输入文件、任务目录</text>
+<text class="tx" x="52" y="418">ArgumentList 逐项原始参数，不额外套引号；启动后立即同时消费双管道（-jar/collect 未实跑）</text>
+
+<!-- L4 CPUID采集 -->
+<rect class="bS" x="40" y="444" width="600" height="88" rx="8"/>
+<text class="btJ" x="52" y="462">L4 CPUID 采集 · 30 §10</text>
+<rect x="470" y="451" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#1D9E75" stroke-width="0.8"/>
+<text class="chip" x="549" y="464" text-anchor="middle" fill="#0F6E56">候选B已冻结 · 探针实跑</text>
+<text class="tx" x="52" y="482">用 .NET X86Base.CpuId 采原始寄存器 → 写 cpuid.json（C# 写，Java 读）</text>
+<text class="tx" x="52" y="498">每寄存器六键 leaf/subleaf/eax/ebx/ecx/edx，8 位小写 hex 保 32 位位模式</text>
+<text class="tx" x="52" y="514">解码：候选B（2026-10-14 冻结）——C# 解码，交原证据+cpuid-decode-b-v1 规则</text>
+
+<!-- L3 任务控制 -->
+<rect class="bS" x="40" y="540" width="600" height="88" rx="8"/>
+<text class="btJ" x="52" y="558">L3 任务控制 · 30 §7 §15</text>
+<rect x="470" y="547" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#1D9E75" stroke-width="0.8"/>
+<text class="chip" x="549" y="560" text-anchor="middle" fill="#0F6E56">独占建目录/取消/超时实跑</text>
+<text class="tx" x="52" y="578">生成新 executionId（32 位小写 hex），创建独立任务目录，登记活动任务/取消标记</text>
+<text class="tx" x="52" y="594">Process 管理：Kill 只限自有进程并确认退出；切页/关闭经同一控制器</text>
+<text class="tx" x="52" y="610">取消后完整 JSON 也拒收；只停自有进程已实跑，重复点击/切页/关闭控制器尚未接入</text>
+
+<!-- L2 页面与交互 -->
+<rect class="bB" x="40" y="636" width="600" height="88" rx="8"/>
+<text class="bt" x="52" y="654">L2 页面与交互 · 30 §6 §7</text>
+<rect x="470" y="643" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#85B7EB" stroke-width="0.8"/>
+<text class="chip" x="549" y="656" text-anchor="middle" fill="#185FA5">方向已认可 · 未实现</text>
+<text class="tx" x="52" y="674">WPF 检测页面：按钮、结果区、证据展开、HTML 导出入口</text>
+<text class="tx" x="52" y="690">点击交任务控制器，无活动任务才开始；合法结果进页面，可查看证据与导出</text>
+<text class="tx" x="52" y="706">新任务开始时旧结果退出结果区，旧报告明确标为历史执行身份</text>
+
+<!-- L1 宿主接入 -->
+<rect class="bB" x="40" y="732" width="600" height="88" rx="8"/>
+<text class="bt" x="52" y="750">L1 宿主接入 · 30 §5.1（历史源码确认的边界）</text>
+<rect x="470" y="739" width="158" height="18" rx="9" fill="#FFFFFF" stroke="#85B7EB" stroke-width="0.8"/>
+<text class="chip" x="549" y="752" text-anchor="middle" fill="#185FA5">边界已确认 · 历史源码</text>
+<text class="tx" x="52" y="770">IYanJiPlugin：CreatePage(IHostContext) 返回 WPF UserControl</text>
+<text class="tx" x="52" y="786">可选 IModulePage.PassChanged（仅人工确认触发）、IPluginShutdown.Shutdown()</text>
+<text class="tx" x="52" y="802">PluginLoader 扫 plugins/*/plugin.json 加载 .NET 程序集；JAR 不能被其实例化</text>
+
+<rect x="40" y="836" width="600" height="30" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text x="340" y="855" text-anchor="middle" style="font:500 12px 'Segoe UI','Microsoft YaHei',sans-serif;fill:#854F0B">C# 管：接入宿主、建目录、采CPUID、启Java、收result、校验、展示、导出</text>
+
+<text class="h2" x="40" y="890">02 不是 C# 的：Java 侧职责（对照）</text>
+<text class="tm" x="40" y="906">30 §5.3 §8 §10 §11 §13 · 两侧源码互不读取，各自独立构建</text>
+<rect class="bJ" x="40" y="916" width="600" height="118" rx="8"/>
+<text class="tx" x="52" y="936">SMBIOS 采集（JNA GetSystemFirmwareTable）· §11</text>
+<text class="tx" x="52" y="954">原始包保存、8 字节包装头解析 · §5.3 §11</text>
+<text class="tx" x="52" y="972">表扫描 SmbiosScanner、字符串集 · §11</text>
+<text class="tx" x="52" y="990">Type0 / Type4 解码 · §11</text>
+<text class="tx" x="52" y="1008">CPUID 寄存器品牌解码（候选A 时）· §10</text>
+<text class="tx" x="356" y="936">CPU 名称规范化、规则核对 · §11</text>
+<text class="tx" x="356" y="954">result.json 写入 · §8 §13</text>
+<text class="tx" x="356" y="972">report.html 生成 · §13</text>
+<text class="tx" x="356" y="990">证据文件提交 · §13</text>
+<text class="tm" x="356" y="1008">有效 JSON ≠ HTML 已生成 · §13</text>
+
+<text class="h2" x="40" y="1058">03 当前切片：demo-args-v1（参数交接）</text>
+<text class="tm" x="40" y="1074">证据分级：已实跑 / 静态审阅 / 未验证 · 勿重复宣称，引用 outputs/39 即可</text>
+<rect class="bS" x="40" y="1084" width="600" height="104" rx="8"/>
+<text class="tx" x="52" y="1104">T1–T8 全过：真实Java联调3（含中文空格）· 负例2 · JVM错误1 · 替身2（标注）</text>
+<text class="tx" x="52" y="1122">契约 C1–C5 已实跑；超时实测 10.4 秒无残留进程；中文/空格路径逐项传参无损</text>
+<text class="tx" x="52" y="1140">2026-10-14：F盘复编译 0/0 + 参考版冒烟 validated + 用户版Java联调 validated</text>
+<text class="tx" x="52" y="1158">用户版：javac 0、javaExitCode=0、stdout三行、目录未写入；F1（JVM级GBK）观察项不改契约</text>
+
+<text class="h2" x="40" y="1212">04 下一步顺序（按价值）</text>
+<rect class="bP" x="40" y="1222" width="600" height="30" rx="8"/>
+<text class="tx" x="52" y="1241">1 用户版真实联调 —— 已完成（2026-10-14 validated）；Java 侧负例 J3–J5 由 Java 线验收</text>
+<rect class="bP" x="40" y="1258" width="600" height="30" rx="8"/>
+<text class="tx" x="52" y="1277">2 人工 JSON 切片（L6）—— 已实跑：Java 写 result → C# 读校验；契约 result-demo-v1</text>
+<rect class="bP" x="40" y="1294" width="600" height="30" rx="8"/>
+<text class="tx" x="52" y="1313">3 CPUID 切片（L4）—— 候选B 已冻结，探针采集+解码已实跑；JSON 形状待并入新契约</text>
+<rect class="bP" x="40" y="1330" width="600" height="30" rx="8"/>
+<text class="tx" x="52" y="1349">4 宿主接入（L1/L2/L3 全量）—— 取消/超时/切页/关闭保护、WPF 页面、证据与导出</text>
+<rect class="bP" x="40" y="1366" width="600" height="30" rx="8"/>
+<text class="tx" x="52" y="1385">5 生命周期与发布 —— 超时预算、宿主崩溃（Job Object 候选）、self-contained 分发</text>
+
+<line x1="40" y1="1416" x2="640" y2="1416" stroke="#E5E7EB" stroke-width="0.5"/>
+<text class="tm" x="40" y="1434">连接规则：目录由 C# 先建，Java 只校验不创建；分类只看退出码，日志仅诊断；不共享内存，靠文件 JSON 交接</text>
+<text class="tm" x="40" y="1452">2026-10-14 · 依据 30 完整方案 + HANDOFF + outputs/39 核对 · 契约36 · F:/BibaYanji-dev/hardware-evidence</text>
+</svg>

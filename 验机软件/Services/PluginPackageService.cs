@@ -18,8 +18,7 @@ public static class PluginPackageService
 
     public record PendingOp(string Action, string Id, string? ZipPath);
 
-    static string OpsFile => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "YanJi", "plugin-ops.json");
+    static string OpsFile => Path.Combine(Settings.DataDirectory, "plugin-ops.json");
 
     /// <summary>排队一个待处理操作（delete / import）。</summary>
     public static void QueuePendingOp(string action, string id, string? zipPath = null)

@@ -57,6 +57,7 @@ public class ColorTestWindow : Window
             else Next();
         };
         MouseLeftButtonDown += (_, _) => Next();
+        Closed += (_, _) => _hintTimer.Stop();
 
         Loaded += (_, _) =>
         {

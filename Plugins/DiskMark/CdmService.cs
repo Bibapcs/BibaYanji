@@ -76,6 +76,7 @@ public class CdmService
     /// 其余只进日志缓冲（报错时附尾部）。</summary>
     public async Task<CdmResult> RunAsync(string drive, IProgress<RunProgress>? progress, CancellationToken ct)
     {
+        ct.ThrowIfCancellationRequested();
         string exe = HostExe;
         if (!File.Exists(exe))
             throw new FileNotFoundException("未找到 CdmHost 负载（应随插件一同分发）：" + exe);
@@ -144,6 +145,7 @@ public class CdmService
         };
         proc.ErrorDataReceived += (_, e) => { if (e.Data != null) sb.AppendLine(e.Data); };
 
+        ct.ThrowIfCancellationRequested();
         proc.Start();
         _current = proc;
         try
@@ -169,12 +171,15 @@ public class CdmService
             _current = null;
         }
 
+        ct.ThrowIfCancellationRequested();
+        if (proc.ExitCode != 0)
+            throw new InvalidOperationException($"CdmHost 运行失败（退出码 {proc.ExitCode}）：\n{Tail(sb.ToString(), 1200)}");
         if (jsonLine == null)
             throw new InvalidOperationException($"CdmHost 未输出成绩（退出码 {proc.ExitCode}）：\n{Tail(sb.ToString(), 1200)}");
 
+        var result = ParseScores(jsonLine, JsonPath);
         Directory.CreateDirectory(ResultDir);
         File.WriteAllText(JsonPath, jsonLine + "\n", new UTF8Encoding(false));
-        var result = ParseScores(jsonLine, JsonPath);
         AppendScore(drive + ":", result);
         return result;
     }
@@ -184,12 +189,18 @@ public class CdmService
     {
         using var doc = JsonDocument.Parse(json);
         var r = doc.RootElement;
-        return new CdmResult(
+        var result = new CdmResult(
             r.GetProperty("seq_read").GetDouble(),
             r.GetProperty("seq_write").GetDouble(),
             r.GetProperty("rnd4k_read").GetDouble(),
             r.GetProperty("rnd4k_write").GetDouble(),
             jsonPath);
+        if (!double.IsFinite(result.SeqRead) || result.SeqRead < 0 ||
+            !double.IsFinite(result.SeqWrite) || result.SeqWrite < 0 ||
+            !double.IsFinite(result.Rnd4KRead) || result.Rnd4KRead < 0 ||
+            !double.IsFinite(result.Rnd4KWrite) || result.Rnd4KWrite < 0)
+            throw new FormatException("CdmHost 成绩必须为有限非负数");
+        return result;
     }
 
     /// <summary>追加一行成绩记录（UTF-8 带 BOM；落盘失败不影响本次成绩）。</summary>

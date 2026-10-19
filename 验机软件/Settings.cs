@@ -6,8 +6,11 @@ namespace YanJi;
 /// <summary>简单设置持久化（%APPDATA%\YanJi\settings.json）。</summary>
 public static class Settings
 {
-    static string DirPath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "YanJi");
+    // 预览包放置标记文件，设置与待处理插件队列和正式版隔离。
+    public static string DataDirectory => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        File.Exists(Path.Combine(AppContext.BaseDirectory, "preview-mode")) ? "YanJiPreview" : "YanJi");
+    static string DirPath => DataDirectory;
     static string FilePath => Path.Combine(DirPath, "settings.json");
 
     /// <summary>主题选择：null = 未设置过（首次运行跟随系统）。</summary>

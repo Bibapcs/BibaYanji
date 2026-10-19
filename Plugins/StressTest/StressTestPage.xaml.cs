@@ -34,19 +34,29 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
         _tick.Tick += (_, _) => RefreshRunningState();
         StressTestService.StateChanged += OnServiceStateChanged;
         StressTestService.Logged += OnStressLogged;
+        SensorMonitorService.SessionStarted += () => QueueSensorUpdate(ResetSensorState, allowCanceled: true);
         SensorMonitorService.Sampled += OnSensorSampled;
         SensorMonitorService.SensorsResolved += OnSensorsResolved;
         SensorMonitorService.GpuListReady += OnGpuListReady;
         SensorMonitorService.GpuChanging += OnGpuChanging;
+        SensorMonitorService.Failed += message => QueueSensorUpdate(() =>
+        {
+            _sensorFailure = message;
+            RefreshSensorHint();
+        }, allowCanceled: true);
         // 页面常驻机制下切走即 Unloaded：必须停烤机与传感器轮询（关窗也会触发，双保险）
         Unloaded += (_, _) =>
         {
             _tick.Stop();
-            StressTestService.Stop();
-            SensorMonitorService.Stop();
+            try { StressTestService.Stop(); }
+            finally { SensorMonitorService.Stop(); }
         };
         // 页面可见时才开传感器轮询（Loaded 在切回时会重发，Start 幂等）
-        Loaded += (_, _) => SensorMonitorService.Start();
+        Loaded += (_, _) =>
+        {
+            ResetSensorState();
+            SensorMonitorService.Start();
+        };
         SensorHintText.Text = "正在初始化传感器……";
         RefreshRunningState();
     }
@@ -108,9 +118,40 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
 
     bool _cpuTempDown, _cpuPowerDown, _gpuTempDown, _gpuPowerDown;
     SensorMonitorService.SensorMap? _sensorMap;
+    string? _sensorFailure;
+
+    void ResetSensorState()
+    {
+        CpuTempChart.Clear();
+        CpuPowerChart.Clear();
+        GpuTempChart.Clear();
+        GpuPowerChart.Clear();
+        _cpuTempDown = _cpuPowerDown = _gpuTempDown = _gpuPowerDown = false;
+        CpuTempOverlay.Visibility = CpuPowerOverlay.Visibility = Visibility.Collapsed;
+        _sensorMap = null;
+        _sensorFailure = null;
+        _gpuBoxSyncing = true;
+        try
+        {
+            GpuBox.Items.Clear();
+            GpuBox.Visibility = Visibility.Collapsed;
+        }
+        finally { _gpuBoxSyncing = false; }
+        SensorHintText.Text = "正在初始化传感器……";
+    }
+
+    void QueueSensorUpdate(Action update, bool allowCanceled = false)
+    {
+        var session = SensorMonitorService.SessionToken;
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (IsLoaded && session == SensorMonitorService.SessionToken &&
+                (allowCanceled || !session.IsCancellationRequested)) update();
+        });
+    }
 
     void OnSensorSampled(SensorMonitorService.Reading r) =>
-        Dispatcher.BeginInvoke(() =>
+        QueueSensorUpdate(() =>
         {
             UpdateChart(CpuTempChart, CpuTempOverlay, r.CpuTemp, ref _cpuTempDown);
             UpdateChart(CpuPowerChart, CpuPowerOverlay, r.CpuPower, ref _cpuPowerDown);
@@ -151,12 +192,17 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     void RefreshSensorHint()
     {
         var m = _sensorMap;
-        if (m == null) return;
-        SensorHintText.Text =
+        if (m == null)
+        {
+            SensorHintText.Text = _sensorFailure ?? "正在初始化传感器……";
+            return;
+        }
+        string hint =
             $"CPU 温度  ←  {Line(m.CpuName, m.CpuTemp, _cpuTempDown, needsDriver: true)}\n" +
             $"CPU 功耗  ←  {Line(m.CpuName, m.CpuPower, _cpuPowerDown, needsDriver: true)}\n" +
             $"GPU 温度  ←  {Line(m.GpuName, m.GpuTemp, _gpuTempDown, needsDriver: false)}\n" +
             $"GPU 功耗  ←  {Line(m.GpuName, m.GpuPower, _gpuPowerDown, needsDriver: false)}";
+        SensorHintText.Text = _sensorFailure == null ? hint : _sensorFailure + "\n" + hint;
 
         static string Line(string? hw, string? sensor, bool down, bool needsDriver)
         {
@@ -168,7 +214,7 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     }
 
     void OnSensorsResolved(SensorMonitorService.SensorMap map) =>
-        Dispatcher.BeginInvoke(() =>
+        QueueSensorUpdate(() =>
         {
             _sensorMap = map;
             RefreshSensorHint();
@@ -179,7 +225,7 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     bool _gpuBoxSyncing;
 
     void OnGpuListReady(IReadOnlyList<SensorMonitorService.GpuOption> options, int selected) =>
-        Dispatcher.BeginInvoke(() =>
+        QueueSensorUpdate(() =>
         {
             _gpuBoxSyncing = true;
             GpuBox.Items.Clear();
@@ -198,7 +244,7 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
     }
 
     void OnGpuChanging() =>
-        Dispatcher.BeginInvoke(() =>
+        QueueSensorUpdate(() =>
         {
             // 立即清两图旧曲线与降级标志（新传感器下轮采样重评估）
             GpuTempChart.Clear();
@@ -216,7 +262,8 @@ public partial class StressTestPage : UserControl, YanJi.PluginSdk.IModulePage
         bool ok = await Task.Run(SensorMonitorService.InstallDriver);
         if (ok)
         {
-            SensorMonitorService.Restart(); // 重初始化：新 Computer 直接走驱动读数（无静态缓存依赖）
+            if (IsLoaded) SensorMonitorService.Restart();
+            btn.Content = "驱动已安装";
         }
         else
         {

@@ -1,0 +1,195 @@
+{
+  "reportVersion": 1,
+  "date": "2026-10-13",
+  "contract": "demo-args-v1",
+  "workspace": "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013",
+  "overall": {
+    "sourceDelivery": "已完成",
+    "evidenceLevel": "静态审阅",
+    "compiled": false,
+    "callerExecuted": false,
+    "surrogateExecuted": false,
+    "realJavaIntegrationExecuted": false,
+    "summary": "已交付 net10.0 项目及四个生产源码文件。唯一 SDK 探测返回 127、dotnet: command not found；未编译、未运行、未建立测试替身、未做真实 Java 联调。"
+  },
+  "isolation": {
+    "soleBusinessInput": "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CONTRACT.md",
+    "contractModified": false,
+    "javaWritten": false,
+    "originalSourceReferenced": false,
+    "fileOperationsOutsideWorkspace": false,
+    "originalProjectFilesRead": false,
+    "downloadsOrInstalls": false,
+    "environmentOrGlobalConfigurationChanged": false,
+    "defaultWorkingDirectoryUsedForBusinessFiles": false,
+    "disclosure": "一次 TaskList 调用意外返回共享会话既有任务的标题、状态和简要依赖摘要。这是隔离边界偏差；未打开其中旧任务的详情，未读取对应业务文件，未使用这些摘要补充实现逻辑。后续没有再次调用 TaskList。不能声称完全没有接触任何旧会话元数据。",
+    "businessInputUsedForImplementation": [
+      "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CONTRACT.md"
+    ]
+  },
+  "businessFilesRead": [
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CONTRACT.md",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Caller.csproj",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Program.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CallerResult.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CallerConfiguration.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/JavaCaller.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/README.md",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/validation.json"
+  ],
+  "businessFilesWritten": [
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Caller.csproj",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Program.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CallerResult.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/CallerConfiguration.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/JavaCaller.cs",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/README.md",
+    "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/validation.json"
+  ],
+  "directoryInspection": {
+    "command": "ls -la \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013\"",
+    "exitCode": 0,
+    "initialFiles": ["CONTRACT.md"],
+    "description": "只列出授权独立目录，未枚举默认 cwd 或原工程。"
+  },
+  "sdkProbe": {
+    "evidenceLevel": "已实跑",
+    "attemptCount": 1,
+    "command": "cd \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013\" && dotnet --list-sdks",
+    "workingDirectory": "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013",
+    "shell": "Git Bash",
+    "exitCode": 127,
+    "stdout": "",
+    "stderr": "C:\\Users\\Administrator\\.workbuddy\\binaries\\PortableGit\\versions\\1.2.0\\bin\\bash.exe: line 1: dotnet: command not found\n",
+    "approvalRejected": false,
+    "conclusion": "当前 shell 找不到 dotnet；未证明机器其他位置不存在 SDK。遵守一次探测限制，未替换命令或搜索安装路径。"
+  },
+  "officialDocumentationConsulted": [
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.readtoendasync?view=net-10.0",
+      "result": "成功取得正文",
+      "usedFor": "ReadToEndAsync(CancellationToken) 返回 Task<string>；取消异常记录在任务中，取消时部分数据可能丢失。"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill?view=net-10.0",
+      "result": "成功取得正文",
+      "usedFor": "Kill(true) 停止关联进程及可处理的后代；WaitForExit/HasExited 不代表全部后代退出。"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo.argumentlist?view=net-10.0",
+      "result": "成功取得正文",
+      "usedFor": "ArgumentList 项无需预先转义；不同时使用 Arguments。"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-run",
+      "result": "抓取未取得可用正文",
+      "usedFor": "未作为文档确认通过的证据；README 命令仍属未执行的使用说明。"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build",
+      "result": "抓取未取得可用正文",
+      "usedFor": "未编造 dotnet build --project 用法；README 使用 dotnet run --project 触发指定工程构建及运行。"
+    }
+  ],
+  "build": {
+    "evidenceLevel": "未验证",
+    "targetFramework": "net10.0",
+    "thirdPartyNuGetDependencies": [],
+    "project": "C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Caller.csproj",
+    "attempted": false,
+    "commandExitCode": null,
+    "artifactsProduced": [],
+    "reason": "唯一 SDK 探测找不到 dotnet；按授权停止 SDK 相关动作，仅交付源码与静态审阅。",
+    "futureBuildAndRunCommand": "dotnet run --project \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Caller.csproj\" --configuration Release --no-launch-profile -- \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/Java 21/bin/java.exe\" \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/编译产物 class\" \"C:/Users/Administrator/WorkBuddy/biba-csharp-contract-demo-20261013/演示任务 runs\"",
+    "futureCommandCaveat": "未执行；Java/class 示例路径目前不存在，必须提供已有合法配置。源码可构建性尚未由编译器证实。"
+  },
+  "contractCoverage": [
+    {
+      "id": "C1",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "每次生成 Guid N 格式身份，先检查路径未占用，再创建目录，最后启动进程；不复用、清空或删除。",
+      "sourceReferences": ["CallerConfiguration.cs:49", "JavaCaller.cs:19", "JavaCaller.cs:38"],
+      "runtimeVerification": "未验证",
+      "remaining": "两次调用不同身份/目录、启动瞬间空目录及失败目录保留未实跑；非原子独占，限受控串行。"
+    },
+    {
+      "id": "C2",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "三个配置为 Windows 完整绝对路径；八项按契约顺序加入 ArgumentList，不加额外引号、不经 shell；WorkingDirectory 指向任务目录。",
+      "sourceReferences": ["CallerConfiguration.cs:59", "JavaCaller.cs:95", "JavaCaller.cs:110"],
+      "runtimeVerification": "未验证",
+      "remaining": "中文空格启动器/class/runsRoot 的实际 Windows 参数转交未实跑。"
+    },
+    {
+      "id": "C3",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "在自然退出等待前开启两路 UTF-8 ReadToEndAsync；按 ExitCode 0/2/其他值映射，保留原值与日志；不依赖日志标记。",
+      "sourceReferences": ["JavaCaller.cs:45", "JavaCaller.cs:64", "JavaCaller.cs:67", "JavaCaller.cs:106", "JavaCaller.cs:158"],
+      "runtimeVerification": "未验证",
+      "remaining": "0、2、其他非零返回分类、同时输出超过管道缓冲、UTF-8 中文及日志误导情况未实跑。"
+    },
+    {
+      "id": "C4",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "路径/类型/入口预检、目录创建和启动异常为 caller_failure；request_invalid 仅自然退出 2；启动失败保留已创建任务。自然退出后日志失败仍保留已观察到退出码。",
+      "sourceReferences": ["CallerConfiguration.cs:7", "JavaCaller.cs:17", "JavaCaller.cs:81", "CallerResult.cs:38"],
+      "runtimeVerification": "未验证",
+      "remaining": "不可访问路径、文件冒充目录、存在但不可执行的启动器、等待/读取异常以及启动后的上下文保留未实跑。"
+    },
+    {
+      "id": "C5",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "十秒自然等待；只对本次 Process Kill(true)，最多再等三秒确认本次退出，日志收尾共同三秒；超时及收尾错误保持 timeout 且 javaExitCode=null；读取任务有故障观察，资源用 using 释放，无重试或清理。",
+      "sourceReferences": ["JavaCaller.cs:8", "JavaCaller.cs:43", "JavaCaller.cs:74", "JavaCaller.cs:123", "JavaCaller.cs:158", "JavaCaller.cs:259", "CallerResult.cs:38"],
+      "runtimeVerification": "未验证",
+      "remaining": "停止成功/失败、后代持有管道、无关进程不被停止及实际耗时均未实跑。同步 Start/Kill/Dispose/文件操作不承诺严格全流程总时间上限。"
+    },
+    {
+      "id": "C6",
+      "evidenceLevel": "静态审阅",
+      "reviewConclusion": "当前没有真实 class 输入。文档明确区分替身测试、编译和真实 Java 联调；未编写目标 Java、未把 SDK 探测当联调。",
+      "sourceReferences": ["README.md:3", "validation.json"],
+      "runtimeVerification": "未验证",
+      "remaining": "SDK 不可用，未建立测试替身，替身测试及真实 Java 联调全部未验证。"
+    }
+  ],
+  "callerExitCodeReview": {
+    "evidenceLevel": "静态审阅",
+    "sourceReference": "CallerResult.cs:27",
+    "mapping": {
+      "validated": 0,
+      "request_invalid": 2,
+      "java_failure": 1,
+      "caller_failure": 1,
+      "timeout": 1
+    },
+    "javaExitCodeIsSeparate": true
+  },
+  "runtimeTestCases": [
+    { "name": "两次调用及启动时空目录", "coverage": "C1", "status": "未验证", "exitCode": null },
+    { "name": "中文与空格绝对路径逐项转交", "coverage": "C2", "status": "未验证", "exitCode": null },
+    { "name": "双管道并发及自然退出 0", "coverage": "C3", "status": "未验证", "exitCode": null },
+    { "name": "自然退出 2 与日志标记不左右分类", "coverage": "C3/C4", "status": "未验证", "exitCode": null },
+    { "name": "自然退出其他非零码保留原值", "coverage": "C3", "status": "未验证", "exitCode": null },
+    { "name": "配置和启动失败保留已创建上下文", "coverage": "C4", "status": "未验证", "exitCode": null },
+    { "name": "自然退出但日志读取失败或收尾超时", "coverage": "C4/C5", "status": "未验证", "exitCode": null },
+    { "name": "十秒超时、停止与三秒日志收尾", "coverage": "C5", "status": "未验证", "exitCode": null },
+    { "name": "明确标注的 C# 子进程替身测试", "coverage": "C6", "status": "未验证", "exitCode": null },
+    { "name": "C# 到真实 Java 21 联调", "coverage": "C6", "status": "未验证", "exitCode": null }
+  ],
+  "ambiguitiesReturnedToMainAssistant": [],
+  "contractBehaviorChanges": [],
+  "remainingRisks": [
+    "编译器未检查语法、引用、可空警告或 net10.0 SDK 兼容性；不得声称构建成功。",
+    "当前 shell 找不到 dotnet；未搜索其他位置，不对整机 SDK 安装状态作结论。",
+    "没有子进程实跑证据；所有管道、退出分类、中文空格和超时行为只能标为静态审阅。",
+    "不证明 Java 21、DemoCommand.class 字节码、依赖加载或 Java J1–J5 行为；真实 Java 联调未验证。",
+    "目录检查再创建不原子；并发/恶意目录置换、符号链接/权限强化不在本版能力之内。",
+    "ReadToEndAsync 适用于本合同有限日志，生产无限日志未规定内存上限。",
+    "读取取消可能丢失部分文本；未读完的一路返回空文本并记明不完整，不伪造完整日志。",
+    "Kill(true) 受权限及进程树竞态限制；确认本次进程退出不等于确认全部后代退出。",
+    "异步等待和日志收尾有界，但同步文件操作、启动、Kill 与 Dispose 不保证全流程精确十六秒。",
+    "用户取消、宿主崩溃、WPF、真实宿主、硬件检测及生产生命周期不在本次实现与验证范围。",
+    "一次共享任务列表返回旧会话任务标题等元数据，隔离审计存在已披露偏差；未据此补充业务实现。"
+  ]
+}

@@ -2,6 +2,10 @@
 bin/
 obj/
 out/
+target/
+
+# IDE 本机配置（不随仓库走）
+.idea/
 
 # 发布产物（可重新生成，见 README「部署」与项目交接文档）
 publish/

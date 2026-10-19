@@ -13,36 +13,65 @@
 ; 0.0.4：配置核对硬盘部分新增「介质与数据完整性错误」（NVMe SMART，即 CrystalDiskInfo 的 0E 项）。
 
 ; LZMA2 块级并行线程数：自动取本机逻辑处理器线程数（NUMBER_OF_PROCESSORS），取不到回落 8
-#define BlockThreads GetEnv("NUMBER_OF_PROCESSORS")
-#if BlockThreads == ""
-  #undef BlockThreads
-  #define BlockThreads 8
+#ifndef BlockThreads
+  #define BlockThreads GetEnv("NUMBER_OF_PROCESSORS")
+  #if BlockThreads == ""
+    #undef BlockThreads
+    #define BlockThreads 8
+  #endif
+#endif
+
+; 本地验收包可用 /DPreview=1 与正式版并存，避免覆盖已安装版本及共享用户数据。
+#ifndef PackageVersion
+  #define PackageVersion "0.0.4"
+#endif
+#ifndef PackageFileVersion
+  #define PackageFileVersion "0.0.4.0"
+#endif
+#ifndef PublishSource
+  #define PublishSource "..\publish"
+#endif
+#ifdef Preview
+  #ifdef MeetingPreview
+    #define ProductName "笔吧验机会议预览版"
+    #define ProductDirectory "BibaInspectionMeetingPreview"
+    #define ProductId "BibaInspection.MeetingPreview"
+  #else
+    #define ProductName "笔吧验机预览版"
+    #define ProductDirectory "BibaInspectionPreview"
+    #define ProductId "BibaInspection.Preview"
+  #endif
+#else
+  #define ProductName "笔吧验机"
+  #define ProductDirectory "BibaInspection"
+  #define ProductId "笔吧验机"
 #endif
 
 [Setup]
-AppName=笔吧验机
-AppVersion=0.0.4
-AppVerName=笔吧验机 0.0.4
+AppId={#ProductId}
+AppName={#ProductName}
+AppVersion={#PackageVersion}
+AppVerName={#ProductName} {#PackageVersion}
 AppPublisher=笔吧验机
 ; 只面向 x64 Windows（self-contained win-x64），且装到 C:\Program Files（而非 (x86)）
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 ; 默认目录用纯英文 BibaInspection：规避外部组件/CLI 对中文路径的兼容问题
-DefaultDirName={autopf}\BibaInspection
-DefaultGroupName=笔吧验机
+DefaultDirName={autopf}\{#ProductDirectory}
+DefaultGroupName={#ProductName}
 PrivilegesRequired=admin
 OutputDir=.
-OutputBaseFilename=笔吧验机Setup-v0.0.4
+OutputBaseFilename=笔吧验机Setup-v{#PackageVersion}
 Compression=lzma2/max
 SolidCompression=yes
 ; 块级并行压缩：多线程各压一块（压缩率略降）；独立 64 位压缩进程，规避 32 位编译器内存上限
 LZMANumBlockThreads={#BlockThreads}
 LZMAUseSeparateProcess=yes
-VersionInfoVersion=0.0.4.0
+VersionInfoVersion={#PackageFileVersion}
 VersionInfoCompany=笔吧验机
 VersionInfoDescription=笔吧验机 安装向导
 VersionInfoProductName=笔吧验机
-UninstallDisplayName=笔吧验机
+UninstallDisplayName={#ProductName}
 ; 安装/卸载程序 exe 的图标 = 主程序同款 app.ico
 SetupIconFile=..\验机软件\app.ico
 WizardStyle=modern
@@ -69,26 +98,31 @@ Name: "disk"; Description: "硬盘跑分（CrystalDiskMark 源码集成，SEQ1M/
 [Tasks]
 Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "附加任务："
 Name: "startmenu"; Description: "创建开始菜单项"; GroupDescription: "附加任务："
+#ifdef Preview
+; 预览版只在用户主动选择后才安装内核驱动，默认不执行。
+Name: "pawnio"; Description: "安装 PawnIO 内核驱动（可选；请先确认需要修改系统驱动）"; GroupDescription: "附加任务："; Flags: unchecked
+#else
 Name: "pawnio"; Description: "安装 PawnIO 内核驱动（CPU/主板传感器需要；官方签名安装器，静默安装无需重启）"; GroupDescription: "附加任务："
+#endif
 
 [Files]
 ; 主程序：除 plugins\ 与 Tools\ 外的全部内容（exe + 运行时 + PluginSdk + 依赖）。
 ; 注意不能带 createallsubdirs：它会把被 Excludes 排除的目录也空建出来（Tools\ 空目录就是这么来的）
-Source: "..\publish\*"; DestDir: "{app}"; Excludes: "plugins\*,Tools\*"; Components: main; Flags: ignoreversion recursesubdirs
+Source: "{#PublishSource}\*"; DestDir: "{app}"; Excludes: "plugins\*,Tools\*"; Components: main; Flags: ignoreversion recursesubdirs
 ; 模块插件：每插件一个目录一个组件
-Source: "..\publish\plugins\config\*"; DestDir: "{app}\plugins\config"; Components: config; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\publish\plugins\keyboard\*"; DestDir: "{app}\plugins\keyboard"; Components: keyboard; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\publish\plugins\screen\*"; DestDir: "{app}\plugins\screen"; Components: screen; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\publish\plugins\av\*"; DestDir: "{app}\plugins\av"; Components: av; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\publish\plugins\stress\*"; DestDir: "{app}\plugins\stress"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\publish\plugins\disk\*"; DestDir: "{app}\plugins\disk"; Components: disk; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\config\*"; DestDir: "{app}\plugins\config"; Components: config; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\keyboard\*"; DestDir: "{app}\plugins\keyboard"; Components: keyboard; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\screen\*"; DestDir: "{app}\plugins\screen"; Components: screen; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\av\*"; DestDir: "{app}\plugins\av"; Components: av; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\stress\*"; DestDir: "{app}\plugins\stress"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\plugins\disk\*"; DestDir: "{app}\plugins\disk"; Components: disk; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 烤机工具负载只有散热测试用：随 stress 组件安装（不勾散热可省约 130MB）
-Source: "..\publish\Tools\*"; DestDir: "{app}\Tools"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishSource}\Tools\*"; DestDir: "{app}\Tools"; Components: stress; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\笔吧验机"; Filename: "{app}\验机软件.exe"; Check: WizardIsTaskSelected('startmenu')
-Name: "{group}\卸载 笔吧验机"; Filename: "{uninstallexe}"; Check: WizardIsTaskSelected('startmenu')
-Name: "{commondesktop}\笔吧验机"; Filename: "{app}\验机软件.exe"; Check: WizardIsTaskSelected('desktopicon')
+Name: "{group}\{#ProductName}"; Filename: "{app}\验机软件.exe"; Check: WizardIsTaskSelected('startmenu')
+Name: "{group}\卸载 {#ProductName}"; Filename: "{uninstallexe}"; Check: WizardIsTaskSelected('startmenu')
+Name: "{commondesktop}\{#ProductName}"; Filename: "{app}\验机软件.exe"; Check: WizardIsTaskSelected('desktopicon')
 
 ; 安装末尾自动安装 PawnIO 内核驱动（默认勾选的附加任务）。
 ; 必须 -install -silent：只传 -install 时其安装器会弹版权确认窗（已实测）——
@@ -129,7 +163,13 @@ var
   BtnOk, BtnCancel: TNewButton;
   Lbl: TNewStaticText;
 begin
-  DeleteUserData := True; { 静默卸载/异常路径下的默认值 }
+#ifdef Preview
+  { 预览版设置与插件队列独立，硬盘成绩仍共享；卸载始终保留用户数据。 }
+  DeleteUserData := False;
+  Result := True;
+  Exit;
+#endif
+  DeleteUserData := True; { 正式版静默卸载/异常路径下的默认值 }
   Form := CreateCustomForm(ScaleX(420), ScaleY(150), False, True);
   Form.Caption := '卸载 笔吧验机';
   Form.Position := poScreenCenter;

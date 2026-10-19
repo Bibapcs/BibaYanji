@@ -86,6 +86,7 @@ public partial class MainWindow : Window
                     catch { /* 单个插件清理失败不影响其它插件与退出 */ }
                 }
         };
+        UpdateCompletion();
         // 初始选中第一个模块；没有插件时内容区显示占位提示
         if (NavList.Items.Count > 0)
             NavList.SelectedIndex = 0;
@@ -111,10 +112,25 @@ public partial class MainWindow : Window
         var dotGrid = new Grid { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0) };
         dotGrid.Children.Add(dot);
         dotGrid.Children.Add(check);
-        var panel = new StackPanel { Orientation = Orientation.Horizontal };
+        var panel = new Grid();
+        panel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(27) });
+        panel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        panel.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        var icon = new TextBlock
+        {
+            Text = ModulePresentation(lp.Info.Id).Icon,
+            FontFamily = new FontFamily("Segoe MDL2 Assets"), FontSize = 17,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        panel.Children.Add(icon);
+        var name = new TextBlock { Text = lp.Info.Name, FontSize = 13, VerticalAlignment = VerticalAlignment.Center };
+        Grid.SetColumn(name, 1);
+        panel.Children.Add(name);
+        dotGrid.Margin = new Thickness(8, 0, 0, 0);
+        Grid.SetColumn(dotGrid, 2);
         panel.Children.Add(dotGrid);
-        panel.Children.Add(new TextBlock { Text = lp.Info.Name });
-        var newItem = new ListBoxItem { Tag = lp.Info.Id, Content = panel };
+        var newItem = new ListBoxItem { Tag = lp.Info.Id, Content = panel, ToolTip = ModulePresentation(lp.Info.Id).Hint };
+        System.Windows.Automation.AutomationProperties.SetName(newItem, lp.Info.Name);
         int insertAt = NavList.Items.Count;
         for (int i = 0; i < NavList.Items.Count; i++)
             if (NavList.Items[i] is ListBoxItem ex && ex.Tag is string exId
@@ -144,6 +160,7 @@ public partial class MainWindow : Window
         if (!lp.Info.Terminal) _passableTags.Add(lp.Info.Id);
         if (lp.Page is IModulePage mp)
             mp.PassChanged += done => OnModulePassChanged(lp.Info.Id, done);
+        UpdateCompletion();
         // 首次插入时 NavList 从无选中项：选中它
         if (NavList.SelectedIndex < 0)
             NavList.SelectedItem = NavList.Items.Cast<object>().FirstOrDefault(
@@ -184,7 +201,33 @@ public partial class MainWindow : Window
     {
         // 按 ListBoxItem.Tag（插件 id）取页面实例（常驻，切换不丢状态）
         if (NavList.SelectedItem is ListBoxItem item && item.Tag is string tag && _pages.TryGetValue(tag, out var page))
+        {
             ContentHost.Content = page;
+            CurrentModuleText.Text = _plugins.FirstOrDefault(p => p.Info.Id == tag)?.Info.Name ?? tag;
+            ModuleHintText.Text = ModulePresentation(tag).Hint;
+        }
+    }
+
+    static (string Icon, string Hint) ModulePresentation(string id) => id switch
+    {
+        "config" => ("\uE950", "核对真实硬件信息，再确认配置是否符合预期。"),
+        "keyboard" => ("\uE765", "点击键盘区域后逐个按下实体按键；完成后确认通过。"),
+        "screen" => ("\uE7F4", "选择屏幕，进入全屏纯色检查坏点和显示异常。"),
+        "av" => ("\uE714", "分别检查摄像头、麦克风和扬声器。"),
+        "stress" => ("\uE9D9", "查看温度与功耗；烤机需由你手动启动并持续留意温度。"),
+        "disk" => ("\uEDA2", "确认目标盘与测试参数后再开始跑分。"),
+        _ => ("\uE74C", "按模块说明完成检查。"),
+    };
+
+    void UpdateCompletion()
+    {
+        int total = _passableTags.Count;
+        int done = _passableTags.Count(_doneTags.Contains);
+        ModuleCountText.Text = $"{_pages.Count} 个模块";
+        CompletionText.Text = $"{done} / {total}";
+        CompletionProgress.Maximum = Math.Max(1, total);
+        CompletionProgress.Value = done;
+        AllDoneHint.Visibility = total > 0 && done == total ? Visibility.Visible : Visibility.Collapsed;
     }
 
     /// <summary>模块页面通过态变化：圆点同步 + 通过时自动跳转下一未完成模块；回退时撤掉「全部完成」提示。</summary>
@@ -201,6 +244,7 @@ public partial class MainWindow : Window
             _doneTags.Remove(tag);
             AllDoneHint.Visibility = Visibility.Collapsed;
         }
+        UpdateCompletion();
         // 推送给关注完成状态的插件（验机结束页的清单实时跟随）
         _hostContext.RaiseDoneChanged();
     }

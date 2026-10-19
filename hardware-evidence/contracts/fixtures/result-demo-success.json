@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "0.1.0",
+  "ruleSetVersion": "demo-only-v1",
+  "mode": "result-demo",
+  "executionId": "0123456789abcdef0123456789abcdef",
+  "captureId": "demo-cpu-v1",
+  "executionStatus": "completed",
+  "sources": [
+    { "sourceId": "demo", "kind": "synthetic", "required": false, "status": "captured", "evidencePaths": [] }
+  ],
+  "fields": [],
+  "checks": [
+    { "ruleId": "demoOnly", "status": "insufficientEvidence", "fieldIds": [], "reason": "人工演示只验证结果交接，不支持硬件核验结论。" }
+  ],
+  "diagnostics": [
+    { "code": "ARTIFICIAL_DEMO", "severity": "info", "stage": "demo", "sourceId": "demo", "message": "本次数据为人工演示，没有采集硬件。" }
+  ]
+}

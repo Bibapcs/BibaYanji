@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 功能：CPUID 采集探针工程文件
+       背景：L4 候选切片（未冻结），独立 exe，不改 demo-args-v1 契约
+       方法：net10.0 控制台，仅 .NET 标准库，无第三方 NuGet；警告视为错误 -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>CpuidProbe</AssemblyName>
+    <RootNamespace>CpuidProbe</RootNamespace>
+  </PropertyGroup>
+
+</Project>

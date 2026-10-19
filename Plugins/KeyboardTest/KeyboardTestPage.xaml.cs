@@ -25,6 +25,7 @@ public partial class KeyboardTestPage : UserControl, YanJi.PluginSdk.IModulePage
 
     readonly List<KeyVisual> _all = [];
     readonly Dictionary<Key, List<KeyVisual>> _keyMap = [];
+    Window? _hostWindow;
     int _testedCount;
 
     /// <summary>核对完成状态变化（true = 已通过，false = 重置回到待测试）；MainWindow 据此同步导航圆点并自动跳转。</summary>
@@ -37,6 +38,32 @@ public partial class KeyboardTestPage : UserControl, YanJi.PluginSdk.IModulePage
     {
         InitializeComponent();
         BuildKeyboard();
+        Loaded += (_, _) =>
+        {
+            _hostWindow = Window.GetWindow(this);
+            if (_hostWindow != null) _hostWindow.Deactivated += HostWindow_Deactivated;
+        };
+        Unloaded += (_, _) =>
+        {
+            if (_hostWindow != null) _hostWindow.Deactivated -= HostWindow_Deactivated;
+            _hostWindow = null;
+            ClearPressedVisuals();
+        };
+        IsKeyboardFocusWithinChanged += (_, _) =>
+        {
+            if (!IsKeyboardFocusWithin) ClearPressedVisuals();
+        };
+    }
+
+    void HostWindow_Deactivated(object? sender, EventArgs e) => ClearPressedVisuals();
+
+    void ClearPressedVisuals()
+    {
+        foreach (var v in _all)
+        {
+            if (v.Tested) SetTested(v);
+            else SetNormal(v);
+        }
     }
 
     // ═══ 键盘生成（u 单位坐标 → Canvas 绝对定位） ═══
